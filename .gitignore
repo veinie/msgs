@@ -1,3 +1,6 @@
+testdb/
+.gitignore
+
 # Logs
 logs
 *.log
