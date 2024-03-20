@@ -1,1 +1,3 @@
-module.exports = [];
+const chatResolvers = require('./chat')
+
+module.exports = [chatResolvers];

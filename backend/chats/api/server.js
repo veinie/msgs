@@ -12,6 +12,7 @@ const { connectToDatabase } = require('../../common/util/db')
 const typeDefs = require('../graphql/schemas');
 const resolvers = require('../graphql/resolvers');
 const context = require('../graphql/context');
+const { tokenExtractor } = require('../../common/util/middleware')
 
 
 const runServer = async (PORT) => {
@@ -44,7 +45,14 @@ const runServer = async (PORT) => {
     '/api',
     cors(),
     express.json(),
-    expressMiddleware(server)
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        tokenExtractor(req, null, () => {})
+        return {
+          req,
+        }
+      }
+    })
   )
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}`))
