@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt')
 const nodemailer = require('../util/email');
 
 const { SECRET, SALT_ROUNDS } = require('../util/config')
-const { tokenExtractor } = require('../util/middleware')
-const { User } = require('../models')
+const { tokenExtractor } = require('../../common/util/middleware')
+const { User } = require('../../common/models')
 
 router.post('/', async (req, res) => {
   const { username, password, email } = req.body

@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
-const { Session } = require('../models')
-const { tokenExtractor } = require('../util/middleware')
+const { Session } = require('../../common/models')
+const { tokenExtractor } = require('../../common/util/middleware')
 
 router.post('/', tokenExtractor, async (req, res) => {
   if (req.body.global) {

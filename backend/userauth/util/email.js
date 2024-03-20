@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const { BASE_URL, EMAIL_USER, EMAIL_PASS } = require('./config')
-const logger = require('./logger')
+const logger = require('../../common/util/logger')
 
 // https://betterprogramming.pub/how-to-create-a-signup-confirmation-email-with-node-js-c2fea602872a
 
