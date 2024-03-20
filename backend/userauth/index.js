@@ -2,7 +2,7 @@ const express = require('express')
 const app = express()
 
 const { PORT } = require('./util/config')
-const { connectToDatabase } = require('./util/db')
+const { connectToDatabase } = require('../common/util/db')
 const middleware = require('./util/middleware')
 
 const usersRouter = require('./controllers/users')

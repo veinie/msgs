@@ -21,8 +21,9 @@ const unknownEndpoint = (_req, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
 
-const errorHandler = (error, _req, _res, next) => {
+const errorHandler = (error, _req, res, next) => {
   logger.error(`${error.name}: ${error.message}`)
+  res.json({ error: `${ error.name }: ${ error.message }` })
   next(error) 
 }
 

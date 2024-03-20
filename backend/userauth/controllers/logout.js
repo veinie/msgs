@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const Session = require('../models/session')
+const { Session } = require('../models')
 const { tokenExtractor } = require('../util/middleware')
 
 router.post('/', tokenExtractor, async (req, res) => {
