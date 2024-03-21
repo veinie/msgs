@@ -27,12 +27,16 @@ router.post('/', async (req, res) => {
     return res.status(403).json({ msg: 'User deactivated' })
   }
 
-  const userForToken = {
+  const payload = {
     username: user.username,
     id: user.id,
   }
 
-  const token = jwt.sign(userForToken, SECRET)
+  const options = {
+    expiresIn: '1h'
+  }
+
+  const token = jwt.sign(payload, SECRET, options)
   await Session.create({ token, userId: user.id })
 
   res
