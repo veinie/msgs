@@ -1,3 +1,4 @@
 const chatResolvers = require('./chat')
+const messageResolvers = require('./message')
 
-module.exports = [chatResolvers];
+module.exports = [chatResolvers, messageResolvers];

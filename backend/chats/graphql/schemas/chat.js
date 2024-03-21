@@ -1,7 +1,8 @@
 module.exports = `
   type Chat {
     id: Int!
-    updatedAt: String!
+    createdAt: String
+    updatedAt: String
   }
   type Mutation {
     createChat(

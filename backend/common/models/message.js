@@ -18,7 +18,7 @@ Message.init({
   sequelize,
   underscored: true,
   timestamps: true,
-  modelName: 'user',
+  modelName: 'message',
 })
 
 module.exports = Message

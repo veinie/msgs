@@ -3,7 +3,7 @@ const { Chat, Userchat, User } = require('../../../common/models')
 
 module.exports = {
   Mutation: {
-    async createChat(_, { username, userId }, context) {
+    createChat: async (_, { username, userId }, context) => {
       if (!context.req.decodedToken) throw new Error('You must be logged in')
       const requestedUser = await User.findOne({
         where: {
@@ -17,10 +17,10 @@ module.exports = {
       const chat = await Chat.create()
       await Userchat.create({ chatId: chat.id, userId: context.req.decodedToken.id, accepted: true })
       await Userchat.create({ chatId: chat.id, userId: requestedUser.id })
-    } 
+    }
   },
   Query: {
-    async getUserChats(_, _args, context) {
+    getUserChats: async (_, _args, context) => {
       const chats = await Chat.findAll({
         include: [{
           model: User,
