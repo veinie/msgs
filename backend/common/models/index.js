@@ -7,8 +7,14 @@ const Message = require('./message')
 User.hasMany(Session)
 Session.belongsTo(User)
 
-Chat.belongsToMany(User, { through: Userchat})
-User.belongsToMany(Chat, { through: Userchat })
+Chat.belongsToMany(User, { through: Userchat, foreignKey: 'chat_id' })
+User.belongsToMany(Chat, { through: Userchat, foreignKey: 'user_id' })
+Userchat.belongsTo(User, { foreignKey: 'requester_id' })
+// Userchat.belongsTo(User, { foreignKey: 'user_id' })
+// Userchat.belongsTo(Chat, { foreignKey: 'chat_id' })
+
+User.hasMany(Userchat)
+Userchat.belongsTo(User)
 
 User.hasMany(Message)
 Chat.hasMany(Message)
