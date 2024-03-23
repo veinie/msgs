@@ -32,8 +32,12 @@ router.post('/', async (req, res) => {
     id: user.id,
   }
 
+  const expiresIn = body.extendedSession
+    ? '30d'
+    : '1h'
+
   const options = {
-    expiresIn: '1h'
+    expiresIn
   }
 
   const token = jwt.sign(payload, SECRET, options)
