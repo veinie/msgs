@@ -35,10 +35,6 @@ module.exports = {
     getChatMessages: async (_, { chatId }, context) => {
       const messages = await Message.findAll({
         where: { chatId },
-        include: [{
-          model: User,
-          where: { id: context.req.decodedToken.id }
-        }]
       })
       return messages
     }

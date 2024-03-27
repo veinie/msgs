@@ -45,7 +45,7 @@ router.post('/', async (req, res) => {
 
   res
     .status(200)
-    .send({ token, username: user.username, name: user.name })
+    .send({ token, username: user.username, id: user.id })
 })
 
 module.exports = router

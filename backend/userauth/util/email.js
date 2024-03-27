@@ -15,7 +15,6 @@ const transport = nodemailer.createTransport({
   },
 });
 
-
 module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
   logger.info(`Sending account confirmation email to ${email}`)
   transport.sendMail({
@@ -26,6 +25,21 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
         <h2>Hello ${name}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
         <a href=${BASE_URL}/api/users/confirm/${confirmationCode}> Click here</a>
+        </div>`,
+  }).catch(err => console.log(err));
+};
+
+module.exports.sendPasswordResetEmail = (name, email, confirmationCode) => {
+  logger.info(`Sending password reset email to ${email}`)
+  transport.sendMail({
+    from: EMAIL_USER,
+    to: email,
+    subject: "Password reset requested",
+    html: `<h1>Reset password</h1>
+        <h2>Hello ${name}</h2>
+        <p>A request for resetting your Msgs password was submitted. If you didn't send the request, please remove this message.</p>
+        <p>You can proceed resetting the password by clicking the following link:</p>
+        <a href=${BASE_URL}/api/users/resetpassword/${confirmationCode}>${BASE_URL}/api/users/resetpassword/${confirmationCode}</a>
         </div>`,
   }).catch(err => console.log(err));
 };
