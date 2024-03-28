@@ -25,12 +25,11 @@ const logout = async (token, global = false) => {
   const bodyParameters = {
     global
   }
-  const response = await axios.post(`${baseUrl}/logout`, bodyParameters, config)
-  if (response.status === 200) {
-    return response
-  } else {
-    console.log(response.data)
-    return false
+  try {
+    const response = await axios.post(`${baseUrl}/logout`, bodyParameters, config)
+    return response.data
+  } catch (error) {
+    return error.response.data
   }
 }
 

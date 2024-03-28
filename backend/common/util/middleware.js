@@ -54,7 +54,14 @@ const tokenExtractor = async (req, res, next) => {
         throw new Error('Transaction attempt by an inactive user')
       }
     } catch (error){
-      console.log(error)
+      if (error.name === jwt.TokenExpiredError) {
+        await Session.destroy({
+          where: {
+            token: authorization.substring(7)
+          }
+        })
+      }
+      // console.log(error)
       return res.status(401).json({ error: 'token invalid' })
     }
   } else {

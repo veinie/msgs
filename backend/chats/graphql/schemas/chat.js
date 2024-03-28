@@ -3,14 +3,16 @@ module.exports = `
     id: Int!
     createdAt: String
     updatedAt: String
+    messages: [Message!]
+    users: [User]
   }
   type Userchat {
     id: Int!
     createdAt: String,
     updatedAt: String,
-    user_id: Int!
-    chat_id: Int!
-    requester_id: Int
+    userId: Int!
+    chatId: Int!
+    requesterId: Int
     accepted: Boolean
   }
   type Mutation {
@@ -25,5 +27,8 @@ module.exports = `
   type Query {
     getUserChats: [Chat!]
     getChatRequests: [Userchat!]
+  }
+  type Subscription {
+    newMessage(chatId: Int!): Message!
   }
 `

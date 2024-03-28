@@ -5,7 +5,7 @@ import useField from '../../hooks/useField'
 import userService from '../../services/user'
 
 const LoginForm = () => {
-  const { user, setLogin } = useContext(UserContext);
+  const { setLogin } = useContext(UserContext);
   const { reset: resetEmail, ...email } = useField('text')
   const { reset: resetPassword, ...password } = useField('password')
 
@@ -15,9 +15,11 @@ const LoginForm = () => {
       email: email.value,
       password: password.value,
     })
-    console.log(response)
+    if (response.error) {
+      alert(response.error.message)
+      return
+    }
     setLogin(response)
-    console.log(user)
     resetEmail()
     resetPassword()
   }
@@ -27,7 +29,7 @@ const LoginForm = () => {
       <h2>Log in</h2>
       <form id="login-form" onSubmit={handleLogin}>
         <div>
-          username
+          email
           <input { ...email }/>
         </div>
         <div>

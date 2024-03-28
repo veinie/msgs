@@ -2,10 +2,10 @@ module.exports = `
   type Message {
     id: Int!
     content: String
-    userId: Int!
     chatId: Int!
     createdAt: String!
     updatedAt: String!
+    user: User!
   }
   type Mutation {
     createMessage(

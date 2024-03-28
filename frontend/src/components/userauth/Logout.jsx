@@ -10,14 +10,16 @@ const Logout = () => {
     event.preventDefault()
     console.log('logout initiated')
     const response = await userService.logout(user.token)
-    if (response) {
-      setLogout()
+    console.log(response)
+    if (response.error) {
+      alert('Session expired')
     }
+    setLogout()
   }
 
   return (
     <div>
-      <button onClick={handleLogout}>logout {user.username}</button>
+      <button onClick={handleLogout}>log out</button>
     </div>
   )
 }

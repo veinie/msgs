@@ -9,3 +9,4 @@
 |21.3.| 4 | GraphQL-Scheman ja resolverien määritystä. JWT-happamoitumisen lisäys. ER-diagrammi tietok. rakenteesta.|
 |23.3.| 4 | Lisätty extendedSession istunnon keston kasvattamiseksi. Keskustelupyyntöjen ja näiden hyväksymisen lisäys GraphQL-rajapintaan.|
 |27.3.| 9 | Fronendin alustus. Lisätty käyttäjä-konteksti, sekä lomakkeet kirjautumiseen ja rekisteröiytymiseen. Pieniä muutoksia userauth-apiin frontendin toimintojen tueksi.|
+|28.3.| 9 | Frontendin parannus sovelluksen tilan ja localStoragen käsittelyssä. Lisätty Chat-esikatseluikkunat, Chat-näkymät, lomake uuden viestin lähettämistä varten. Lisäksi käytin todella paljon aikaa GraphQL-subscriptionien määrittämiseen, mutta tämä jatkuu valitettavasti vielä myöhemmin.|

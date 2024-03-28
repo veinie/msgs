@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import {
+  HorizontalFlexContainer,
+  HorizontallyCentralizedContainer,
+  VerticallyCentralizedContainer,
+  FormDiv
+} from '../styles/style'
 import LoginForm from './userauth/LoginForm'
 import SignupForm from './userauth/SignupForm'
 
@@ -13,19 +19,27 @@ const LandingPage = () => {
   }
 
   return (
-    <>
-      <p>Welcome to</p>
-      <h1>MSGS</h1>
-      <div style={hideWhenVisible}>
-        <LoginForm />
-        Do not have an account yet?
-        <button onClick={toggleVisibility}>Sign up</button>
-      </div>
-      <div style={showWhenVisible}>
-        <SignupForm />
-        <button onClick={toggleVisibility}>Back to login</button>
-      </div>
-    </>
+    <VerticallyCentralizedContainer>
+      <HorizontallyCentralizedContainer>
+        <HorizontalFlexContainer>
+          <div>
+            <p>Welcome to</p>
+            <h1>MSGS</h1>
+          </div>
+          <FormDiv>
+            <div style={hideWhenVisible}>
+              <LoginForm />
+              Do not have an account yet?
+              <button onClick={toggleVisibility}>Sign up</button>
+            </div>
+            <div style={showWhenVisible}>
+              <SignupForm />
+              <button onClick={toggleVisibility}>Back to login</button>
+            </div>
+          </FormDiv>
+        </HorizontalFlexContainer>
+      </HorizontallyCentralizedContainer>
+    </VerticallyCentralizedContainer>
   )
 }
 

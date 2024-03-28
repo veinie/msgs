@@ -20,19 +20,23 @@ const UserProvider = ({ children }) => {
     }
   }, [])
 
-  useEffect(() => {
-    window.localStorage.setItem('MsgsUser', JSON.stringify(user))
-    window.localStorage.setItem('MsgsAuthenticated', JSON.stringify(authenticated))
-  }, [user, authenticated])
+  // useEffect(() => {
+  //   window.localStorage.setItem('MsgsUser', JSON.stringify(user))
+  //   window.localStorage.setItem('MsgsAuthenticated', JSON.stringify(authenticated))
+  // }, [user, authenticated])
 
   const setLogin = (userData) => {
     setUser(userData)
     setAuthenticated(true)
+    localStorage.setItem('MsgsUser', JSON.stringify(userData))
+    localStorage.setItem('MsgsAuthenticated', JSON.stringify(true))
   }
 
   const setLogout = () => {
     setUser(null)
     setAuthenticated(false)
+    localStorage.removeItem('MsgsUser')
+    localStorage.removeItem('MsgsAuthenticated')
   }
 
   const updateUserProfile = (newProfileData) => {

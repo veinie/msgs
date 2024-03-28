@@ -1,6 +1,6 @@
 const { request } = require('express')
-const { Op } = require('sequelize')
-const { Chat, Userchat, User } = require('../../../common/models')
+const { literal, Op } = require('sequelize')
+const { Chat, Userchat, User, Message } = require('../../../common/models')
 
 module.exports = {
   Mutation: {
@@ -43,6 +43,19 @@ module.exports = {
             }
           },
           required: true,
+        }, {
+          model: User,
+          through: {
+            model: Userchat,
+            where: {
+              accepted: true
+            }
+          }
+        }, {
+          model: Message,
+          include: [{
+            model: User
+          }]
         }],
       })
       return chats
