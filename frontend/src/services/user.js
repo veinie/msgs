@@ -8,7 +8,11 @@ const signup = async user => {
   } catch (error) {
     return error.response.data
   }
+}
 
+const confirmAccount = async (code) => {
+  const response = await axios.get(`${baseUrl}/users/confirm/${code}`)
+  return response.data
 }
 
 const login = async credentials => {
@@ -35,6 +39,7 @@ const logout = async (token, global = false) => {
 
 export default {
   signup,
+  confirmAccount,
   login,
   logout
 }

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import './modalStyle.css'
+import '../../styles/modalStyle.css'
 
 const SuccesfulSignupModal = ({ isOpen, onClose, message }) => {
   if (!isOpen) {

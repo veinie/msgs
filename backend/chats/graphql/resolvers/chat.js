@@ -4,21 +4,35 @@ const { Chat, Userchat, User, Message } = require('../../../common/models')
 
 module.exports = {
   Mutation: {
-    createChat: async (_, { username, userId }, context) => {
+    createChat: async (_, { userId }, context) => {
       if (!context.req.decodedToken) throw new Error('You must be logged in')
-      const requestedUser = await User.findOne({
-        where: {
-          username: username,
-          id: userId
-        }
-      })
+      const requestingUser = await User.findByPk(context.req.decodedToken.id)
+      const requestedUser = await User.findByPk(userId)
       if (!requestedUser) {
         throw new Error('Requested user not found')
       }
-      const chat = await Chat.create()
-      await Userchat.create({ chatId: chat.id, userId: context.req.decodedToken.id, accepted: true })
-      await Userchat.create({ chatId: chat.id, userId: requestedUser.id })
-      return chat
+      const newChat = await Chat.create()
+      console.log(newChat.dataValues.id)
+      await requestingUser.addChat(newChat)
+      await requestedUser.addChat(newChat)
+      const requesterJoinEntry = await Userchat.findOne({
+        where: {
+          userId: requestingUser.dataValues.id,
+          chat_id: newChat.dataValues.id
+        }
+      })
+      requesterJoinEntry.accepted = true
+      await requesterJoinEntry.save()
+      console.log(requesterJoinEntry)
+      const requestedJoinEntry = await Userchat.findOne({
+        where: {
+          userId: requestedUser.dataValues.id,
+          chat_id: newChat.dataValues.id
+        }
+      })
+      requestedJoinEntry.requesterId = requestingUser.dataValues.id
+      await requestedJoinEntry.save()
+      return newChat
     },
     acceptChatRequest: async (_, { requestId }, context) => {
       const request = await Userchat.findByPk(requestId)

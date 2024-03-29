@@ -52,7 +52,6 @@ const ChatView = ({ chat }) => {
       const isAtBottom = scrollTop + clientHeight >= scrollHeight
   
       if (!isAtBottom) {
-        // scrollableElement.setAttribute('data-auto-scroll', 'false')
         disableAutoScroll()
       }
     })
@@ -92,7 +91,7 @@ const ChatView = ({ chat }) => {
           <Message key={ message.id + message.createdAt } message={ message } />
         ))}
       </MessageListContainer>
-      <NewMessageForm chatId={ chat.id } />
+      <NewMessageForm chatId={ chat.id } updateMessages={ setMessages } />
     </ChatViewContainer>
   )
 }

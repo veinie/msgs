@@ -8,4 +8,5 @@ module.exports = {
   SALT_ROUNDS: parseInt(process.env.SALT_ROUNDS) || 10,
   EMAIL_USER: process.env.EMAIL_USER || "",
   EMAIL_PASS: process.env.EMAIL_PASS || "",
+  FRONTEND_CONFIRMATION_URL: process.env.FRONTEND_CONFIRMATION_URL
 }

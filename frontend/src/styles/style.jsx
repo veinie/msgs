@@ -67,6 +67,14 @@ export const NewMessageContainer = styled.div`
   border: 1px solid #8b9cff;
 `
 
+export const UserPreviewSelectable = styled.div`
+  display: block;
+  padding: 1vh;
+  margin-top: 1vh;
+  border: 1px solid grey;
+  cursor: pointer;
+`
+
 // #265bff
 // #8b9cff
 // #e3e2ff

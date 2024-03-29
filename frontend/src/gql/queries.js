@@ -22,3 +22,25 @@ export const USER_CHATS = gql`
     }
   }
 `
+
+export const CHAT_REQUESTS = gql`
+  query {
+    getChatRequests {
+      id
+      createdAt
+      updatedAt
+      userId
+      chatId
+      requesterId
+    }
+  }
+`
+
+export const FIND_USER = gql`
+  query findUser($search: String!) {
+    findUser(search: $search) {
+      id,
+      username
+    }
+  }
+`

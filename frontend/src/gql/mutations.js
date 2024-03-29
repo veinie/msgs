@@ -12,3 +12,24 @@ export const ADD_MESSAGE = gql`
     }
   }
 `
+
+export const NEW_CHAT = gql`
+  mutation createChat(
+    $userId: Int!
+  ) {
+    createChat (
+      userId: $userId
+    ) {
+      id
+      createdAt
+      updatedAt
+      messages {
+        content
+      }
+      users {
+        username
+        id
+      }
+    }
+  }
+`

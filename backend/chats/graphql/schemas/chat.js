@@ -18,7 +18,6 @@ module.exports = `
   type Mutation {
     createChat(
       userId: Int!
-      username: String!
     ): Chat
     acceptChatRequest(
       requestId: Int!

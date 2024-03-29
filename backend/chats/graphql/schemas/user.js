@@ -3,4 +3,7 @@ module.exports = `
     id: Int!
     username: String!
   }
+  type Query {
+    findUser(search: String!): [User]
+  }
 `

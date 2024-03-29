@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const { BASE_URL, EMAIL_USER, EMAIL_PASS } = require('./config')
+const { FRONTEND_CONFIRMATION_URL, BASE_URL, EMAIL_USER, EMAIL_PASS } = require('./config')
 const logger = require('../../common/util/logger')
 
 // https://betterprogramming.pub/how-to-create-a-signup-confirmation-email-with-node-js-c2fea602872a
@@ -24,7 +24,7 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
     html: `<h1>Email Confirmation</h1>
         <h2>Hello ${name}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=${BASE_URL}/api/users/confirm/${confirmationCode}> Click here</a>
+        <a href=${FRONTEND_CONFIRMATION_URL}/${confirmationCode}> Click here</a>
         </div>`,
   }).catch(err => console.log(err));
 };

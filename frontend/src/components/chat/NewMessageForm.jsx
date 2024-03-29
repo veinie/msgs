@@ -6,13 +6,16 @@ import { ADD_MESSAGE } from "../../gql/mutations"
 
 const NewMessageForm = ({ chatId }) => {
   const { reset: resetContent, ...content } = useField('text')
-  const [ send ] = useMutation(ADD_MESSAGE)
+  const [send] = useMutation(ADD_MESSAGE)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    send({ variables: { chatId, content: content.value } })
+    const response = await send({ variables: { chatId, content: content.value } })
+    console.log(response)
     resetContent()
   }
+
+
 
   return (
     <NewMessageContainer>
@@ -30,7 +33,6 @@ const NewMessageForm = ({ chatId }) => {
 
 NewMessageForm.propTypes = {
   chatId: PropTypes.number.isRequired,
-  updateMessages: PropTypes.func.isRequired
 }
 
 export default NewMessageForm
