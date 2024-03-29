@@ -49,15 +49,14 @@ export const ChatPreviewLink = styled(Link)`
 `
 
 export const ChatViewContainer = styled.div`
-  max-height: 80%;
   padding: 4vh;
   background-color: white;
   border: 1px solid #8b9cff;
 `
 
 export const MessageListContainer = styled.div`
-  overflow: auto;
-  max-height: 60%;
+  overflow-y: auto;
+  max-height: 60vh;
 `
 
 export const MessageContainer = styled.div`

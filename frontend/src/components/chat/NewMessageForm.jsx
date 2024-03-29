@@ -13,18 +13,24 @@ const NewMessageForm = ({ chatId }) => {
     send({ variables: { chatId, content: content.value } })
     resetContent()
   }
+
   return (
     <NewMessageContainer>
       <form id='new-message-form' onSubmit={handleSubmit} style={{ width: '100%' }}>
-        <textarea required rows='5' { ...content }  style={{ width: 'calc(100% - 15%)' }}/>
-        <button id='send-message-btn' type='submit' style={{ width: '14%' }}>Send</button>
+        <textarea 
+          required
+          { ...content }
+          style={{ width: '80%' }}
+        />
+        <button id='send-message-btn' type='submit' style={{ width: '19%' }}>Send</button>
       </form>
     </NewMessageContainer>
   )
 }
 
 NewMessageForm.propTypes = {
-  chatId: PropTypes.number.isRequired
+  chatId: PropTypes.number.isRequired,
+  updateMessages: PropTypes.func.isRequired
 }
 
 export default NewMessageForm

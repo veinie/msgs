@@ -4,6 +4,16 @@ html, body {
   overflow-x: hidden;
 }
 
+/* For Firefox */
+html {
+  scrollbar-width: thin;
+}
+
+/* For other browsers */
+html {
+  scrollbar-width: none;
+}
+
 #wrapper {
   min-height: 100%; 
 }
