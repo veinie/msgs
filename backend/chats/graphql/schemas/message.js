@@ -23,4 +23,7 @@ module.exports = `
       chatId: Int!
     ): [Message!]
   }
+  type Subscription {
+    newMessageToChat(chatId: Int!): Message!
+  }
 `

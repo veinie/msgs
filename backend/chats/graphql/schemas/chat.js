@@ -28,7 +28,4 @@ module.exports = `
     getUserChats: [Chat!]
     getChatRequests: [Userchat!]
   }
-  type Subscription {
-    newMessage(chatId: Int!): Message!
-  }
 `

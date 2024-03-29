@@ -40,13 +40,18 @@ const splitLink = split(
       definition.operation === 'subscription'
     )
   },
-  wsLink,
+  authLink.concat(wsLink),
   authLink.concat(httpLink)
 )
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  link: splitLink
+  link: splitLink,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'network-only'
+    }
+  }
 })
 
 ReactDOM.createRoot(document.getElementById('root')).render(

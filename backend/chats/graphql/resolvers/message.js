@@ -1,7 +1,8 @@
-const { PubSub } = require('graphql-subscriptions')
+const { PubSub, withFilter } = require('graphql-subscriptions')
 const pubsub = new PubSub()
 
 const { Chat, Userchat, User, Message } = require('../../../common/models')
+
 
 module.exports = {
   Mutation: {
@@ -25,7 +26,9 @@ module.exports = {
         userId: context.req.decodedToken.id,
         content,
       })
-      pubsub.publish(`MESSAGE_ADDED_TO_CHAT_${chatId}`, { newMessage: message })
+      // pubsub.publish(`MESSAGE_ADDED_TO_CHAT_${chatId}`, { newMessage: message })
+      // pubsub.publish('MESSAGE_ADDED_TO_CHAT', { chatId: chat.id, newMessage: NewMessageForm })
+      pubsub.publish('newMessageToChat', { chatId: message.chatId, newMessage: message });
       return message
     },
     updateMessage: async (_, { chatId, id, content }, context) => {
@@ -45,15 +48,27 @@ module.exports = {
     getChatMessages: async (_, { chatId }, context) => {
       const messages = await Message.findAll({
         where: { chatId },
+        include: [{
+          model: User
+        }]
       })
       return messages
     }
   },
   Subscription: {
-    newMessage: {
-      // subscribe: () => pubsub.asyncIterator('MESSAGE_ADDED')
-      subscribe: (_, { chatId }) => {
-        return pubsub.asyncIterator(`MESSAGE_ADDED_TO_CHAT_${chatId}`)
+    newMessageToChat: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('newMessageToChat'),
+        (payload, variables) => {
+          return payload.chatId === variables.chatId
+        }
+      ),
+      resolve: async (payload) => {
+        return await Message.findByPk(payload.newMessage.id, {
+          include: [{
+            model: User
+          }]
+        })
       }
     }
   }

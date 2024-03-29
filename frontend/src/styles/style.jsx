@@ -11,7 +11,7 @@ export const Page = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-x: hidden;
   padding: 1vh;
   background-color: ${theme.baseBgLight};
 `
@@ -49,9 +49,15 @@ export const ChatPreviewLink = styled(Link)`
 `
 
 export const ChatViewContainer = styled.div`
+  max-height: 80%;
   padding: 4vh;
   background-color: white;
   border: 1px solid #8b9cff;
+`
+
+export const MessageListContainer = styled.div`
+  overflow: auto;
+  max-height: 60%;
 `
 
 export const MessageContainer = styled.div`
