@@ -12,7 +12,7 @@ module.exports = `
     updatedAt: String
     user_id: Int!
     chat_id: Int!
-    requesterId: Int
+    requester: User
     accepted: Boolean!
   }
   type Mutation {

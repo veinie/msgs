@@ -14,6 +14,7 @@ import AccountConfirmed from './components/userauth/AccountConfirmed'
 import { Page } from './styles/style'
 import { UserContext } from './contexts/UserContext'
 import { USER_CHATS, CHAT_REQUESTS } from './gql/queries'
+import ChatRequest from './components/chat/ChatRequest'
 
 
 function App() {
@@ -34,8 +35,14 @@ function App() {
   useEffect(() => {
     if (!(chatRequestsQuery.loading || chatRequestsQuery.error) && chatRequestsQuery.data) {
       setChatRequests(chatRequestsQuery.data.getChatRequests)
+      console.log(chatRequests)
     }
-  }, [chatRequestsQuery])
+  }, [chatRequestsQuery.loading, chatRequestsQuery.error, chatRequestsQuery.data, chatRequestsQuery, chatRequests])
+
+  const updateChatsAndRequests = () => {
+    chatsQuery.refetch()
+    chatRequestsQuery.refetch()
+  }
 
   const chatMatch = useMatch('/chats/:id')
   const chatById = chatsQuery.data && chats && chatMatch
@@ -50,9 +57,9 @@ function App() {
     }
     return (
       <>
-        <Menubar />
-        { chatRequests.length }
+        <Menubar /> <br />
         { chatRequests.length > 0 && <button>View {chatRequests.length} incoming requests</button>}
+        { chatRequests.length > 0 && chatRequests.map(request => <ChatRequest key={ request.id } request={ request } updateChatsAndRequests={updateChatsAndRequests} /> ) }
         { chats && chats.map(chat => <ChatPreview chat={ chat } key={ chat.id }/>) }
       </>
     )

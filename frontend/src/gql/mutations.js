@@ -33,3 +33,15 @@ export const NEW_CHAT = gql`
     }
   }
 `
+
+export const ACCEPT_CHAT_REQUEST = gql`
+  mutation acceptChatRequest(
+    $requestId: Int!
+  ) {
+    acceptChatRequest (
+      requestId: $requestId
+    ) {
+      id
+    }
+  }
+`

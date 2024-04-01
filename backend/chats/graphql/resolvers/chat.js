@@ -36,11 +36,13 @@ module.exports = {
     },
     acceptChatRequest: async (_, { requestId }, context) => {
       const request = await Userchat.findByPk(requestId)
-      if (request.userId === context.req.decodedToken.id) {
+      console.log(request)
+      if (request.user_id === context.req.decodedToken.id) {
         request.accepted = true
         await request.save()
-        const chat = await Chat.findByPk(request.chatId)
-        return chat
+        return request
+        // const chat = await Chat.findByPk(request.chatId)
+        // return chat
       }
     }
   },
@@ -85,21 +87,13 @@ module.exports = {
           user_id: context.req.decodedToken.id,
           accepted: false
         },
-        required: true
+        // required: true,
+        include: [{
+          model: User,
+          as: 'requester',
+          foreignKey: 'requester_id'
+        }]
       })
-      // const requests = await Chat.findAll({
-      //   include: [{
-      //     model: User,
-      //     through: {
-      //       model: Userchat,
-      //       where: {
-      //         userId: context.req.decodedToken.id,
-      //         accepted: false
-      //       }
-      //     },
-      //     required: true,
-      //   }]
-      // })
       return requests
     }
   }
