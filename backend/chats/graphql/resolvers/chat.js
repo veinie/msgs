@@ -48,22 +48,27 @@ module.exports = {
     getUserChats: async (_, _args, context) => {
       const chats = await Chat.findAll({
         include: [{
+        //   model: User,
+        //   through: {
+        //     model: Userchat,
+        //     where: {
+        //       userId: context.req.decodedToken.id,
+        //       accepted: true
+        //     }
+        //   },
+        //   required: true,
+        // }, {
+        //   model: User,
+        //   through: {
+        //     model: Userchat,
+        //     where: {
+        //       accepted: true
+        //     }
+        //   }
           model: User,
+          where: { id: context.req.decodedToken.id },
           through: {
-            model: Userchat,
-            where: {
-              userId: context.req.decodedToken.id,
-              accepted: true
-            }
-          },
-          required: true,
-        }, {
-          model: User,
-          through: {
-            model: Userchat,
-            where: {
-              accepted: true
-            }
+            where: { accepted: true }
           }
         }, {
           model: Message,
@@ -77,10 +82,24 @@ module.exports = {
     getChatRequests: async (_, _args, context) => {
       const requests = await Userchat.findAll({
         where: {
-          userId: context.req.decodedToken.id,
+          user_id: context.req.decodedToken.id,
           accepted: false
-        }
+        },
+        required: true
       })
+      // const requests = await Chat.findAll({
+      //   include: [{
+      //     model: User,
+      //     through: {
+      //       model: Userchat,
+      //       where: {
+      //         userId: context.req.decodedToken.id,
+      //         accepted: false
+      //       }
+      //     },
+      //     required: true,
+      //   }]
+      // })
       return requests
     }
   }

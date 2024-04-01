@@ -29,8 +29,6 @@ export const CHAT_REQUESTS = gql`
       id
       createdAt
       updatedAt
-      userId
-      chatId
       requesterId
     }
   }

@@ -8,12 +8,12 @@ module.exports = `
   }
   type Userchat {
     id: Int!
-    createdAt: String,
-    updatedAt: String,
-    userId: Int!
-    chatId: Int!
+    createdAt: String
+    updatedAt: String
+    user_id: Int!
+    chat_id: Int!
     requesterId: Int
-    accepted: Boolean
+    accepted: Boolean!
   }
   type Mutation {
     createChat(
