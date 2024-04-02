@@ -44,3 +44,12 @@ export const FIND_USER = gql`
     }
   }
 `
+
+export const GET_CHAT_USERS = gql`
+  query getChatUsers($chatId: Int!) {
+    getChatUsers(chatId: $chatId) {
+      username,
+      id
+    }
+  }
+`

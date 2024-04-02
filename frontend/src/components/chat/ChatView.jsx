@@ -7,10 +7,10 @@ import { epochToHumanReadable as formatTime } from '../../util/time'
 import Message from './Message'
 import NewMessageForm from './NewMessageForm'
 
-const ChatView = ({ chat }) => {
+const ChatView = ({ chat, isVisible }) => {
   const [ messages, setMessages ] = useState([])
   const [ users, setUsers ] = useState('')
-
+  // console.log(`Chat ${chat.id} is visible: ${isVisible}`)
   useEffect(() => {
     if (chat) {
       try {
@@ -43,7 +43,7 @@ const ChatView = ({ chat }) => {
 
   if (!chat) return <div>Loading data...</div>
 
-  const scrollableElement = document.getElementById('message-list')
+  const scrollableElement = document.getElementById(`${chat.id}_message-list`)
 
   if (scrollableElement !== null) {
     scrollableElement.addEventListener('scroll', function(event) {
@@ -83,10 +83,10 @@ const ChatView = ({ chat }) => {
   }
 
   return (
-    <ChatViewContainer>
+    <ChatViewContainer style={{ display: isVisible ? 'block' : 'none' }}>
       <p>{ users }</p>
       <i>{ formatTime(chat.updatedAt) }</i>
-      <MessageListContainer id='message-list'>
+      <MessageListContainer id={ `${chat.id}_message-list` }>
         { messages.map(message => (
           <Message key={ message.id + message.createdAt } message={ message } />
         ))}
@@ -97,7 +97,8 @@ const ChatView = ({ chat }) => {
 }
 
 ChatView.propTypes = {
-  chat: PropTypes.object
+  chat: PropTypes.object,
+  isVisible: PropTypes.bool.isRequired
 }
 
 export default ChatView

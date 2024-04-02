@@ -26,5 +26,8 @@ module.exports = `
   type Query {
     getUserChats: [Chat!]
     getChatRequests: [Userchat!]
+    getChatUsers(
+      chatId: Int!
+    ): [User]
   }
 `

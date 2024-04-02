@@ -11,3 +11,4 @@
 |27.3.| 9 | Fronendin alustus. Lisätty käyttäjä-konteksti, sekä lomakkeet kirjautumiseen ja rekisteröiytymiseen. Pieniä muutoksia userauth-apiin frontendin toimintojen tueksi.|
 |28.3.| 9 | Frontendin parannus sovelluksen tilan ja localStoragen käsittelyssä. Lisätty Chat-esikatseluikkunat, Chat-näkymät, lomake uuden viestin lähettämistä varten. Lisäksi käytin todella paljon aikaa GraphQL-subscriptionien määrittämiseen, mutta tämä jatkuu valitettavasti vielä myöhemmin.|
 |29.3.| 10 | Subscriptionit keskustelujen uusien viestien reaaliaikaista päivittämistä varten. Frontendin parantelua, lisätty käyttäjähaku uusien keskustelujen aloittamista varten, keskustelunäkymän parantelua, uuden käyttäjän aktivoinnin tuken lisäys käyttöliittymään.|
+|1.4. | 4 | Lisätty frontendiin tuki extendedSession-kirjautumiseen. Päivitetty GraphQL-API chat- ja userchat queryiden ja resolvereiden osalta. Lisätty Frontendiin tuki keskustelupyyntöjen hyväksymiselle.|

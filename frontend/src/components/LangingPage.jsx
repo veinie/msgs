@@ -3,6 +3,7 @@ import {
   HorizontalFlexContainer,
   HorizontallyCentralizedContainer,
   VerticallyCentralizedContainer,
+  DesktopHorizontalMobileVertical,
   FormDiv
 } from '../styles/style'
 import LoginForm from './userauth/LoginForm'
@@ -21,7 +22,7 @@ const LandingPage = () => {
   return (
     <VerticallyCentralizedContainer>
       <HorizontallyCentralizedContainer>
-        <HorizontalFlexContainer>
+        <DesktopHorizontalMobileVertical>
           <div>
             <p>Welcome to</p>
             <h1>MSGS</h1>
@@ -37,7 +38,7 @@ const LandingPage = () => {
               <button onClick={toggleVisibility}>Back to login</button>
             </div>
           </FormDiv>
-        </HorizontalFlexContainer>
+        </DesktopHorizontalMobileVertical>
       </HorizontallyCentralizedContainer>
     </VerticallyCentralizedContainer>
   )

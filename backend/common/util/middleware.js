@@ -61,8 +61,12 @@ const tokenExtractor = async (req, res, next) => {
           }
         })
       }
-      // console.log(error)
-      return res.status(401).json({ error: 'token invalid' })
+      if (res) {
+        return res.status(401).json({ error: 'token invalid' })
+      } else {
+        throw new Error('token invalid')
+      }
+
     }
   } else {
     return res.status(401).json({ error: 'Bearer token missing' })
