@@ -30,4 +30,20 @@ export const GlobalStyles = createGlobalStyle`
   .full-width {
     width: 100%;
   }
+  
+  .menu-div {
+    text-align: center;
+    min-width: 15em;
+    min-height: 100%
+    
+    @media (min-width: 767px) {
+      overflow-y: auto;
+    }
+
+  }
+
+  .scrollable {
+    overflow-y auto;
+  }
+
 `

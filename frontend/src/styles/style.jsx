@@ -7,19 +7,25 @@ import styled from 'styled-components'
 // }
 
 export const Page = styled.div`
+  margin: 0;
+  padding: 0;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  overflow-x: hidden;
-  padding: 1vh;
 
 `
   // background: linear-gradient(145deg, ${theme.baseBgGrey}, ${theme.slightlyLighterGrey});
 export const NavBar = styled.div`
 @media (max-width: 767px) {
 }
+`
+
+export const ChatsList = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 `
 
 export const MenuBtn = styled.div`
@@ -55,6 +61,8 @@ export const HorizontallyCentralizedContainer = styled.div`
 export const DesktopHorizontalMobileVertical = styled.div`
   height: 100%;
   display: flex;
+  margin: 0;
+  padding: 0;
   
   @media (max-width: 767px) {
     flex-direction: column;
@@ -75,12 +83,15 @@ export const ChatPreviewLink = styled(Link)`
 
 export const ChatViewContainer = styled.div`
   width: 100%;
+  max-height: 100VH;
+
   padding: 4vh;
 `
 
 export const MessageListContainer = styled.div`
+  height: 80%;
   overflow-y: auto;
-  max-height: 60vh;
+
 `
 
 export const MessageContainer = styled.div`
@@ -88,7 +99,8 @@ export const MessageContainer = styled.div`
 `
 
 export const NewMessageContainer = styled.div`
-
+  width: 80%;
+  height: 10%;
 `
 
 export const UserPreviewSelectable = styled.div`
@@ -97,18 +109,6 @@ export const UserPreviewSelectable = styled.div`
   margin-top: 1vh;
   border: 1px solid grey;
   cursor: pointer;
-`
-
-export const DesktopNav = styled.div`
-  @media (max-width: 767px) {
-    display: none;
-  }
-`
-
-export const MobileNav = styled.div`
-  @media (max-width: 767px) {
-    display: flex;
-  }
 `
 
 export const NavToggler = styled.button`

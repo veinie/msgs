@@ -11,15 +11,13 @@ import Menubar from './components/Menubar'
 import ChatView from './components/chat/ChatView'
 import ChatPreview from './components/chat/ChatPreview'
 import AccountConfirmed from './components/userauth/AccountConfirmed'
-import { HorizontalFlexContainer, Page, VerticalFlexContainer, DesktopHorizontalMobileVertical } from './styles/style'
+import { Page, DesktopHorizontalMobileVertical } from './styles/style'
 import { UserContext } from './contexts/UserContext'
 import { USER_CHATS, CHAT_REQUESTS } from './gql/queries'
-import ChatRequest from './components/chat/ChatRequest'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles } from './styles/globalStyles'
 import { lightTheme, darkTheme } from './styles/theme'
 import { useDarkMode } from './hooks/useDarkMode'
-import ThemeToggler from './components/ThemeToggler'
 import UserProfile from './components/UserProfile'
 import ChatRequests from './components/chat/ChatRequests'
 
@@ -83,10 +81,7 @@ function App() {
     return (
       <>
         <DesktopHorizontalMobileVertical>
-            <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } chatRequests={ chatRequests }>
-              {/* { chatRequests.length > 0 && <button style={{ display: chatRequests.length > 0 ? 'inline' : 'none' }}>View {chatRequests.length} incoming requests</button>}
-              { chatRequests.length > 0 && chatRequests.map(request => <ChatRequest key={ request.id } request={ request } updateChatsAndRequests={updateChatsAndRequests} /> ) } */}
-              {/* { chats && chats.map(chat => <ChatPreview chat={ chat } key={ chat.id }/>) } */}
+            <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } chatRequests={ chatRequests } style={{ height: '100VH' }}>
               { chats && <p>Chats:</p> }
               { chats && chats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} />) }
             </Menubar>

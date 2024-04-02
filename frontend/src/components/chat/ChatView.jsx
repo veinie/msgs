@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import { useSubscription } from '@apollo/client'
+import { useQuery, useSubscription } from '@apollo/client'
 import { SUBSCRIBE_CHAT_MESSAGES } from '../../gql/subscriptions'
+import { GET_CHAT_USERS } from '../../gql/queries'
 import { ChatViewContainer, MessageListContainer } from '../../styles/style'
 import { epochToHumanReadable as formatTime } from '../../util/time'
 import Message from './Message'
@@ -10,7 +11,18 @@ import NewMessageForm from './NewMessageForm'
 const ChatView = ({ chat, isVisible }) => {
   const [ messages, setMessages ] = useState([])
   const [ users, setUsers ] = useState('')
-  // console.log(`Chat ${chat.id} is visible: ${isVisible}`)
+  const usersQuery = useQuery(GET_CHAT_USERS, {
+    variables: {
+      chatId: chat.id
+    }
+  })
+
+  useEffect(() => {
+    if ((!usersQuery.loading || !usersQuery.error) && usersQuery.data) {
+      setUsers(usersQuery.data.getChatUsers.map(user => user.username).join(', '))
+    }
+  }, [usersQuery])
+
   useEffect(() => {
     if (chat) {
       try {
