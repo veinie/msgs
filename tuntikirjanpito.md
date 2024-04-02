@@ -13,3 +13,4 @@
 |29.3.| 10 | Subscriptionit keskustelujen uusien viestien reaaliaikaista päivittämistä varten. Frontendin parantelua, lisätty käyttäjähaku uusien keskustelujen aloittamista varten, keskustelunäkymän parantelua, uuden käyttäjän aktivoinnin tuken lisäys käyttöliittymään.|
 |1.4. | 4 | Lisätty frontendiin tuki extendedSession-kirjautumiseen. Päivitetty GraphQL-API chat- ja userchat queryiden ja resolvereiden osalta. Lisätty Frontendiin tuki keskustelupyyntöjen hyväksymiselle.|
 |2.4. | 10 | Käyttöliittymän päivittelyä. Lisätty responsiivinen valikkorakenne ja päivitetty sivun leiska muiltakin osin paremmin mobiiliystävälliseksi. Lisätty tuki vaalean ja tumman teeman valinnalle. Päivitetty tuki keskustelupyyntöjen hyväksymiselle.|
+|3.4. | 3 | Korjattu käyttöliittymäleiskan overflow-ongelmia ja lisätty käyttäjähaku chat-näkymään.|
