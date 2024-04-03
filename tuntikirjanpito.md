@@ -14,3 +14,4 @@
 |1.4. | 4 | Lisätty frontendiin tuki extendedSession-kirjautumiseen. Päivitetty GraphQL-API chat- ja userchat queryiden ja resolvereiden osalta. Lisätty Frontendiin tuki keskustelupyyntöjen hyväksymiselle.|
 |2.4. | 10 | Käyttöliittymän päivittelyä. Lisätty responsiivinen valikkorakenne ja päivitetty sivun leiska muiltakin osin paremmin mobiiliystävälliseksi. Lisätty tuki vaalean ja tumman teeman valinnalle. Päivitetty tuki keskustelupyyntöjen hyväksymiselle.|
 |3.4. | 3 | Korjattu käyttöliittymäleiskan overflow-ongelmia ja lisätty käyttäjähaku chat-näkymään.|
+|3.4. | 10 | Lisätty tokenin päivitysmahdollisuus käyttäjänhallinta-backendiin. Lisätty käyttäjän aktiivisuuden seuranta frontendiin. Lisätty tokenin automaattinen päivittäminen frontendiin, mikäli token on happamoitumassa ja käyttäjä on aktiivinen sovelluksessa.|
