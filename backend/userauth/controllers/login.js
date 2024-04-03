@@ -68,7 +68,7 @@ router.get('/refresh', tokenExtractor, async (req, res) => {
     session.token = refreshedToken
     await session.save() 
   
-    res.status(200).send({ refreshedToken, username, id })
+    res.status(200).send({ token: refreshedToken, username, id })
   } catch (error) {
     console.log(error)
   }

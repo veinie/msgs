@@ -23,7 +23,7 @@ import ChatRequests from './components/chat/ChatRequests'
 
 
 function App() {
-  const { authenticated } = useContext(UserContext)
+  const { authenticated, setLogout } = useContext(UserContext)
   const [ chats, setChats ] = useState([])
   const [ chatRequests, setChatRequests ] = useState([])
   const [ visibleElement, setVisibleElement ] = useState(-1)
@@ -33,6 +33,7 @@ function App() {
   const chatRequestsQuery = useQuery(CHAT_REQUESTS)
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === 'light' ? lightTheme : darkTheme
+
 
   // useEffect(() => {
   //   if (
@@ -46,6 +47,9 @@ function App() {
 
   useEffect(() => {
     if (chatsQuery.error) {
+      if (chatsQuery.error.message === 'invalid token') {
+        setLogout()
+      }
       console.log(chatsQuery.error.message)
     }
     if (!(chatsQuery.loading || chatsQuery.error) && chatsQuery.data) {

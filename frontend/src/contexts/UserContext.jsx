@@ -6,6 +6,8 @@ const UserContext = createContext({ user: {} })
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [authenticated, setAuthenticated] = useState(false)
+  // const [isActive, setIsActive] = useState(true)
+  // const resetInactivityTimeoutRef = useRef(null)
 
   useEffect(() => {
     const storedUser = window.localStorage.getItem('MsgsUser')
@@ -19,6 +21,33 @@ const UserProvider = ({ children }) => {
       setAuthenticated(JSON.parse(storedAuthenticated))
     }
   }, [])
+
+  // useEffect(() => {
+  //   function handleUserActivity() {
+  //     setIsActive(true)
+
+  //     const inactivityTimeout = setTimeout(() => {
+  //       setIsActive(false)
+  //     }, 10000) // 10 seconds
+  //     // }, 60000) // 60 seconds
+  
+  //     resetInactivityTimeoutRef.current = () => {
+  //       clearTimeout(inactivityTimeout)
+  //       setIsActive(true)
+  //     }
+  
+  //     document.addEventListener('mousemove', resetInactivityTimeoutRef.current)
+  //     document.addEventListener('keydown', resetInactivityTimeoutRef.current)
+  //   }
+
+  //   handleUserActivity()
+
+  //   return () => {
+  //     document.removeEventListener('mousemove', resetInactivityTimeoutRef.current)
+  //     document.removeEventListener('keydown', resetInactivityTimeoutRef.current)
+  //   }
+
+  // }, [])
 
   // useEffect(() => {
   //   window.localStorage.setItem('MsgsUser', JSON.stringify(user))

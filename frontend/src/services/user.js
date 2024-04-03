@@ -20,6 +20,16 @@ const login = async credentials => {
   return response.data
 }
 
+const refreshToken = async (token) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  const response = await axios.get(`${baseUrl}/login/refresh`, config)
+  return response.data
+}
+
 const logout = async (token, global = false) => {
   const config = {
     headers: {
@@ -41,5 +51,6 @@ export default {
   signup,
   confirmAccount,
   login,
+  refreshToken,
   logout
 }
