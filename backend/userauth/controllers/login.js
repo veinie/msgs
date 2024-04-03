@@ -4,6 +4,7 @@ const router = require('express').Router()
 
 const { SECRET } = require('../util/config')
 const { User, Session } = require('../../common/models')
+const { tokenExtractor } = require('../../common/util/middleware')
 
 router.post('/', async (req, res) => {
   const body = req.body
@@ -46,6 +47,31 @@ router.post('/', async (req, res) => {
   res
     .status(200)
     .send({ token, username: user.username, id: user.id })
+})
+
+router.get('/refresh', tokenExtractor, async (req, res) => {
+  try {
+    const session = await Session.findByPk(req.sessionId)
+    const username = req.decodedToken.username
+    const id = req.decodedToken.id
+  
+    const payload = {
+      username,
+      id
+    }
+  
+    const options = {
+      expiresIn: '30m'
+    }
+  
+    const refreshedToken = jwt.sign(payload, SECRET, options)
+    session.token = refreshedToken
+    await session.save() 
+  
+    res.status(200).send({ refreshedToken, username, id })
+  } catch (error) {
+    console.log(error)
+  }
 })
 
 module.exports = router
