@@ -10,7 +10,7 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   const { user, setLogin } = useContext(UserContext)
   const [active, setActive] = useState(true)
   useIdleTimer({
-    timeout: 60000, // 10 seconds
+    timeout: 60000, // 60 seconds
     onAction: () => setActive(true),
     onIdle: () => setActive(false)
   })
