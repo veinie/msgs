@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect } from 'react'
-import { useQuery, useSubscription } from '@apollo/client'
+import { useApolloClient, useSubscription } from '@apollo/client'
 import { SUBSCRIBE_CHAT_MESSAGES } from '../../gql/subscriptions'
 import { GET_CHAT_USERS } from '../../gql/queries'
 import { ChatViewContainer, MessageListContainer } from '../../styles/style'
@@ -10,25 +10,30 @@ import NewMessageForm from './NewMessageForm'
 
 const ChatView = ({ chat, isVisible }) => {
   const [ messages, setMessages ] = useState([])
-  const [ users, setUsers ] = useState('')
-  const usersQuery = useQuery(GET_CHAT_USERS, {
+  const [ users, setUsers ] = useState([])
+  const client = useApolloClient()
+  const cachedUsers = client.readQuery({
+    query: GET_CHAT_USERS,
     variables: {
       chatId: chat.id
     }
   })
 
   useEffect(() => {
-    if ((!usersQuery.loading || !usersQuery.error) && usersQuery.data) {
-      setUsers(usersQuery.data.getChatUsers.map(user => user.username).join(', '))
+    console.log(cachedUsers)
+    try {
+      setUsers(cachedUsers.getChatUsers.map(u => u.username))
+    } catch (error) {
+      console.log(error)
     }
-  }, [usersQuery])
+  }, [cachedUsers])
 
   useEffect(() => {
     if (chat) {
       try {
         const softMessages = [...chat.messages]
         setMessages(sortByCreatedAt(softMessages))
-        setUsers(chat.users.map(user => user.username).join(', '))
+        setUsers(chat.users.map(user => user.username))
       } catch (error) {
         console.log(error)
       }
@@ -96,7 +101,7 @@ const ChatView = ({ chat, isVisible }) => {
 
   return (
     <ChatViewContainer style={{ display: isVisible ? 'block' : 'none' }}>
-      <p>{ users }</p>
+      <p>{ users && users.join(', ') }</p>
       <i>{ formatTime(chat.updatedAt) }</i>
       <MessageListContainer id={ `${chat.id}_message-list` }>
         { messages.map(message => (
