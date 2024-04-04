@@ -5,7 +5,7 @@ const nodemailer = require('../util/email');
 
 const { SECRET, SALT_ROUNDS } = require('../util/config')
 const { tokenExtractor } = require('../../common/util/middleware')
-const { User } = require('../../common/models')
+const { User, Session } = require('../../common/models')
 
 router.post('/signup', async (req, res) => {
   const { username, password, email } = req.body
@@ -41,6 +41,35 @@ router.get('/confirm/:confirmationCode', async (req, res) => {
   user.active = true
   await user.save()
   res.status(200).json({ message: "User activated." })
+})
+
+router.post('/resetpassword', tokenExtractor, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body
+    const user = await User.scope('unlimited').findByPk(req.decodedToken.id)
+  
+    const passwordCorrect = user === null
+    ? false
+    : await bcrypt.compare(oldPassword, user.passwordHash)
+  
+    if (passwordCorrect) {
+      const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS)
+      user.passwordHash = newPasswordHash
+      await user.save()
+      await Session.destroy({
+        where: {
+          userId: req.decodedToken.id,
+        }
+      })
+      res.status(200).json({ message: 'updated succesfully' })
+    } else {
+      res.status(401).json({ error: 'invalid credentials' })
+    }
+  } catch (error) {
+      console.log(error)
+      res.status(500)._construct({ error: error.message })
+  }
+
 })
 
 router.post('/passwordresetrequest', async (req, res) => {
