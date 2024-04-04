@@ -30,6 +30,8 @@ const Menubar = ({ visibleElement, setVisibleElement, chatRequests, children }) 
     setIsModalOpen(false)
   }
 
+  console.log('Menubar rendered')
+
   return (
     <>
       <NavToggler onClick={() => setIsNavOpen(!isNavOpen)} className='menu-div'>

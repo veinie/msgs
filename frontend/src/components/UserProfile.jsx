@@ -15,38 +15,37 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
     onIdle: () => setActive(false)
   })
 
-  const refreshToken = async () => {
+  useEffect(() => {
     // Auto-refresh user token if user is not idle and
     // token expires in less than 20 minutes
-    try {
-      if (active) {
-        const expTime = JSON.parse(atob(user.token.split('.')[1])).exp * 1000
-        const minutesRemaining = (expTime - Date.now()) / 1000 / 60
-        console.log(`Token valid for ${minutesRemaining} more minutes.`)
-        if (minutesRemaining < 20) {
-          // refresh token
-          console.log('refreshing token')
-          const response = await userService.refreshToken(user.token)
-          if (response.error) {
-            console.log(response.error)
-            return
-          } else {
-            setLogin(response)
+    const interval = setInterval( async () => {
+      try {
+        if (active) {
+          console.log('checking time to token invalidation')
+          const expTime = JSON.parse(atob(user.token.split('.')[1])).exp * 1000
+          const minutesRemaining = (expTime - Date.now()) / 1000 / 60
+          if (minutesRemaining < 20) {
+            console.log('refreshing token')
+            const response = await userService.refreshToken(user.token)
+            if (response.error) {
+              console.log(response.error)
+              return
+            } else {
+              setLogin(response)
+            }
           }
         }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
-    }
-  }
+    }, 60000)
 
-  useEffect(() => {
-    refreshToken()
+    return () => {
+      clearInterval(interval)
+    }
   }, [])
 
-  setTimeout(() => {
-    refreshToken()
-  }, 60000)
+  console.log('Userprofile rendered')
 
   return (
     <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>

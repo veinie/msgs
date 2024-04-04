@@ -27,35 +27,30 @@ function App() {
   const [ chats, setChats ] = useState([])
   const [ chatRequests, setChatRequests ] = useState([])
   const [ visibleElement, setVisibleElement ] = useState(-1)
-  const chatsQuery = useQuery( USER_CHATS, {
-    fetchPolicy: 'network-only'
-  })
-  const chatRequestsQuery = useQuery(CHAT_REQUESTS)
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === 'light' ? lightTheme : darkTheme
 
+  const handleQueryError = (error) => {
+    console.log(error)
+    if (error.message === 'invalid token') {
+      setLogout()
+    }
+  }
 
-  // useEffect(() => {
-  //   if (
-  //     chatsQuery.error && chatsQuery.error.message && chatsQuery.error.message === 'invalid token' 
-  //     || 
-  //     chatRequestsQuery.error && chatRequestsQuery.error.message && chatRequestsQuery.error.message === 'invalid token') {
-  //     console.log('Invalid token detected, logging out')
-  //     setLogout()
-  //   }
-  // }, [chatsQuery.error, chatRequestsQuery.error, setLogout])
+  const chatsQuery = useQuery( USER_CHATS, {
+    fetchPolicy: 'network-only',
+    onError: (error) => handleQueryError(error)
+  })
+
+  const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
+    onError: (error) => handleQueryError(error)
+  })
 
   useEffect(() => {
-    if (chatsQuery.error) {
-      if (chatsQuery.error.message === 'invalid token') {
-        setLogout()
-      }
-      console.log(chatsQuery.error.message)
-    }
-    if (!(chatsQuery.loading || chatsQuery.error) && chatsQuery.data) {
+    if (!(chatsQuery.loading || chatsQuery.error) && chatsQuery.data && chatsQuery.data.getUserChats) {
       setChats(chatsQuery.data.getUserChats)
     }
-  }, [chatsQuery.loading, chatsQuery.error, chatsQuery.data])
+  }, [chatsQuery.loading, chatsQuery.error, chatsQuery.data, setLogout])
 
   useEffect(() => {
     if (!(chatRequestsQuery.loading || chatRequestsQuery.error) && chatRequestsQuery.data) {
@@ -68,6 +63,8 @@ function App() {
     chatsQuery.refetch()
     chatRequestsQuery.refetch()
   }
+
+  console.log('App rendered')
 
   // const chatMatch = useMatch('/chats/:id')
   // const chatById = chatsQuery.data && chats && chatMatch
