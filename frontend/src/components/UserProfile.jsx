@@ -7,7 +7,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import userService from '../services/user'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
-  const { user, setLogin } = useContext(UserContext)
+  const { user, setLogin, setLogout } = useContext(UserContext)
   const [active, setActive] = useState(true)
   useIdleTimer({
     timeout: 60000, // 60 seconds
@@ -24,11 +24,11 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
           console.log('checking time to token invalidation')
           const expTime = JSON.parse(atob(user.token.split('.')[1])).exp * 1000
           const minutesRemaining = (expTime - Date.now()) / 1000 / 60
-          if (minutesRemaining < 20) {
+          if (minutesRemaining < 59) {
             console.log('refreshing token')
             const response = await userService.refreshToken(user.token)
             if (response.error) {
-              console.log(response.error)
+              console.log(response)
               return
             } else {
               setLogin(response)
@@ -37,8 +37,11 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
         }
       } catch (error) {
         console.log(error)
+        if (error.response.request.status === 401) {
+          setLogout()
+        }
       }
-    }, 60000)
+    }, 10000)
 
     return () => {
       clearInterval(interval)
