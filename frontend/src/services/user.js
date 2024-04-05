@@ -49,6 +49,11 @@ const changePassword = async ({token, oldPassword, newPassword}) => {
   return response
 }
 
+const changeUsername = async ({ token, newUsername }) => {
+  const response = axios.patch(`${baseUrl}/users/changeUsername`, { newUsername }, makeConfig(token))
+  return response
+}
+
 const logout = async (token, global = false) => {
   const config = {
     headers: {
@@ -72,5 +77,6 @@ export default {
   login,
   refreshToken,
   changePassword,
+  changeUsername,
   logout
 }

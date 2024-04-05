@@ -6,6 +6,7 @@ import ThemeToggler from './ThemeToggler'
 import { useIdleTimer } from 'react-idle-timer'
 import userService from '../services/user'
 import PasswordResetForm from './userauth/PasswordResetForm'
+import ChangeUsernameForm from './userauth/ChangeUsernameForm'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   const { user, setLogin, setLogout } = useContext(UserContext)
@@ -64,10 +65,8 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
       <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
       <Logout />
       <hr/>
-      <h3>Update profile picture</h3>
-      <button>update profilepic</button><br/>
       <h3>Change username</h3>
-      <button>change username</button><br/>
+      <ChangeUsernameForm /><br/>
       <h3>Change password</h3>
       <PasswordResetForm />
       <br/>

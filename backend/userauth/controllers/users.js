@@ -79,7 +79,7 @@ router.patch('/changeusername', tokenExtractor, async (req, res) => {
   } else {
     user.username = newUsername
     await user.save()
-    res.status(204).json({ message: 'Username updated succesfully' })
+    res.status(204).send({ username: user.username })
   }
 })
 
