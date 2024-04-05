@@ -69,7 +69,18 @@ router.post('/resetpassword', tokenExtractor, async (req, res) => {
       console.log(error)
       res.status(500)._construct({ error: error.message })
   }
+})
 
+router.patch('/changeusername', tokenExtractor, async (req, res) => {
+  const user = await User.findByPk(req.decodedToken.id)
+  const { newUsername } = req.body
+  if (!(user && newUsername)) {
+    res.status(400).json({ error: 'Username required' })
+  } else {
+    user.username = newUsername
+    await user.save()
+    res.status(204).json({ message: 'Username updated succesfully' })
+  }
 })
 
 router.post('/passwordresetrequest', async (req, res) => {
