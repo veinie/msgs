@@ -23,9 +23,6 @@ export const NEW_CHAT = gql`
       id
       createdAt
       updatedAt
-      messages {
-        content
-      }
       users {
         username
         id

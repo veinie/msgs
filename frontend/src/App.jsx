@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react'
+import { useState, useContext } from 'react'
 import {
   Routes,
   Route,
@@ -30,6 +30,8 @@ function App() {
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === 'light' ? lightTheme : darkTheme
 
+  console.log(chatRequests)
+
   const handleQueryError = (error) => {
     console.log(error)
     if (error.message === 'invalid token') {
@@ -39,25 +41,18 @@ function App() {
 
   const chatsQuery = useQuery( USER_CHATS, {
     fetchPolicy: 'network-only',
+    onCompleted: (data) => {
+      setChats(data.getUserChats)
+    },
     onError: (error) => handleQueryError(error)
   })
 
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
+    onCompleted: (data) => {
+      setChatRequests(data.getChatRequests)
+    },
     onError: (error) => handleQueryError(error)
   })
-
-  useEffect(() => {
-    if (!(chatsQuery.loading || chatsQuery.error) && chatsQuery.data && chatsQuery.data.getUserChats) {
-      setChats(chatsQuery.data.getUserChats)
-    }
-  }, [chatsQuery.loading, chatsQuery.error, chatsQuery.data, setLogout])
-
-  useEffect(() => {
-    if (!(chatRequestsQuery.loading || chatRequestsQuery.error) && chatRequestsQuery.data) {
-      setChatRequests(chatRequestsQuery.data.getChatRequests)
-      console.log(chatRequests)
-    }
-  }, [chatRequestsQuery.loading, chatRequestsQuery.error, chatRequestsQuery.data, chatRequestsQuery, chatRequests])
 
   const updateChatsAndRequests = () => {
     chatsQuery.refetch()
