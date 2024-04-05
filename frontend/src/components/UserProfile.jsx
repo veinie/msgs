@@ -5,14 +5,23 @@ import Logout from './userauth/Logout'
 import ThemeToggler from './ThemeToggler'
 import { useIdleTimer } from 'react-idle-timer'
 import userService from '../services/user'
+import PasswordResetForm from './userauth/PasswordResetForm'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   const { user, setLogin, setLogout } = useContext(UserContext)
   const [active, setActive] = useState(true)
   useIdleTimer({
     timeout: 60000, // 60 seconds
-    onAction: () => setActive(true),
-    onIdle: () => setActive(false)
+    onAction: () => {
+      if (!active) {
+        setActive(true)
+      }
+    },
+    onIdle: () => {
+      if (active) {
+        setActive(false)
+      }
+    }
   })
 
   useEffect(() => {
@@ -24,7 +33,7 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
           console.log('checking time to token invalidation')
           const expTime = JSON.parse(atob(user.token.split('.')[1])).exp * 1000
           const minutesRemaining = (expTime - Date.now()) / 1000 / 60
-          if (minutesRemaining < 59) {
+          if (minutesRemaining < 20) {
             console.log('refreshing token')
             const response = await userService.refreshToken(user.token)
             if (response.error) {
@@ -41,7 +50,7 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
           setLogout()
         }
       }
-    }, 10000)
+    }, 60000)
 
     return () => {
       clearInterval(interval)
@@ -60,7 +69,8 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
       <h3>Change username</h3>
       <button>change username</button><br/>
       <h3>Change password</h3>
-      <button>change password</button><br/>
+      <PasswordResetForm />
+      <br/>
       <h3>Toggle light or dark theme</h3>
       <ThemeToggler theme={theme} toggleTheme={ toggleTheme } />
     </div>

@@ -1,6 +1,15 @@
 import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api'
 
+const makeConfig = (token) => {
+  const config = {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  }
+  return config
+}
+
 const signup = async user => {
   try {
     const response = await axios.post(`${baseUrl}/users/signup`, user)
@@ -30,6 +39,16 @@ const refreshToken = async (token) => {
   return response.data
 }
 
+const changePassword = async ({token, oldPassword, newPassword}) => {
+  const config = makeConfig(token)
+  const payload = {
+    oldPassword,
+    newPassword
+  }
+  const response = await axios.post(`${baseUrl}/users/resetpassword`, payload, config)
+  return response
+}
+
 const logout = async (token, global = false) => {
   const config = {
     headers: {
@@ -52,5 +71,6 @@ export default {
   confirmAccount,
   login,
   refreshToken,
+  changePassword,
   logout
 }
