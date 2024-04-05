@@ -59,11 +59,6 @@ module.exports = {
             where: { accepted: true }
           },
           required: true,
-        }, {
-          model: Message,
-          include: [{
-            model: User
-          }]
         }],
       })
       return chats

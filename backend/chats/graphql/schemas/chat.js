@@ -3,7 +3,6 @@ module.exports = `
     id: Int!
     createdAt: String
     updatedAt: String
-    messages: [Message!]
     users: [User]
   }
   type Userchat {

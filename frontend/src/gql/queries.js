@@ -10,15 +10,6 @@ export const USER_CHATS = gql`
         username
         id
       }
-      messages {
-        createdAt
-        updatedAt
-        content
-        user {
-          id
-          username
-        }
-      }
     }
   }
 `
@@ -53,3 +44,28 @@ export const GET_CHAT_USERS = gql`
     }
   }
 `
+
+export const GET_CHAT_MESSAGES = gql`
+  query chatMessages($chatId: Int!) {
+    getChatMessages(chatId: $chatId) {
+      createdAt
+      updatedAt
+      content
+      user {
+        id
+        username
+      }
+    }
+  }
+`
+
+
+// messages {
+//   createdAt
+//   updatedAt
+//   content
+//   user {
+//     id
+//     username
+//   }
+// }

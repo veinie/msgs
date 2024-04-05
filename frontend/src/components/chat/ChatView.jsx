@@ -1,61 +1,52 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
-import { useApolloClient, useSubscription } from '@apollo/client'
+import { useState } from 'react'
+import { useSubscription, useQuery } from '@apollo/client'
 import { SUBSCRIBE_CHAT_MESSAGES } from '../../gql/subscriptions'
-import { GET_CHAT_USERS } from '../../gql/queries'
+import { GET_CHAT_MESSAGES, GET_CHAT_USERS } from '../../gql/queries'
 import { ChatViewContainer, MessageListContainer } from '../../styles/style'
-import { epochToHumanReadable as formatTime } from '../../util/time'
 import Message from './Message'
 import NewMessageForm from './NewMessageForm'
 
 const ChatView = ({ chat, isVisible }) => {
   const [ messages, setMessages ] = useState([])
   const [ users, setUsers ] = useState([])
-  const client = useApolloClient()
-  const cachedUsers = client.readQuery({
-    query: GET_CHAT_USERS,
-    variables: {
-      chatId: chat.id
+  // const client = useApolloClient()
+
+  const variables = {
+    chatId: chat.id
+  }
+
+  useQuery(GET_CHAT_USERS, {
+    fetchPolicy: 'cache-first',
+    variables,
+    onCompleted: (data) => {
+      setUsers(
+        data.getChatUsers
+          .map(u => u.username)
+      )
     }
   })
 
-  useEffect(() => {
-    console.log(cachedUsers)
-    try {
-      setUsers(cachedUsers.getChatUsers.map(u => u.username))
-    } catch (error) {
-      console.log(error)
+  const messageQuery = useQuery(GET_CHAT_MESSAGES, {
+    fetchPolicy: 'cache-first',
+    variables,
+    onCompleted: (data) => {
+      setMessages(data.getChatMessages)
     }
-  }, [cachedUsers])
-
-  useEffect(() => {
-    if (chat) {
-      try {
-        const softMessages = [...chat.messages]
-        setMessages(sortByCreatedAt(softMessages))
-        setUsers(chat.users.map(user => user.username))
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }, [chat])
+  })
 
   try {
     useSubscription(SUBSCRIBE_CHAT_MESSAGES, {
-      variables: {
-        chatId: chat.id
-      },
+      variables,
       onSubscriptionData: ({ subscriptionData }) => {
+        // writeMessageToCache(subscriptionData)
         const newMessage = subscriptionData.data.newMessageToChat
-        setMessages(messages.concat(newMessage))
+        setMessages(prevMessages => [...prevMessages, newMessage])
+        messageQuery.refetch()
       }
     })
   } catch (error) {
     console.log(error)
-  }
-
-  const sortByCreatedAt = (objects) => {
-    return objects.sort((a, b) => a.createdAt - b.createdAt);
   }
 
   if (!chat) return <div>Loading data...</div>
@@ -102,7 +93,6 @@ const ChatView = ({ chat, isVisible }) => {
   return (
     <ChatViewContainer style={{ display: isVisible ? 'block' : 'none' }}>
       <p>{ users && users.join(', ') }</p>
-      <i>{ formatTime(chat.updatedAt) }</i>
       <MessageListContainer id={ `${chat.id}_message-list` }>
         { messages.map(message => (
           <Message key={ message.id + message.createdAt } message={ message } />
@@ -119,3 +109,32 @@ ChatView.propTypes = {
 }
 
 export default ChatView
+
+  // An attempt to make the cache update locally so that no refetch would be
+  // needed for the chatPreview to recognize newer messages but
+  // unfortunately no solution is currently found for the manual cache modification to
+  // be recognized by the client.wathQuery... Will be coming back to this later
+  //
+  // const writeMessageToCache = (newMessage) => {
+  //   client.cache.modify({
+  //     id: client.cache.identify({__typename: 'Message', chatId: chat.id }),
+  //     fields: {
+  //       getChatMessages(existingMessages = []) {
+  //         const updatedMessages = [...existingMessages, newMessage]
+  //         return updatedMessages
+  //       }
+  //     }
+  //   })
+  // }
+  //
+  // const writeMessageToCache = (newMessage) => {
+  //   const queryResult = client.readQuery({
+  //     query: GET_CHAT_MESSAGES,
+  //       variables
+  //   })
+  //   client.writeQuery({
+  //     query: GET_CHAT_MESSAGES,
+  //     variables,
+  //     data: { ...queryResult, newMessage }
+  //   })
+  // }
