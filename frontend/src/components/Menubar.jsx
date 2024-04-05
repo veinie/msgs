@@ -38,7 +38,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chatRequests, children }) 
         { isNavOpen ? <MdNorth style={{ padding: '1em' }} className='icon' /> : <MdMenu className='icon' /> }
       </NavToggler>
       <VerticalFlexContainer style={{ display: isNavOpen ? 'flex' : 'none' }} className='menu-div background-div'>
-          <h1>MSGS</h1>
+          <h1 className={'pulsating-background'}>MSGS</h1>
           <NavBar>
             <i>Hello, { user.username } #{ user.id }</i>
             <MenuBtn onClick={() => setVisibleElement(-1)} className={ visibleElement === -1 ? 'active-element' : '' }>Profile and Settings</MenuBtn>

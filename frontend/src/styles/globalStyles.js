@@ -46,4 +46,22 @@ export const GlobalStyles = createGlobalStyle`
     overflow-y auto;
   }
 
+  @keyframes pulsate {
+    0% {
+      background-color: ${({ theme }) => theme.background};
+    }
+
+    50% {
+      background-color: ${({ theme }) => theme.accentColor};
+    }
+
+    100% {
+      background-color: ${({ theme }) => theme.background};
+    }
+  }
+
+  .pulsating-background {
+    animation: pulsate 2s infinite;
+  }
+
 `
