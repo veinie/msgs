@@ -29,5 +29,8 @@ module.exports = `
     getChatUsers(
       chatId: Int!
     ): [User]
+    getChatMessages(
+      chatId: Int!
+    ): [Message]
   }
 `

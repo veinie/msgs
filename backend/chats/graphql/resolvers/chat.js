@@ -79,6 +79,25 @@ module.exports = {
       })
       return users
     },
+    getChatMessages: async(_, { chatId }, context) => {
+      if (!context.req.decodedToken) return new Error('invalid token')
+      const isUserchat = await Userchat.findOne({
+        where: {
+          chat_id: chatId,
+          user_id: context.req.decodedToken.id
+        }
+      })
+      if (!isUserchat) return new Error('unauthorized')
+      const messages = await Message.findAll({
+        where: {
+          chat_id: chatId
+        },
+        include: [{
+          model: User
+        }]
+      })
+      return messages
+    },
     getChatRequests: async (_, _args, context) => {
       if (!context.req.decodedToken) return new Error('invalid token')
       const requests = await Userchat.findAll({
