@@ -11,8 +11,6 @@ const PasswordResetForm = () => {
   const { reset: resetNewPasswordAgain, ...newPasswordAgain } = useField('password')
 
   const verifyPassword = () => {
-    // https://stackoverflow.com/questions/58150828/how-can-i-verify-form-passwords-match-using-javascript
-    // TO DO make this prettier and ditch the alert
     if (newPassword.value !== newPasswordAgain.value) {
       alert('Passwords do not match')
       return false

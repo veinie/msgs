@@ -13,8 +13,6 @@ const SignupForm = () => {
   const { reset: resetEmail, ...email } = useField('text')
 
   const verifyPassword = () => {
-    // https://stackoverflow.com/questions/58150828/how-can-i-verify-form-passwords-match-using-javascript
-    // TO DO make this prettier and ditch the alert
     if (password.value !== passwordConfirm.value) {
       alert('Passwords do not match')
       return false
@@ -81,9 +79,5 @@ const SignupForm = () => {
     </div>
   )
 }
-
-// LoginForm.propTypes = {
-//   login: PropTypes.func.isRequired
-// }
 
 export default SignupForm

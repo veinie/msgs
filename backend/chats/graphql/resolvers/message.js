@@ -26,8 +26,6 @@ module.exports = {
         userId: context.req.decodedToken.id,
         content,
       })
-      // pubsub.publish(`MESSAGE_ADDED_TO_CHAT_${chatId}`, { newMessage: message })
-      // pubsub.publish('MESSAGE_ADDED_TO_CHAT', { chatId: chat.id, newMessage: NewMessageForm })
       pubsub.publish('newMessageToChat', { chatId: message.chatId, newMessage: message });
       return message
     },

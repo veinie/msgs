@@ -20,11 +20,6 @@ const UserProvider = ({ children }) => {
     }
   }, [])
 
-  // useEffect(() => {
-  //   window.localStorage.setItem('MsgsUser', JSON.stringify(user))
-  //   window.localStorage.setItem('MsgsAuthenticated', JSON.stringify(authenticated))
-  // }, [user, authenticated])
-
   const setLogin = (userData) => {
     setUser(userData)
     setAuthenticated(true)

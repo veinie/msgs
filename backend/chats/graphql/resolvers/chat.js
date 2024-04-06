@@ -36,17 +36,6 @@ module.exports = {
       requestedJoinEntry.requester_id = requestingUser.id
       await requestedJoinEntry.save()
       console.log(requestedJoinEntry)
-      // const subPublishableRequest = await  Userchat.findOne({
-      //   where: {
-      //     id: requestedJoinEntry.id
-      //   },
-      //   // required: true,
-      //   include: [{
-      //     model: User,
-      //     as: 'requester',
-      //     foreignKey: 'requester_id'
-      //   }]
-      // })
       pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
       return newChat
     },
@@ -57,8 +46,6 @@ module.exports = {
         request.accepted = true
         await request.save()
         return request
-        // const chat = await Chat.findByPk(request.chatId)
-        // return chat
       }
     }
   },
