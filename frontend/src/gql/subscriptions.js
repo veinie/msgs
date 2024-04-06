@@ -15,3 +15,16 @@ export const SUBSCRIBE_CHAT_MESSAGES = gql`
     }
   }
 `
+
+export const SUBSCRIBE_CHAT_REQUESTS = gql`
+  subscription($userId: Int!) {
+    newChatRequest(userId: $userId) {
+      id
+      createdAt
+      updatedAt
+      requester {
+        username
+      }
+    }
+  }
+`

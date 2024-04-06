@@ -4,8 +4,9 @@ import { UserContext } from '../contexts/UserContext';
 import NewChatRequest from './chat/NewChatRequest';
 import { NavBar, MenuBtn, NavToggler, VerticalFlexContainer, ChatsList } from '../styles/style';
 import { MdMenu, MdNorth } from "react-icons/md";
-import { useQuery } from '@apollo/client'
+import { useQuery, useSubscription } from '@apollo/client'
 import { CHAT_REQUESTS } from '../gql/queries'
+import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
 
 const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
   const isInitialRender = useRef(true)
@@ -13,6 +14,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { user, setLogout } = useContext(UserContext)
   const [ chatRequests, setChatRequests ] = useState([])
+
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
     onCompleted: (data) => {
       setChatRequests(data.getChatRequests)
@@ -21,6 +23,18 @@ const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
       if (error.message === 'invalid token') {
         setLogout()
       }
+    }
+  })
+
+  useSubscription(SUBSCRIBE_CHAT_REQUESTS, {
+    variables: {
+      userId: user.id
+    },
+    onData: (subdata) => {
+      console.log('new requests acknowledged')
+      const newRequest = subdata.data.newChatRequest
+      setChatRequests(prevRequests => [...prevRequests, newRequest])
+      chatRequestsQuery.refetch()
     }
   })
 

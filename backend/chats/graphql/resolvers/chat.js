@@ -1,6 +1,8 @@
 const { request } = require('express')
+const { PubSub, withFilter } = require('graphql-subscriptions')
 const { literal, Op } = require('sequelize')
 const { Chat, Userchat, User, Message } = require('../../../common/models')
+const pubsub = new PubSub()
 
 module.exports = {
   Mutation: {
@@ -34,6 +36,18 @@ module.exports = {
       requestedJoinEntry.requester_id = requestingUser.id
       await requestedJoinEntry.save()
       console.log(requestedJoinEntry)
+      // const subPublishableRequest = await  Userchat.findOne({
+      //   where: {
+      //     id: requestedJoinEntry.id
+      //   },
+      //   // required: true,
+      //   include: [{
+      //     model: User,
+      //     as: 'requester',
+      //     foreignKey: 'requester_id'
+      //   }]
+      // })
+      pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
       return newChat
     },
     acceptChatRequest: async (_, { requestId }, context) => {
@@ -108,6 +122,25 @@ module.exports = {
         }]
       })
       return requests
+    }
+  },
+  Subscription: {
+    newChatRequest: {
+      subscribe: withFilter(
+        () => pubsub.asyncIterator('newChatRequest'),
+        (payload, variables) => {
+          return payload.userId === variables.userId
+        }
+      ),
+      resolve: async (payload) => {
+        return await Userchat.findByPk(payload.requestId, {
+          include: [{
+            model: User,
+            as: 'requester',
+            foreignKey: 'requester_id'
+          }]
+        })
+      }
     }
   }
 }

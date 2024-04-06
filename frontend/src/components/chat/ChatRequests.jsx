@@ -14,17 +14,18 @@ const ChatRequests = ({ isVisible }) => {
     const cachedRequests = client.readQuery({
       query: CHAT_REQUESTS
     })
-    setChatRequests(cachedRequests.getChatRequests)
-  })
+    if (cachedRequests) {
+      setChatRequests(cachedRequests.getChatRequests)
+    }
+  }, [client])
 
   useEffect(() => {
     const requestCacheSubscription = client.watchQuery({
       query: CHAT_REQUESTS
     }).subscribe({
       next: (subdata) => {
-        const requests = subdata.getChatRequests
-        console.log(requests)
-        setChatRequests(requests)
+        const newRequests = subdata.data.getChatRequests
+        setChatRequests(newRequests)
       }
     })
     return () => {
@@ -43,7 +44,7 @@ const ChatRequests = ({ isVisible }) => {
     <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
       {chatRequests.map(request => (
         <div key={request.id}>
-          { request.requester.username } invited you to chat!
+          { request.requester.username || 'someone' } invited you to chat!
           <>
             <button style={{ marginLeft: '1em' }} onClick={() => handleClick(request.id)}>Accept!</button>
             <hr/>
