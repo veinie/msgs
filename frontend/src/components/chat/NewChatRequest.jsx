@@ -54,6 +54,8 @@ const NewChatRequest = ({ isOpen, onClose, message }) => {
 
   const handleNewChatRequest = (userId) => {
     sendRequest({ variables: { userId } })
+    resetSearchQuery()
+    onClose()
   }
 
   if (!isOpen) {
