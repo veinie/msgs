@@ -8,7 +8,7 @@ import { useContext } from 'react'
 import { UserContext } from '../../contexts/UserContext'
 
 
-const ChatPreview = ({ chat, visibleElement, setVisibleElement }) => {
+const ChatPreview = ({ chat, visibleElement, setVisibleElement, updateChatTimestamp }) => {
   const { user } = useContext(UserContext)
   const [ participants, setParticipants ] = useState([])
   const [latestMessage, setLatestMessage] = useState(null)
@@ -54,6 +54,12 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement }) => {
 
   }, [client])
 
+  useEffect(() => {
+    if (latestMessage) {
+      updateChatTimestamp(chat.id, latestMessage.createdAt)
+    }
+  }, [latestMessage])
+
   return (
     // <ChatPreviewLink to={ `/chats/${chat.id}` }>
     <ChatPreviewLink onClick={() => setVisibleElement(chat.id) } className={ visibleElement === chat.id ? 'active-element' : '' } >
@@ -66,7 +72,8 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement }) => {
 ChatPreview.propTypes = {
   chat: PropTypes.object,
   visibleElement: PropTypes.number.isRequired,
-  setVisibleElement: PropTypes.func.isRequired
+  setVisibleElement: PropTypes.func.isRequired,
+  updateChatTimestamp: PropTypes.func.isRequired,
 }
 
 export default ChatPreview

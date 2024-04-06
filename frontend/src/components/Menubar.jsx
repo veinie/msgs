@@ -1,12 +1,14 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef, Children, cloneElement } from 'react';
 import { PropTypes } from 'prop-types'
 import { UserContext } from '../contexts/UserContext';
 import NewChatRequest from './chat/NewChatRequest';
 import { NavBar, MenuBtn, NavToggler, VerticalFlexContainer, ChatsList } from '../styles/style';
+import ChatPreview from './chat/ChatPreview';
 import { MdMenu, MdNorth } from "react-icons/md";
 import { useQuery, useSubscription } from '@apollo/client'
 import { CHAT_REQUESTS } from '../gql/queries'
 import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
+import { epochToHumanReadable as formatTime } from '../util/time'
 
 const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
   const isInitialRender = useRef(true)
@@ -14,6 +16,9 @@ const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { user, setLogout } = useContext(UserContext)
   const [ chatRequests, setChatRequests ] = useState([])
+  const [ chatsPerTimestamp, setChatsPerTimestamp ] = useState([{}])
+  const [ sortedChats, setSortedChats ] = useState([{}])
+  const [ menuChats, setMenuChats ] = useState([])
 
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
     onCompleted: (data) => {
@@ -37,6 +42,30 @@ const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
       chatRequestsQuery.refetch()
     }
   })
+
+  const sortChats = (chats) => {
+    const sorted = chats.sort((A, B) => {
+      return B.timestamp - A.timestamp
+    })
+    return sorted
+  }
+
+  useEffect(() => {
+    if (chats) {
+      const withTimestamps = chats.map(c => ({ ...c, timestamp: c.createdAt }))
+      setMenuChats(withTimestamps)
+    }
+  }, [chats])
+
+
+  useEffect(() => {
+    const sorted = sortChats(menuChats)
+    setMenuChats(sorted)
+  }, [menuChats])
+
+  const updateChatTimestamp = (chatId, newTimestamp) => {
+    setMenuChats(sortChats(menuChats.map(c => c.id !== chatId ? c : { ...c, timestamp: newTimestamp })))
+  }
 
   useEffect(() => {
     // If using mobile-sized menu, close the menu when new element is selected to be visible except during the initial render
@@ -79,7 +108,9 @@ const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
             />
           </NavBar>
           <ChatsList>
-            { children }
+            {/* { children } */}
+            { chats && <p>Chats:</p> }
+            { menuChats && menuChats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} updateChatTimestamp={ updateChatTimestamp } />) }
           </ChatsList>
 
       </VerticalFlexContainer>
