@@ -64,4 +64,26 @@ export const GlobalStyles = createGlobalStyle`
     animation: pulsate 2s infinite;
   }
 
+  .accent {
+    background-color: ${({ theme }) => theme.accentColor};
+  }
+
+  .user-message{
+    position: relative;
+  }
+
+  .user-message::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: linear-gradient(to right, ${({ theme }) => theme.accentColor}, rgba(0, 0, 0, 0));
+    opacity: 0.2;
+    z-index: -1;
+  }
+
+  .not-user-message {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  }
+
 `

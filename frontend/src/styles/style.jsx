@@ -12,8 +12,8 @@ export const Page = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100VW;
+  height: 100VH;
 
 `
   // background: linear-gradient(145deg, ${theme.baseBgGrey}, ${theme.slightlyLighterGrey});
@@ -82,10 +82,16 @@ export const ChatPreviewLink = styled(Link)`
 `
 
 export const ChatViewContainer = styled.div`
-  width: 100%;
-  max-height: 100VH;
-
+  box-sizing: border-box;
+  width: 80VW;
+  height: 100VH;
   padding: 4vh;
+
+  @media (max-width: 767px) {
+    width: 100VW;
+    height: 100VH;
+    padding: 1em;
+  }
 `
 
 export const MessageListContainer = styled.div`
@@ -95,11 +101,12 @@ export const MessageListContainer = styled.div`
 `
 
 export const MessageContainer = styled.div`
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  box-sizing: border-box;
+  padding: 10px;
 `
 
 export const NewMessageContainer = styled.div`
-  width: 80%;
+  width: 100%;
   height: 10%;
 `
 
@@ -128,6 +135,36 @@ export const NavToggler = styled.button`
   @media (min-width: 768px) {
     display: none;
   }
+`
+
+export const InputDiv = styled.div`
+  padding: 5px;
+  color: black;
+  background-color: white;
+  display: inline-block;
+  height: 10VH;
+  width: 80%;
+  overflow-y: auto;
+  border: 1px solid grey;
+  border-radius: 1px;
+`
+
+export const SendButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 19%;
+  height: 10VH;
+  margin-left: 10px;
+  margin-right: 20px;
+  border-radius: 5px;
+  border: 1px solid light-grey;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+`
+
+export const DisabledSendButton = styled(SendButton)`
+  background-color: grey;
+  disabled;
 `
 
 // #265bff

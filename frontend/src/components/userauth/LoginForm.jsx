@@ -3,12 +3,14 @@ import { useState, useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import useField from '../../hooks/useField'
 import userService from '../../services/user'
+import { useApolloClient } from '@apollo/client';
 
 const LoginForm = () => {
   const { setLogin } = useContext(UserContext);
   const [extendedSessionLogin, setExtendedSessionLogin] = useState(false)
   const { reset: resetEmail, ...email } = useField('text')
   const { reset: resetPassword, ...password } = useField('password')
+  const client = useApolloClient()
 
   const handleLogin = async event => {
     event.preventDefault()
@@ -24,6 +26,7 @@ const LoginForm = () => {
     setLogin(response)
     resetEmail()
     resetPassword()
+    client.refetchQueries()
   }
 
   return (

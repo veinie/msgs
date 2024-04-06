@@ -9,11 +9,10 @@ import { useQuery } from '@apollo/client'
 import LandingPage from './components/LangingPage'
 import Menubar from './components/Menubar'
 import ChatView from './components/chat/ChatView'
-import ChatPreview from './components/chat/ChatPreview'
 import AccountConfirmed from './components/userauth/AccountConfirmed'
 import { Page, DesktopHorizontalMobileVertical } from './styles/style'
 import { UserContext } from './contexts/UserContext'
-import { USER_CHATS, CHAT_REQUESTS } from './gql/queries'
+import { USER_CHATS } from './gql/queries'
 import { ThemeProvider } from 'styled-components'
 import { GlobalStyles } from './styles/globalStyles'
 import { lightTheme, darkTheme } from './styles/theme'
@@ -36,7 +35,7 @@ function App() {
     }
   }
 
-  const chatsQuery = useQuery( USER_CHATS, {
+  useQuery( USER_CHATS, {
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
       setChats(data.getUserChats)

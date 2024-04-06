@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect, useRef, Children, cloneElement } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types'
 import { UserContext } from '../contexts/UserContext';
 import NewChatRequest from './chat/NewChatRequest';
@@ -8,16 +8,14 @@ import { MdMenu, MdNorth } from "react-icons/md";
 import { useQuery, useSubscription } from '@apollo/client'
 import { CHAT_REQUESTS } from '../gql/queries'
 import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
-import { epochToHumanReadable as formatTime } from '../util/time'
+// import { epochToHumanReadable as formatTime } from '../util/time'
 
-const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
+const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
   const isInitialRender = useRef(true)
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { user, setLogout } = useContext(UserContext)
   const [ chatRequests, setChatRequests ] = useState([])
-  const [ chatsPerTimestamp, setChatsPerTimestamp ] = useState([{}])
-  const [ sortedChats, setSortedChats ] = useState([{}])
   const [ menuChats, setMenuChats ] = useState([])
 
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
