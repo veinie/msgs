@@ -25,12 +25,9 @@ import ChatRequests from './components/chat/ChatRequests'
 function App() {
   const { authenticated, setLogout } = useContext(UserContext)
   const [ chats, setChats ] = useState([])
-  const [ chatRequests, setChatRequests ] = useState([])
   const [ visibleElement, setVisibleElement ] = useState(-1)
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === 'light' ? lightTheme : darkTheme
-
-  console.log(chatRequests)
 
   const handleQueryError = (error) => {
     console.log(error)
@@ -46,18 +43,6 @@ function App() {
     },
     onError: (error) => handleQueryError(error)
   })
-
-  const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
-    onCompleted: (data) => {
-      setChatRequests(data.getChatRequests)
-    },
-    onError: (error) => handleQueryError(error)
-  })
-
-  const updateChatsAndRequests = () => {
-    chatsQuery.refetch()
-    chatRequestsQuery.refetch()
-  }
 
   console.log('App rendered')
 
@@ -77,12 +62,12 @@ function App() {
     return (
       <>
         <DesktopHorizontalMobileVertical>
-            <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } chatRequests={ chatRequests } style={{ height: '100VH' }}>
+            <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } chats={ chats } style={{ height: '100VH' }}>
               { chats && <p>Chats:</p> }
               { chats && chats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} />) }
             </Menubar>
             <UserProfile isVisible={ visibleElement === -1 } visibleElement={ visibleElement } theme={theme} toggleTheme={ themeToggler } />
-            <ChatRequests isVisible={ visibleElement === -2 } visibleElement={ visibleElement } chatRequests={ chatRequests } updateChatsAndRequests={updateChatsAndRequests} />
+            <ChatRequests isVisible={ visibleElement === -2 } visibleElement={ visibleElement } />
             { chats && chats.map(chat => <ChatView chat={ chat } key={ chat.id } id={ chat.id } isVisible={ visibleElement === chat.id } />) }
         </DesktopHorizontalMobileVertical>
       </>

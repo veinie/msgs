@@ -1,15 +1,42 @@
-import { useMutation } from '@apollo/client'
-import PropTypes, { object } from 'prop-types'
+import { useEffect, useState } from 'react'
+import { useMutation, useApolloClient } from '@apollo/client'
+import PropTypes from 'prop-types'
 import { ACCEPT_CHAT_REQUEST } from '../../gql/mutations'
+import { CHAT_REQUESTS } from '../../gql/queries'
 
-const ChatRequests = ({ chatRequests, updateChatsAndRequests, isVisible }) => {
+
+const ChatRequests = ({ isVisible }) => {
+  const [ chatRequests, setChatRequests ] = useState([])
   const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST)
+  const client = useApolloClient()
+
+  useEffect(() => {
+    const cachedRequests = client.readQuery({
+      query: CHAT_REQUESTS
+    })
+    setChatRequests(cachedRequests.getChatRequests)
+  })
+
+  useEffect(() => {
+    const requestCacheSubscription = client.watchQuery({
+      query: CHAT_REQUESTS
+    }).subscribe({
+      next: (subdata) => {
+        const requests = subdata.getChatRequests
+        console.log(requests)
+        setChatRequests(requests)
+      }
+    })
+    return () => {
+      requestCacheSubscription.unsubscribe()
+    }
+  }, [client])
 
   const handleClick = (requestId) => {
     acceptRequest({ variables: {
       requestId
     }})
-    updateChatsAndRequests()
+    // updateChatsAndRequests()
   }
   if (!chatRequests) return <div style={{ padding: '1em' }}>No new requests...</div>
   return(
@@ -28,9 +55,7 @@ const ChatRequests = ({ chatRequests, updateChatsAndRequests, isVisible }) => {
 }
 
 ChatRequests.propTypes = {
-  chatRequests: PropTypes.arrayOf(object),
-  updateChatsAndRequests: PropTypes.func.isRequired,
-  isVisible: PropTypes.bool.isRequired
+  isVisible: PropTypes.bool.isRequired,
 }
 
 export default ChatRequests

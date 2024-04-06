@@ -4,12 +4,25 @@ import { UserContext } from '../contexts/UserContext';
 import NewChatRequest from './chat/NewChatRequest';
 import { NavBar, MenuBtn, NavToggler, VerticalFlexContainer, ChatsList } from '../styles/style';
 import { MdMenu, MdNorth } from "react-icons/md";
+import { useQuery } from '@apollo/client'
+import { CHAT_REQUESTS } from '../gql/queries'
 
-const Menubar = ({ visibleElement, setVisibleElement, chatRequests, children }) => {
+const Menubar = ({ visibleElement, setVisibleElement, chats, children }) => {
   const isInitialRender = useRef(true)
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { user } = useContext(UserContext)
+  const { user, setLogout } = useContext(UserContext)
+  const [ chatRequests, setChatRequests ] = useState([])
+  const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
+    onCompleted: (data) => {
+      setChatRequests(data.getChatRequests)
+    },
+    onError: (error) => {
+      if (error.message === 'invalid token') {
+        setLogout()
+      }
+    }
+  })
 
   useEffect(() => {
     // If using mobile-sized menu, close the menu when new element is selected to be visible except during the initial render
@@ -62,9 +75,9 @@ const Menubar = ({ visibleElement, setVisibleElement, chatRequests, children }) 
 
 Menubar.propTypes = {
   visibleElement: PropTypes.number,
+  chats: PropTypes.array.isRequired,
   children: PropTypes.array,
-  setVisibleElement: PropTypes.func,
-  chatRequests: PropTypes.array
+  setVisibleElement: PropTypes.func
 }
 
 export default Menubar
