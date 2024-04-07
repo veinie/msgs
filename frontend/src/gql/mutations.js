@@ -55,3 +55,24 @@ export const DELETE_MESSAGE = gql`
     }
   }
 `
+
+export const UPDATE_MESSAGE = gql`
+  mutation updateMessage(
+    $id: Int!
+    $content: String!
+  ) {
+    updateMessage(
+      id: $id
+      content: $content
+    ) {
+      id
+      createdAt
+      updatedAt
+      content
+      user {
+        id
+        username
+      }
+    }
+  }
+`

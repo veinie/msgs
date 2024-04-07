@@ -17,9 +17,9 @@ module.exports = `
       content: String!
     ): Message!
     updateMessage(
-      chatId: Int!
+      chatId: Int
       id: Int!
-      content: String
+      content: String!
     ): Message
     deleteMessage(
       id: Int!

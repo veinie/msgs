@@ -67,6 +67,10 @@ const ChatView = ({ chat, isVisible }) => {
     setMessages(messages.filter(m => m.id !== messageId))
   }
 
+  const updateMessageOnList = (messageId, updatedMessage) => {
+    setMessages(messages.map(m => m.id !== messageId ? m : updatedMessage))
+  }
+
   if (!chat) return <div>Loading data...</div>
 
   const displayMessages = () => {
@@ -77,6 +81,7 @@ const ChatView = ({ chat, isVisible }) => {
           key={ message.id + message.createdAt }
           message={ message }
           deleteMessageFromList={deleteMessageFromList}
+          updateMessageOnList={updateMessageOnList}
         />
       ))
     )

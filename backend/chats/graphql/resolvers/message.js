@@ -30,16 +30,19 @@ module.exports = {
       return message
     },
     updateMessage: async (_, { chatId, id, content }, context) => {
-      const message = await Message.findOne({
-        where: {
-          chatId,
-          id,
-          userId: context.req.decodedToken.id
-        }
+      if (!context.req.decodedToken) return new Error('invalid token')
+      const message = await Message.findByPk(id, {
+        include: [{
+          model: User
+        }]
       })
-      message.content = content
-      await message.save()
-      return message
+      if (message.userId === context.req.decodedToken.id) {
+        message.content = content
+        await message.save()
+        return message
+      } else {
+        throw new Error('unauthorized')
+      }
     },
     deleteMessage: async (_, { id }, context) => {
       if (!context.req.decodedToken) return new Error('invalid token')
