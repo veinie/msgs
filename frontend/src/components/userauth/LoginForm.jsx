@@ -26,7 +26,9 @@ const LoginForm = () => {
     setLogin(response)
     resetEmail()
     resetPassword()
-    client.refetchQueries()
+    client.refetchQueries({
+      include: 'active',
+    })
   }
 
   return (

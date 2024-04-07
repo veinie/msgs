@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useSubscription, useQuery } from '@apollo/client'
 import { SUBSCRIBE_CHAT_MESSAGES } from '../../gql/subscriptions'
 import { GET_CHAT_MESSAGES, GET_CHAT_USERS } from '../../gql/queries'
@@ -10,7 +10,7 @@ import NewMessageForm from './NewMessageForm'
 const ChatView = ({ chat, isVisible }) => {
   const [ messages, setMessages ] = useState([])
   const [ users, setUsers ] = useState([])
-  // const client = useApolloClient()
+  const lastMessageRef = useRef(null)
 
   const variables = {
     chatId: chat.id
@@ -49,54 +49,38 @@ const ChatView = ({ chat, isVisible }) => {
     console.log(error)
   }
 
+  useEffect(() => {
+    setTimeout(() => {
+      console.log(messages.length)
+      lastMessageRef.current.scrollIntoView({
+        block: 'end',
+      })
+    }, 500)
+  }, [messages.length, messages])
+
+  useLayoutEffect(() => {
+    lastMessageRef.current.scrollIntoView({
+      block: 'end',
+    })
+  })
+
   if (!chat) return <div>Loading data...</div>
 
-  const scrollableElement = document.getElementById(`${chat.id}_message-list`)
-
-  if (scrollableElement !== null) {
-    scrollableElement.addEventListener('scroll', function(event) {
-      const { scrollTop, scrollHeight, clientHeight } = event.target
-  
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight
-  
-      if (!isAtBottom) {
-        disableAutoScroll()
-      }
-    })
-
-    scrollableElement.addEventListener('DOMSubtreeModified', checkAutoScroll)
-
-    enableAutoScroll()
-
-  }
-
-  function scrollToBottom() {
-    scrollableElement.scrollTop = scrollableElement.scrollHeight
-  }
-
-  function enableAutoScroll() {
-    scrollableElement.setAttribute('data-auto-scroll', 'true')
-    scrollToBottom()
-  }
-
-  function disableAutoScroll() {
-    scrollableElement.setAttribute('data-auto-scroll', 'false')
-  }
-
-  function checkAutoScroll() {
-    const autoScroll = scrollableElement.getAttribute('data-auto-scroll')
-    if (autoScroll === 'true') {
-      scrollToBottom()
-    }
+  const displayMessages = () => {
+    if (messages.length === 0) return <p>Nothing yet...</p>
+    return (
+      messages.map(message => (
+        <Message key={ message.id + message.createdAt } message={ message } />
+      ))
+    )
   }
 
   return (
     <ChatViewContainer style={{ display: isVisible ? 'block' : 'none' }}>
       <p>{ users && users.join(', ') }</p>
       <MessageListContainer id={ `${chat.id}_message-list` }>
-        { messages.map(message => (
-          <Message key={ message.id + message.createdAt } message={ message } />
-        ))}
+        { displayMessages() }
+        <div ref={lastMessageRef} />
       </MessageListContainer>
       <NewMessageForm chatId={ chat.id } updateMessages={ setMessages } />
     </ChatViewContainer>

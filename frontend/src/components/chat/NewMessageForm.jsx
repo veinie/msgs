@@ -19,7 +19,7 @@ const NewMessageForm = ({ chatId }) => {
 
   return (
     <NewMessageContainer>
-      <form id='new-message-form' onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <form id={`${chatId}-new-message-form`} onSubmit={handleSubmit} style={{ width: '100%' }}>
         <VerticallyCentralizedContainer>
           <InputDiv contentEditable onInput={e => setContent(e.currentTarget.textContent)} id={`${chatId}-input`}></InputDiv>
           {content !== '' ? <SendButton className='accent'>Send</SendButton> : <DisabledSendButton>Send</DisabledSendButton> }

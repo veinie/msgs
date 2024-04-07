@@ -1,9 +1,11 @@
-import { useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { useContext } from 'react'
+import { useApolloClient } from '@apollo/client'
+import { UserContext } from '../../contexts/UserContext'
 import userService from '../../services/user'
 
 const Logout = () => {
-  const { user, setLogout } = useContext(UserContext);
+  const { user, setLogout } = useContext(UserContext)
+  const client = useApolloClient()
 
   const handleLogout = async event => {
     event.preventDefault()
@@ -14,6 +16,8 @@ const Logout = () => {
       alert('Session expired')
     }
     setLogout()
+    client.cache.evict({ fieldName: '__typename' })
+    client.cache.gc()
   }
 
   return (

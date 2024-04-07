@@ -83,13 +83,13 @@ export const ChatPreviewLink = styled(Link)`
 
 export const ChatViewContainer = styled.div`
   box-sizing: border-box;
-  width: 80VW;
+  width: 100%;
   height: 100VH;
   padding: 4vh;
 
   @media (max-width: 767px) {
     width: 100VW;
-    height: 100VH;
+    height: 100%;
     padding: 1em;
   }
 `
@@ -97,12 +97,22 @@ export const ChatViewContainer = styled.div`
 export const MessageListContainer = styled.div`
   height: 80%;
   overflow-y: auto;
+  padding: 10px;
 
+  @media (max-width: 767px) {
+    padding: 0;
+  }
 `
 
 export const MessageContainer = styled.div`
+  border-radius: 20px;
   box-sizing: border-box;
   padding: 10px;
+  margin-bottom: 10px;
+
+  @media (max-width: 767px) {
+    margin-bottom: 5px;
+  }
 `
 
 export const NewMessageContainer = styled.div`

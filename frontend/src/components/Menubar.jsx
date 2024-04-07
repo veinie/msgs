@@ -16,8 +16,10 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { user, setLogout } = useContext(UserContext)
   const [ chatRequests, setChatRequests ] = useState([])
-  const [ menuChats, setMenuChats ] = useState([])
-
+  const [ menuChats, setMenuChats ] = useState(
+    chats.map(c => ({ ...c, timestamp: c.createdAt ? c.createdAt : null }))
+  )
+      
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
     onCompleted: (data) => {
       setChatRequests(data.getChatRequests)
@@ -54,7 +56,6 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
       setMenuChats(withTimestamps)
     }
   }, [chats])
-
 
   useEffect(() => {
     const sorted = sortChats(menuChats)
@@ -107,8 +108,8 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
           </NavBar>
           <ChatsList>
             {/* { children } */}
-            { chats && <p>Chats:</p> }
-            { menuChats && menuChats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} updateChatTimestamp={ updateChatTimestamp } />) }
+            { chats && <p>Chats</p> }
+            { menuChats && menuChats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} updateChatTimestamp={ updateChatTimestamp } timestamp />) }
           </ChatsList>
 
       </VerticalFlexContainer>
