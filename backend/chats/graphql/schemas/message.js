@@ -7,6 +7,10 @@ module.exports = `
     updatedAt: String!
     user: User!
   }
+  type DeleteMessageResponse {
+    success: Boolean!
+    message: String!
+  }
   type Mutation {
     createMessage(
       chatId: Int!
@@ -17,6 +21,9 @@ module.exports = `
       id: Int!
       content: String
     ): Message
+    deleteMessage(
+      id: Int!
+    ): DeleteMessageResponse
   }
   type Query {
     getChatMessages(

@@ -48,6 +48,7 @@ export const GET_CHAT_USERS = gql`
 export const GET_CHAT_MESSAGES = gql`
   query chatMessages($chatId: Int!) {
     getChatMessages(chatId: $chatId) {
+      id
       createdAt
       updatedAt
       content

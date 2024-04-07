@@ -42,3 +42,16 @@ export const ACCEPT_CHAT_REQUEST = gql`
     }
   }
 `
+
+export const DELETE_MESSAGE = gql`
+  mutation deleteMessage(
+    $id: Int!
+  ) {
+    deleteMessage(
+      id: $id
+    ) {
+      success
+      message
+    }
+  }
+`

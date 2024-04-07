@@ -40,6 +40,15 @@ module.exports = {
       message.content = content
       await message.save()
       return message
+    },
+    deleteMessage: async (_, { id }, context) => {
+      if (!context.req.decodedToken) return new Error('invalid token')
+      const message = await Message.findByPk(id)
+      if (message && message.userId === context.req.decodedToken.id) {
+        await message.destroy()
+        return { success: true, message: 'Message deleted' }
+      }
+      return { success: false, message: 'something went wrong' }
     }
   },
   Query: {

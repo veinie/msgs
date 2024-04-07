@@ -63,13 +63,21 @@ const ChatView = ({ chat, isVisible }) => {
     })
   })
 
+  const deleteMessageFromList = (messageId) => {
+    setMessages(messages.filter(m => m.id !== messageId))
+  }
+
   if (!chat) return <div>Loading data...</div>
 
   const displayMessages = () => {
     if (messages.length === 0) return <p>Nothing yet...</p>
     return (
       messages.map(message => (
-        <Message key={ message.id + message.createdAt } message={ message } />
+        <Message
+          key={ message.id + message.createdAt }
+          message={ message }
+          deleteMessageFromList={deleteMessageFromList}
+        />
       ))
     )
   }
