@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import {
   Routes,
   Route,
@@ -24,7 +24,11 @@ import ChatRequests from './components/chat/ChatRequests'
 function App() {
   const { authenticated, setLogout } = useContext(UserContext)
   const [ chats, setChats ] = useState([])
-  const [ visibleElement, setVisibleElement ] = useState(-1)
+  const [ visibleElement, setVisibleElement ] = useState(
+    isNaN(localStorage.getItem('current-page'))
+      ? -1
+      : Number(localStorage.getItem('current-page'))
+  )
   const [theme, themeToggler, mountedComponent] = useDarkMode()
   const themeMode = theme === 'light' ? lightTheme : darkTheme
 
@@ -42,6 +46,16 @@ function App() {
     },
     onError: (error) => handleQueryError(error)
   })
+
+  useEffect(() => {
+    const currentPage = localStorage.getItem('current-page')
+    if (currentPage && !isNaN) setVisibleElement(Number(currentPage))
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('current-page', visibleElement.toString())
+    console.log(localStorage.getItem('current-page'))
+  }, [visibleElement])
 
   console.log('App rendered')
 

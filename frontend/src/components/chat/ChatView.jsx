@@ -51,7 +51,6 @@ const ChatView = ({ chat, isVisible }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      console.log(messages.length)
       lastMessageRef.current.scrollIntoView({
         block: 'end',
       })

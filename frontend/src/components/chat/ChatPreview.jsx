@@ -50,8 +50,6 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement, updateChatTimest
           return latest
         }, null)
         setLatestMessage(subLatestMessage)
-        console.log('latest message set')
-        // updateChatTimestamp(chat.id, subLatestMessage.createdAt)
       }
     })
 
