@@ -71,7 +71,7 @@ const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
         isOpen={isModalOpen}
         message={'Edit Message:'}
       >
-        <input onChange={handleChange} value={text} />
+        <textarea onChange={handleChange} value={text} />
         <button onClick={handleClick}>Submit</button>
       </Modal>
     )

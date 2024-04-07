@@ -81,4 +81,10 @@ export const GlobalStyles = createGlobalStyle`
     color: ${({ theme }) => theme.invertedText};
   }
 
+  .message-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
 `
