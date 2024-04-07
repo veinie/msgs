@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useLazyQuery, useMutation } from "@apollo/client"
 import { FIND_USER } from "../../gql/queries"
 import { NEW_CHAT } from '../../gql/mutations'
 import useField from "../../hooks/useField"
 import '../../styles/modalStyle.css'
 import { UserPreviewSelectable } from '../../styles/style'
+import { UserContext } from '../../contexts/UserContext'
 
 const NewChatRequest = ({ isOpen, onClose, message }) => {
+  const { user } = useContext(UserContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
   const { reset: resetSearchQuery, ...search } = useField('text')
   const [shouldExecuteQuery, setShouldExecuteQuery] = useState(false);
@@ -69,7 +71,7 @@ const NewChatRequest = ({ isOpen, onClose, message }) => {
         <div className="modal-content">
           <p>{message}</p>
           <input placeholder='Username or user ID' { ...search } />
-          {data && data.findUser.map(user => (
+          {data && data.findUser.filter(u => u.id !== user.id).map(user => (
             <UserPreviewSelectable key={ user.id } onClick={() => handleNewChatRequest(user.id)}>
               { user.username } #{ user.id }
             </UserPreviewSelectable>

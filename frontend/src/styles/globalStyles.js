@@ -77,4 +77,8 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.background};
   }
 
+  .modal-content {
+    color: ${({ theme }) => theme.invertedText};
+  }
+
 `

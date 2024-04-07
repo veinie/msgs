@@ -30,7 +30,7 @@ export const ChatsList = styled.div`
 
 export const MenuBtn = styled.div`
   display: block;
-  padding: 2vh;
+  padding: 10px;
   margin-top: 2vh;
   text-decoration: none;
   cursor: pointer;
@@ -79,6 +79,10 @@ export const ChatPreviewLink = styled(Link)`
   padding: 2vh;
   text-decoration: none;
   cursor: pointer;
+
+  i {
+    color: grey;
+  }
 `
 
 export const ChatViewContainer = styled.div`
