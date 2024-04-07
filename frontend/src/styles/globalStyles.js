@@ -46,6 +46,12 @@ export const GlobalStyles = createGlobalStyle`
     overflow-y auto;
   }
 
+  .mobile-scrollable: {
+    @media (min-width: 767px) {
+      overflow-y: auto;
+    }
+  }
+
   @keyframes pulsate {
     0% {
       background-color: ${({ theme }) => theme.background};

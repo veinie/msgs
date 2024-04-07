@@ -92,7 +92,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
       <NavToggler onClick={() => setIsNavOpen(!isNavOpen)} className='menu-div'>
         { isNavOpen ? <MdNorth style={{ padding: '1em' }} className='icon' /> : <MdMenu className='icon' /> }
       </NavToggler>
-      <VerticalFlexContainer style={{ display: isNavOpen ? 'flex' : 'none' }} className='menu-div background-div'>
+      <VerticalFlexContainer style={{ display: isNavOpen ? 'flex' : 'none' }} className='menu-div background-div mobile-scrollable'>
           <h1 className={'pulsating-background'}>MSGS</h1>
           <NavBar>
             <i>Hello, { user.username } #{ user.id }</i>

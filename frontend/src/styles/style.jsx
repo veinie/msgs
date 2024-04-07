@@ -19,6 +19,7 @@ export const Page = styled.div`
   // background: linear-gradient(145deg, ${theme.baseBgGrey}, ${theme.slightlyLighterGrey});
 export const NavBar = styled.div`
 @media (max-width: 767px) {
+  overflow-y: auto;
 }
 `
 
