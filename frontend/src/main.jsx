@@ -14,6 +14,10 @@ import { createClient } from 'graphql-ws'
 import App from './App.jsx'
 import { UserProvider } from './contexts/UserContext.jsx'
 
+const CHATS_URL = import.meta.env.VITE_CHATS_URL
+
+console.log(CHATS_URL)
+
 const authLink = setContext(async (_, { headers }) => {
   const user = JSON.parse(localStorage.getItem('MsgsUser'))
   return {
@@ -25,11 +29,11 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3002/api'
+  uri: `http://${CHATS_URL}`
 })
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:3002/api'
+  url: `ws://${CHATS_URL}`
 }))
 
 const splitLink = split(

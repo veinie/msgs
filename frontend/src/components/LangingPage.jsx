@@ -25,6 +25,7 @@ const LandingPage = () => {
           <div>
             <p>Welcome to</p>
             <h1>MSGS</h1>
+            <button onClick={() => {alert('alert')}}>alert</button>
           </div>
           <FormDiv>
             <div style={hideWhenVisible}>

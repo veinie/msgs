@@ -53,8 +53,9 @@ function App() {
   }, [])
 
   useEffect(() => {
-    localStorage.setItem('current-page', visibleElement.toString())
-    console.log(localStorage.getItem('current-page'))
+    if (visibleElement !== 0) {
+      localStorage.setItem('current-page', visibleElement.toString())
+    }
   }, [visibleElement])
 
   console.log('App rendered')
@@ -89,7 +90,7 @@ function App() {
       <GlobalStyles />
       <Page>
         <Routes>
-          <Route path='/' element={ home() } />
+          <Route path='*' element={ home() } />
           {/* <Route path='/chats/:id' element={<ChatView chat={ chatById } />} /> */}
           <Route path='/accountconfirmation/:code' element={<AccountConfirmed />} />
         </Routes>

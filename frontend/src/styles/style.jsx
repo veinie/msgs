@@ -26,7 +26,10 @@ export const NavBar = styled.div`
 export const ChatsList = styled.div`
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 767px) {
   overflow-y: auto;
+  }
 `
 
 export const MenuBtn = styled.div`
@@ -93,8 +96,6 @@ export const ChatViewContainer = styled.div`
   padding: 4vh;
 
   @media (max-width: 767px) {
-    width: 100VW;
-    height: 100%;
     padding: 1em;
   }
 `
@@ -134,14 +135,19 @@ export const UserPreviewSelectable = styled.div`
 `
 
 export const NavToggler = styled.button`
+  position: -webkit-fixed; 
+  position: fixed;
+  top: 0;
   width: 100%;
   display: block;
+  padding: 10px;
   background-color: transparent;
   border: none;
   color: #fff;
   font-size: 1.5rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 999;
 
   &:hover {
     color: #bada55;

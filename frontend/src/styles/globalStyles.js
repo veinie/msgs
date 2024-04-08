@@ -24,19 +24,25 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   .icon {
-    color: ${({ theme }) => theme.text}
+    color: ${({ theme }) => theme.accentColor}
   }
 
   .full-width {
     width: 100%;
+    box-sizing: border-box;
+  }
+
+  .center-align {
+    text-align: center;
   }
   
   .menu-div {
     text-align: center;
-    min-width: 15em;
     min-height: 100%
+    width: 100VW;
     
     @media (min-width: 767px) {
+      width: 300px;
       overflow-y: auto;
     }
 
@@ -78,7 +84,6 @@ export const GlobalStyles = createGlobalStyle`
     background: linear-gradient(to right, ${({ theme }) => theme.mildAccentColor}, ${({ theme }) => theme.background});
   }
 
-
   .not-user-message {
     background-color: ${({ theme }) => theme.background};
   }
@@ -91,6 +96,10 @@ export const GlobalStyles = createGlobalStyle`
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+  }
+
+  .icon {
+
   }
 
 `

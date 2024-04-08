@@ -14,21 +14,21 @@ const LoginForm = () => {
 
   const handleLogin = async event => {
     event.preventDefault()
-    const response = await userService.login({
-      email: email.value,
-      password: password.value,
-      extendedSession: extendedSessionLogin
-    })
-    if (response.error) {
-      alert(response.error.message)
-      return
+    try {
+      const response = await userService.login({
+        email: email.value,
+        password: password.value,
+        extendedSession: extendedSessionLogin
+      })
+      setLogin(response)
+      resetEmail()
+      resetPassword()
+      client.refetchQueries({
+        include: 'active',
+      })
+    } catch (error) {
+      alert(error)
     }
-    setLogin(response)
-    resetEmail()
-    resetPassword()
-    client.refetchQueries({
-      include: 'active',
-    })
   }
 
   return (
