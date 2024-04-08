@@ -21,3 +21,4 @@
 |6.4. | 12 | Lisätty GraphQL-backendiin ja frontend-sovellukseen uusi subscription keskustelupyyntöjä varten. Siirretty keskustelupyyntöjen hallinta frontendissä Menu-komponenttiin ylimääräisten App-komponenttien renderöinnin välttämiseksi. Muutettu Menu-komponentissa chat-esikatseluiden järjestys siten, että keskustelut, joihin on saapunut viestejä viimeisimpänä, näytetään ensin. Vaihdettu keskustelunäkymän textfield-input contenteditable-diviksi.|
 |8.4. | 5 | Lisätty backendiin tuki viestien muokkamiselle ja poistamiselle, sekä näitä hyödyntävät toiminnot frontend-sovellukseen|
 |8.4. | 5 | Frontendin elementtien muokkausta.|
+|9.4.| 5 | Layoutin mobiiliystävällisen parannus.|
