@@ -2,7 +2,16 @@ import { useState, useContext, useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types'
 import { UserContext } from '../contexts/UserContext';
 import NewChatRequest from './chat/NewChatRequest';
-import { NavBar, MenuBtn, NavToggler, VerticalFlexContainer, ChatsList, VerticallyCentralizedContainer, HorizontallyCentralizedContainer } from '../styles/style';
+import {
+  NavBar,
+  MenuBtn,
+  NavToggler,
+  VerticalFlexContainer,
+  ChatsList,
+  VerticallyCentralizedContainer,
+  HorizontallyCentralizedContainer,
+  NavTogglerPlaceholder
+} from '../styles/style';
 import ChatPreview from './chat/ChatPreview';
 import { MdMenu, MdNorth } from "react-icons/md";
 import { useQuery, useSubscription } from '@apollo/client'
@@ -32,7 +41,8 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
   const [viewPortSize, setViewPortSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const mobileWidthTrigger = 767
   const [onMobile, setOnMobile] = useState(viewPortSize.width <= mobileWidthTrigger)
-      
+  const debug = false
+
   const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
     onCompleted: (data) => {
       setChatRequests(data.getChatRequests)
@@ -80,23 +90,27 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
   }
 
   useEffect(() => {
+    if (viewPortSize.width <= mobileWidthTrigger) {
+      setOnMobile(true)
+    } else if (viewPortSize.width >= mobileWidthTrigger) {
+      setOnMobile(false)
+      if (!isNavOpen){
+        setIsNavOpen(true)
+      }
+    }
+  }, [viewPortSize])
+
+  useEffect(() => {
     if (onMobile) {
       setVisibleElement(0)
     }
-
     const handleResize = () => {
       setViewPortSize({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight
       })
-      if (viewPortSize <= mobileWidthTrigger) {
-        setOnMobile(true)
-        setVisibleElement(0)
-      } else {
-        setOnMobile(false)
-      }
-    }
 
+    }
     window.addEventListener('resize', handleResize)
 
     return () => {
@@ -144,7 +158,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
   const ComponentLayoutDebugger = () => {
     console.log('Menubar rendered')
     return (
-      <div style={{ position: 'fixed', top: '0' }}>
+      <div style={{ position: 'fixed', top: '0' }} className='background-div'>
         Width: {viewPortSize.width}<br/>
         Height: {viewPortSize.height}<br/>
         onMobile: {onMobile ? 'true' : 'false'}<br/>
@@ -157,11 +171,12 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
 
   return (
     <>
-      {/* <ComponentLayoutDebugger /> */}
+      { debug && <ComponentLayoutDebugger /> }
       <NavToggler onClick={handleNavTogglerClick} className='full-width center-align'>
         { isNavOpen ? <MdNorth style={{ padding: '5px' }} className='icon icon-background' /> : <MdMenu className='icon icon-background' /> }
       </NavToggler>
       <VerticalFlexContainer style={{ display: isNavOpen ? 'flex' : 'none' }} className='menu-div background-div mobile-scrollable'>
+        <NavTogglerPlaceholder />
           <h1>MSGS</h1>
           <NavBar>
             <i>Hello, { user.username } #{ user.id }</i>

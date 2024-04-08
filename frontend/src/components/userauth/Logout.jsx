@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { useApolloClient } from '@apollo/client'
 import { UserContext } from '../../contexts/UserContext'
 import userService from '../../services/user'
+import { Button } from '../../styles/style'
 
 const Logout = () => {
   const { user, setLogout } = useContext(UserContext)
@@ -22,7 +23,7 @@ const Logout = () => {
 
   return (
     <div>
-      <button onClick={handleLogout}>log out</button>
+      <Button className='btn btn-success' onClick={handleLogout}>log out</Button>
     </div>
   )
 }

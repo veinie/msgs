@@ -19,12 +19,23 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.body}
   }
 
+  .landingpage-form {
+    padding: 20px;
+    border-radius: 10px 20px;
+    width: 350px;
+  }
+
   .menu-btn {
 
   }
 
   .icon {
     color: ${({ theme }) => theme.accentColor}
+  }
+
+  .profile-element {
+    padding: 10px;
+    margin-bottom: 10px;
   }
 
   .full-width {
@@ -45,7 +56,6 @@ export const GlobalStyles = createGlobalStyle`
       width: 300px;
       overflow-y: auto;
     }
-
   }
 
   .scrollable {
@@ -80,6 +90,24 @@ export const GlobalStyles = createGlobalStyle`
     background-color: ${({ theme }) => theme.accentColor};
   }
 
+  .message-info {
+    font-size: 15px;
+    display: inline-block;
+  }
+
+  .message-tools {
+    display: inline-block;
+    font-size: 15px;
+    width: 100%;
+    text-align: right;
+
+    i {
+      display: inline;
+    }
+  }
+
+  .message-sender {}
+
   .user-message{
     background: linear-gradient(to right, ${({ theme }) => theme.mildAccentColor}, ${({ theme }) => theme.background});
   }
@@ -102,4 +130,63 @@ export const GlobalStyles = createGlobalStyle`
 
   }
 
+  .btn-primary {
+    background-color: ${({ theme }) => theme.buttonPrimary}
+  }
+
+  .btn-secondary {
+    background-color: ${({ theme }) => theme.buttonSecondary}
+  }
+
+  .btn-success {
+    background-color: ${({ theme }) => theme.accentColor};
+  }
+
+  .btn-light {
+    background-color: light-grey;
+    color: black;
+  }
+
+  .btn-send {
+    background-color: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.text};
+  }
+
+  .btn-send-disabled {
+    background-color: ${({ theme }) => theme.background};
+    color: ${({ theme }) => theme.body};
+  }
+
+  .btn {
+    color: #ffffff;
+  }
+
+  .btn-disabled {
+    background-color: light-grey;
+    color: white;
+    cursor: default;
+  }
+
+  .form-element {
+    margin-bottom: 10px;
+  }
+
+  .landingpage-input {
+    padding: 10px;
+    display: block; 
+  }
+
+  .text-input {
+    padding: 10px;
+    display: block; 
+  }
+
+  .message-edit-icon {
+    cursor: pointer;
+    width: 5%;
+    
+    @media (max-width: 767px) {
+      width: 15%;
+    }
+  }
 `

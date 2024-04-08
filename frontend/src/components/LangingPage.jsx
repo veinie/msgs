@@ -3,7 +3,8 @@ import {
   HorizontallyCentralizedContainer,
   VerticallyCentralizedContainer,
   DesktopHorizontalMobileVertical,
-  FormDiv
+  FormDiv,
+  Button
 } from '../styles/style'
 import LoginForm from './userauth/LoginForm'
 import SignupForm from './userauth/SignupForm'
@@ -22,22 +23,21 @@ const LandingPage = () => {
     <VerticallyCentralizedContainer>
       <HorizontallyCentralizedContainer>
         <DesktopHorizontalMobileVertical>
-          <div>
-            <p>Welcome to</p>
-            <h1>MSGS</h1>
-            <button onClick={() => {alert('alert')}}>alert</button>
-          </div>
-          <FormDiv>
-            <div style={hideWhenVisible}>
-              <LoginForm />
-              Do not have an account yet?
-              <button onClick={toggleVisibility}>Sign up</button>
+            <div style={{ width: '150px', textAlign: 'center' }}>
+              <p>Welcome to</p>
+              <h1>MSGS</h1>
             </div>
-            <div style={showWhenVisible}>
-              <SignupForm />
-              <button onClick={toggleVisibility}>Back to login</button>
-            </div>
-          </FormDiv>
+            <FormDiv>
+              <div style={hideWhenVisible} className='background-div landingpage-form'>
+                <LoginForm />
+                Do not have an account yet?
+                <Button className='btn-light' onClick={toggleVisibility} style={{ marginLeft: '5px' }}>Sign up</Button>
+              </div>
+              <div style={showWhenVisible} className='background-div landingpage-form'>
+                <SignupForm />
+                <Button className='btn-light' onClick={toggleVisibility}>Back to login</Button>
+              </div>
+            </FormDiv>
         </DesktopHorizontalMobileVertical>
       </HorizontallyCentralizedContainer>
     </VerticallyCentralizedContainer>

@@ -16,6 +16,7 @@
   background-color: white;
   padding: 20px;
   border-radius: 4px;
+  max-width: 80%;
 }
 
 .close-button {

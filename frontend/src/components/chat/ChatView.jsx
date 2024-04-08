@@ -16,6 +16,10 @@ const ChatView = ({ chat, isVisible }) => {
     chatId: chat.id
   }
 
+  const sortMessages = (data) => {
+    return [...data].sort((a, b) => a.createdAt - b.createdAt)
+  }
+
   useQuery(GET_CHAT_USERS, {
     fetchPolicy: 'cache-first',
     variables,
@@ -31,7 +35,8 @@ const ChatView = ({ chat, isVisible }) => {
     fetchPolicy: 'cache-first',
     variables,
     onCompleted: (data) => {
-      setMessages(data.getChatMessages)
+      const sortedMessages = sortMessages(data.getChatMessages)
+      setMessages(sortedMessages)
     }
   })
 
@@ -39,9 +44,8 @@ const ChatView = ({ chat, isVisible }) => {
     useSubscription(SUBSCRIBE_CHAT_MESSAGES, {
       variables,
       onSubscriptionData: ({ subscriptionData }) => {
-        // writeMessageToCache(subscriptionData)
         const newMessage = subscriptionData.data.newMessageToChat
-        setMessages(prevMessages => [...prevMessages, newMessage])
+        setMessages(prevMessages => sortMessages([...prevMessages, newMessage]))
         messageQuery.refetch()
       }
     })

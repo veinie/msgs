@@ -4,6 +4,7 @@ import { UserContext } from '../../contexts/UserContext';
 import useField from '../../hooks/useField'
 import userService from '../../services/user'
 import { useApolloClient } from '@apollo/client';
+import { Button } from '../../styles/style';
 
 const LoginForm = () => {
   const { setLogin } = useContext(UserContext);
@@ -35,15 +36,15 @@ const LoginForm = () => {
     <div>
       <h2>Log in</h2>
       <form id="login-form" onSubmit={handleLogin}>
-        <div>
+        <div className='form-element'>
           email
-          <input required { ...email }/>
+          <input required { ...email } placeholder='Your account email' className='full-width landingpage-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           password
-          <input required { ...password }/>
+          <input required { ...password } placeholder='********' className='full-width landingpage-input'/>
         </div>
-        <div>
+        <div className='form-element' onClick={() => setExtendedSessionLogin(!extendedSessionLogin)}>
           <input
             type="checkbox"
             checked={extendedSessionLogin}
@@ -51,9 +52,9 @@ const LoginForm = () => {
           />
           Keep me logged in for 30 days
         </div>
-        <button id="login-button" type="submit">
-          login
-        </button>
+        <Button className='btn btn-primary' id="login-button" type="submit">
+          Log in
+        </Button>
       </form>
     </div>
   )

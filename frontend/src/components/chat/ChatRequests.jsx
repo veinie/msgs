@@ -3,6 +3,7 @@ import { useMutation, useApolloClient } from '@apollo/client'
 import PropTypes from 'prop-types'
 import { ACCEPT_CHAT_REQUEST } from '../../gql/mutations'
 import { CHAT_REQUESTS } from '../../gql/queries'
+import { NavTogglerPlaceholder } from '../../styles/style'
 
 
 const ChatRequests = ({ isVisible }) => {
@@ -42,6 +43,7 @@ const ChatRequests = ({ isVisible }) => {
   if (!chatRequests) return <div style={{ padding: '1em' }}>No new requests...</div>
   return(
     <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
+      <NavTogglerPlaceholder />
       {chatRequests.map(request => (
         <div key={request.id}>
           { request.requester.username || 'someone' } invited you to chat!

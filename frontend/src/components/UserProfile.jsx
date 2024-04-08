@@ -7,6 +7,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import userService from '../services/user'
 import PasswordResetForm from './userauth/PasswordResetForm'
 import ChangeUsernameForm from './userauth/ChangeUsernameForm'
+import { Scrollable } from '../styles/style'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   const { user, setLogin, setLogout } = useContext(UserContext)
@@ -61,18 +62,16 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   console.log('Userprofile rendered')
 
   return (
-    <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
+    <Scrollable style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
       <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
       <Logout />
       <hr/>
-      <h3>Change username</h3>
-      <ChangeUsernameForm /><br/>
-      <h3>Change password</h3>
+      <ChangeUsernameForm />
       <PasswordResetForm />
-      <br/>
-      <h3>Toggle light or dark theme</h3>
       <ThemeToggler theme={theme} toggleTheme={ toggleTheme } />
-    </div>
+    </Scrollable>
+
+      
   )
 }
 

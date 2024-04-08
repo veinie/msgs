@@ -18,9 +18,13 @@ export const Page = styled.div`
 `
   // background: linear-gradient(145deg, ${theme.baseBgGrey}, ${theme.slightlyLighterGrey});
 export const NavBar = styled.div`
-@media (max-width: 767px) {
+  @media (max-width: 767px) {
+    overflow-y: auto;
+  }
+`
+
+export const Scrollable = styled.div`
   overflow-y: auto;
-}
 `
 
 export const ChatsList = styled.div`
@@ -124,6 +128,11 @@ export const MessageContainer = styled.div`
 export const NewMessageContainer = styled.div`
   width: 100%;
   height: 10%;
+  padding-left: 10px;
+
+  @media (max-width: 767px) {
+    padding: 0;
+  }
 `
 
 export const UserPreviewSelectable = styled.div`
@@ -132,6 +141,15 @@ export const UserPreviewSelectable = styled.div`
   margin-top: 1vh;
   border: 1px solid grey;
   cursor: pointer;
+`
+
+export const NavTogglerPlaceholder = styled.div`
+  widht: 100%;
+  height: 60px;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
 `
 
 export const NavToggler = styled.button`
@@ -159,33 +177,45 @@ export const NavToggler = styled.button`
 `
 
 export const InputDiv = styled.div`
-  padding: 5px;
+  padding: 10px;
   color: black;
   background-color: white;
   display: inline-block;
-  height: 10VH;
+  height: 80px;
   width: 80%;
   overflow-y: auto;
   border: 1px solid grey;
-  border-radius: 1px;
+  border-radius: 10px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 5px;
+  }
 `
 
-export const SendButton = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 19%;
-  height: 10VH;
-  margin-left: 10px;
-  margin-right: 20px;
-  border-radius: 5px;
-  border: 1px solid light-grey;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+export const Button = styled.button`
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid #cccccc;
+  box-shadow: rgba(0, 0, 0, 0.1) -4px 9px 25px -6px;
+`
+
+export const SendButton = styled(Button)`
+  width: 20%;
+  height: 80px;
+  margin: 0 5px 0 5px;
+  border: none;
+
+  @media (max-width: 767px) {
+    width: 100px;
+  }
 `
 
 export const DisabledSendButton = styled(SendButton)`
-  background-color: grey;
-  disabled;
+  cursor: not-allowed;
 `
 
 // #265bff

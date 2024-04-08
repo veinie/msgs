@@ -2,9 +2,11 @@ import { useContext } from "react"
 import { UserContext } from "../../contexts/UserContext"
 import useField from "../../hooks/useField"
 import userService from "../../services/user"
+import { Button } from '../../styles/style'
 
 const ChangeUsernameForm = () => {
   const { user, updateUserProfile, setLogout } = useContext(UserContext)
+
 
   const { reset: resetNewUsername, ...newUsername } = useField('text')
 
@@ -29,13 +31,14 @@ const ChangeUsernameForm = () => {
   }
 
   return (
-    <div>
+    <div className="background-div profile-element">
+      <h3>Change username</h3>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className='form-element'>
           New username
-          <input required {...newUsername} />
+          <input required {...newUsername} className='text-input'/>
         </div>
-        <button type='submit'>Submit new username</button>
+        <Button className={ newUsername.value === '' ? 'btn btn-disabled' : 'btn btn-secondary' } type='submit'>Submit new username</Button>
       </form>
     </div>
   )

@@ -1,7 +1,8 @@
-import { useContext } from "react"
+import { useState, useEffect, useContext } from "react"
 import { UserContext } from "../../contexts/UserContext"
 import useField from "../../hooks/useField"
 import userService from "../../services/user"
+import { Button } from "../../styles/style"
 
 const PasswordResetForm = () => {
   const { user, setLogout } = useContext(UserContext)
@@ -9,6 +10,22 @@ const PasswordResetForm = () => {
   const { reset: resetOldPassword, ...oldPassword } = useField('password')
   const { reset: resetNewPassword, ...newPassword } = useField('password')
   const { reset: resetNewPasswordAgain, ...newPasswordAgain } = useField('password')
+
+  const [readyToSubmit, setReadyToSubmit] = useState(false)
+
+  useEffect(() => {
+    if (
+      oldPassword.value.length > 0
+      &&
+      newPassword.value.length > 0
+      &&
+      newPasswordAgain.value.length > 0
+    ) {
+      setReadyToSubmit(true)
+    } else {
+      setReadyToSubmit(false)
+    }
+  }, [oldPassword.value, newPassword.value, newPasswordAgain.value])
 
   const verifyPassword = () => {
     if (newPassword.value !== newPasswordAgain.value) {
@@ -42,21 +59,22 @@ const PasswordResetForm = () => {
   }
 
   return (
-    <div>
+    <div className="background-div profile-element">
+      <h3>Change password</h3>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className='form-element'>
           Old password
-          <input required {...oldPassword } />
+          <input required {...oldPassword } className='text-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           New password
-          <input required {...newPassword} />
+          <input required {...newPassword} className='text-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           New password again
-          <input required {...newPasswordAgain}/>
+          <input required {...newPasswordAgain} className='text-input'/>
         </div>
-        <button type="submit">Change password</button>
+        <Button className={ !readyToSubmit ? 'btn btn-disabled' : 'btn btn-secondary' } type='submit'>Submit new password</Button>
       </form>
     </div>
   )

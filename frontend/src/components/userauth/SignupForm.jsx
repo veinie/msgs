@@ -3,6 +3,7 @@ import { useState } from 'react'
 import SuccesfulSignupModal from './SuccesfulSignupModal'
 import useField from '../../hooks/useField'
 import userService from '../../services/user'
+import { Button } from '../../styles/style'
 
 const SignupForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -56,25 +57,25 @@ const SignupForm = () => {
       <SuccesfulSignupModal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
       <h2>Sign up</h2>
       <form id="signup-form" onSubmit={handleSignup}>
-        <div>
+        <div className='form-element'>
           username
-          <input required { ...username }/>
+          <input required { ...username } placeholder='Your new username' className='full-width landingpage-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           password
-          <input required { ...password }/>
+          <input required { ...password } placeholder='*******' className='full-width landingpage-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           confirm password
-          <input required { ...passwordConfirm }/>
+          <input required { ...passwordConfirm } placeholder='*******' className='full-width landingpage-input'/>
         </div>
-        <div>
+        <div className='form-element'>
           email
-          <input required { ...email }/>
+          <input required { ...email } placeholder='sample@email.net' className='full-width landingpage-input'/>
         </div>
-        <button id="signup-button" type="submit">
+        <Button className='btn btn-success form-element' id="signup-button" type="submit">
           Sign up
-        </button>
+        </Button>
       </form>
     </div>
   )

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { MessageContainer } from '../../styles/style'
 import { epochToHumanReadable as formatTime } from '../../util/time'
 import { useContext } from 'react'
@@ -7,6 +7,8 @@ import { UserContext } from '../../contexts/UserContext'
 import { useMutation } from '@apollo/client'
 import { UPDATE_MESSAGE, DELETE_MESSAGE } from '../../gql/mutations'
 import Modal from '../Modal'
+import { MdMoreVert, MdEdit, MdDeleteForever } from "react-icons/md";
+import { InputDiv, Button } from '../../styles/style'
 
 const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
   const { user } = useContext(UserContext)
@@ -51,10 +53,22 @@ const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
 
   const EditMessageModal = () => {
     const [text, setText] = useState(message.content)
-    const handleChange = (event) => {
-      event.preventDefault()
-      setText(event.target.value)
-    }
+    const contentEditableRef = useRef(null);
+
+    useEffect(() => {
+      const contentEditableElement = contentEditableRef.current
+      if (contentEditableElement) {
+        contentEditableElement.innerHTML = text
+      }
+    }, [text])
+
+    useEffect(() => {
+      const contentEditableElement = contentEditableRef.current
+      if (contentEditableElement) {
+        contentEditableElement.focus()
+      }
+    }, [])
+
     const handleClick = () => {
       if (text.length > 0) {
         updateMessage({
@@ -65,15 +79,49 @@ const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
         })
       }
     }
+
     return (
       <Modal
         onClose={closeModal}
         isOpen={isModalOpen}
         message={'Edit Message:'}
       >
-        <textarea onChange={handleChange} value={text} />
-        <button onClick={handleClick}>Submit</button>
+        <InputDiv
+          contentEditable
+          autoFocus
+          ref={contentEditableRef}
+          onBlur={e => setText(e.currentTarget.textContent)}
+          id={`${message.id}-edit-input`}
+          dangerouslySetInnerHTML={{ __html: text }}
+        />
+        <br />
+        <Button className='btn btn-secondary' onClick={handleClick}>Submit</Button>
       </Modal>
+    )
+  }
+
+  const MessageActions = () => {
+    const [visible, setVisible] = useState(false)
+    const showWhenVisible = { display: visible ? '' : 'none' }
+    return (
+      <div className='message-tools'>
+        <MdEdit style={{ ...showWhenVisible }} className='message-edit-icon' onClick={handleEditClick}>Edit message</MdEdit>
+        <MdDeleteForever style={{ ...showWhenVisible }} className='message-edit-icon' onClick={handleDeleteClick}>Delete message</MdDeleteForever>
+        <MdMoreVert onClick={ () => setVisible(!visible) } className='message-edit-icon' />
+      </div>
+    )
+  }
+
+  const messageInfo = () => {
+    return(
+      <div>
+        <div className='message-info'>
+          { message.user.username === user.username ? 'You ' : `${message.user.username} ` }
+          at
+          <i> { createdAt }</i> { message.createdAt !== message.updatedAt && '(edited)' }:
+        </div>
+        { message.user.id === user.id ? <MessageActions /> : <p/> }
+      </div>
     )
   }
 
@@ -81,19 +129,10 @@ const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
   return (
     <MessageContainer className={ message.user.id === user.id ? 'user-message' : 'not-user-message' }>
       <EditMessageModal />
-      <div className='message-sender'>
-        { message.user.username } at <i>{ createdAt }</i> { message.createdAt !== message.updatedAt && '(edited)' }:
-        { message.user.id === user.id &&
-          <>
-            <button onClick={handleEditClick}>Edit message</button>
-            <button onClick={handleDeleteClick}>Delete message</button>
-          </>
-        }
-      </div>
+      { messageInfo() }
       <div className='message-content'>
         { message.content }
       </div>
-
     </MessageContainer>
   )
 }
