@@ -62,6 +62,26 @@ module.exports = {
           required: true,
         }],
       })
+      let users = []
+      if (chats) {
+        users = await User.findAll({
+          include: [{
+            model: Chat,
+            through: {
+              where: {
+                id: {
+                  [Op.in]: chats.map(c => c.id)
+                }
+              }
+            }
+          }]
+        })
+      }
+      if (users) {
+        chats.forEach(c => {
+          c.users = users.filter(u => u.chats.map(c => c.id).includes(c.id))
+        })
+      }
       return chats
     },
     getChatUsers: async(_, { chatId }, context) => {
