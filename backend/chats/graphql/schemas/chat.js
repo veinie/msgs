@@ -14,6 +14,11 @@ module.exports = `
     requester: User
     accepted: Boolean!
   }
+  type DeclineRequestResponse {
+    success: Boolean!
+    message: String!
+    requestId: Int!
+  }
   type Mutation {
     createChat(
       userId: Int!
@@ -21,6 +26,9 @@ module.exports = `
     acceptChatRequest(
       requestId: Int!
     ): Chat
+    declineChatRequest(
+      requestId: Int!
+    ): DeclineRequestResponse!
   }
   type Query {
     getUserChats: [Chat!]

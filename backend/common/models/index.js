@@ -11,6 +11,7 @@ Chat.belongsToMany(User, { through: Userchat, foreignKey: 'chat_id' })
 User.belongsToMany(Chat, { through: Userchat, foreignKey: 'user_id' })
 Userchat.belongsTo(User, { foreignKey: 'requester_id', as: 'requester' })
 Userchat.belongsTo(Chat, { foreignKey: 'chat_id' })
+Chat.hasMany(Userchat, { foreignKey: 'chat_id' })
 
 User.hasMany(Message)
 Chat.hasMany(Message)

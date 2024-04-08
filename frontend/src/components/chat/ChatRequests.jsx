@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useMutation, useApolloClient } from '@apollo/client'
 import PropTypes from 'prop-types'
-import { ACCEPT_CHAT_REQUEST } from '../../gql/mutations'
+import { ACCEPT_CHAT_REQUEST, DECLINE_CHAT_REQUEST } from '../../gql/mutations'
 import { CHAT_REQUESTS } from '../../gql/queries'
 import { NavTogglerPlaceholder } from '../../styles/style'
 
@@ -9,6 +9,14 @@ import { NavTogglerPlaceholder } from '../../styles/style'
 const ChatRequests = ({ isVisible }) => {
   const [ chatRequests, setChatRequests ] = useState([])
   const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST)
+  const [declineRequest] = useMutation(DECLINE_CHAT_REQUEST, {
+    onCompleted: (data) => {
+      console.log(data)
+    },
+    onError: (err) => {
+      console.log(err)
+    }
+  })
   const client = useApolloClient()
 
   useEffect(() => {
@@ -40,6 +48,15 @@ const ChatRequests = ({ isVisible }) => {
     }})
     // updateChatsAndRequests()
   }
+
+  const handleDeclineClick = (requestId) => {
+    declineRequest({
+      variables: {
+        requestId
+      }
+    })
+  }
+
   if (!chatRequests) return <div style={{ padding: '1em' }}>No new requests...</div>
   return(
     <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
@@ -49,6 +66,7 @@ const ChatRequests = ({ isVisible }) => {
           { request.requester.username || 'someone' } invited you to chat!
           <>
             <button style={{ marginLeft: '1em' }} onClick={() => handleClick(request.id)}>Accept!</button>
+            <button style={{ marginLeft: '1em' }} onClick={() => handleDeclineClick(request.id)}>Decline</button>
             <hr/>
           </>
         </div>
