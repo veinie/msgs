@@ -22,3 +22,5 @@
 |8.4. | 5 | Lisätty backendiin tuki viestien muokkamiselle ja poistamiselle, sekä näitä hyödyntävät toiminnot frontend-sovellukseen|
 |8.4. | 5 | Frontendin elementtien muokkausta.|
 |9.4.| 5 | Layoutin mobiiliystävällisen parannus.|
+|9.4.| 8 | Lisää frontin muokkausta. Siistitty teemaa ja päivitetty styled-komponentit vastaamaan lopullista toteutusta.|
+|9.4.| 2 | Päivitetty Chats-GraphQL-API palauttamaan keskusteluihin liittyvät käyttäjät getUserChats-kutsussa. Lisätty mahdollisuus keskustelupyyntöjen hylkäämiseen ja näihin liittyvien keskustelujen poistoon.|
