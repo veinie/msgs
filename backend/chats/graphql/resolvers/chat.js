@@ -63,14 +63,14 @@ module.exports = {
           pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
           return newChat
       }
-      throw new Error('something happened')
     },
     acceptChatRequest: async (_, { requestId }, context) => {
       const request = await Userchat.findByPk(requestId)
       if (request.user_id === context.req.decodedToken.id) {
         request.accepted = true
         await request.save()
-        return request
+        const chat = await Chat.findByPk(request.chat_id)
+        return chat
       }
     },
     declineChatRequest: async (_, { requestId }, context) => {
@@ -100,21 +100,21 @@ module.exports = {
           required: true,
         }],
       })
+      console.log(chats.length)
       let users = []
       if (chats) {
         users = await User.findAll({
           include: [{
             model: Chat,
-            through: {
-              where: {
-                id: {
-                  [Op.in]: chats.map(c => c.id)
-                }
+            where: {
+              id: {
+                [Op.in]: chats.map(c => c.id)
               }
             }
           }]
         })
       }
+      console.log(users)
       if (users) {
         chats.forEach(c => {
           c.users = users.filter(u => u.chats.map(c => c.id).includes(c.id))

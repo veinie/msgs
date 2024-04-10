@@ -14,9 +14,9 @@ import {
 } from '../styles/style';
 import ChatPreview from './chat/ChatPreview';
 import { MdMenu, MdNorth } from "react-icons/md";
-import { useQuery, useSubscription } from '@apollo/client'
-import { CHAT_REQUESTS } from '../gql/queries'
+import { useSubscription } from '@apollo/client'
 import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
+import { ChatsContext } from '../contexts/ChatsContext';
 
 const PlaceHolder = () => {
   return (
@@ -28,65 +28,37 @@ const PlaceHolder = () => {
   )
 }
 
-const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
+const Menubar = ({ visibleElement, setVisibleElement }) => {
   const isInitialRender = useRef(true)
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const { user, setLogout } = useContext(UserContext)
-  const [ chatRequests, setChatRequests ] = useState([])
-  const [ menuChats, setMenuChats ] = useState(
-    chats.map(c => ({ ...c, timestamp: c.createdAt ? c.createdAt : null }))
-  )
+  const { user } = useContext(UserContext)
+  const { chats, setChats, chatRequests, setChatRequests } = useContext(ChatsContext)
+  const [ menuChats, setMenuChats ] = useState(chats)
   const [viewPortSize, setViewPortSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const mobileWidthTrigger = 767
   const [onMobile, setOnMobile] = useState(viewPortSize.width <= mobileWidthTrigger)
   const debug = false
 
-  const chatRequestsQuery = useQuery(CHAT_REQUESTS, {
-    onCompleted: (data) => {
-      setChatRequests(data.getChatRequests)
-    },
-    onError: (error) => {
-      if (error.message === 'invalid token') {
-        setLogout()
-      }
-    },
-  })
-
   useSubscription(SUBSCRIBE_CHAT_REQUESTS, {
-    variables: {
-      userId: user.id
-    },
     onData: (subdata) => {
-      console.log('new requests acknowledged')
       const newRequest = subdata.data.newChatRequest
       setChatRequests(prevRequests => [...prevRequests, newRequest])
-      chatRequestsQuery.refetch()
     }
   })
 
-  const sortChats = (chats) => {
-    const sorted = chats.sort((A, B) => {
-      return B.timestamp - A.timestamp
-    })
-    return sorted
-  }
-
   useEffect(() => {
+    const sortChats = () => {
+      const sorted = [...chats].sort((A, B) => {
+        return B.latestMessageAt - A.latestMessageAt
+      })
+      return sorted
+    }
+
     if (chats) {
-      const withTimestamps = chats.map(c => ({ ...c, timestamp: c.createdAt }))
-      setMenuChats(withTimestamps)
+      setMenuChats(sortChats(chats))
     }
   }, [chats])
-
-  useEffect(() => {
-    const sorted = sortChats(menuChats)
-    setMenuChats(sorted)
-  }, [menuChats])
-
-  const updateChatTimestamp = (chatId, newTimestamp) => {
-    setMenuChats(sortChats(menuChats.map(c => c.id !== chatId ? c : { ...c, timestamp: newTimestamp })))
-  }
 
   useEffect(() => {
     if (viewPortSize.width <= mobileWidthTrigger) {
@@ -172,16 +144,31 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
     <>
       { debug && <ComponentLayoutDebugger /> }
       <NavToggler onClick={handleNavTogglerClick} className='full-width center-align'>
-        { isNavOpen ? <MdNorth style={{ padding: '5px' }} className='icon icon-background' /> : <MdMenu className='icon icon-background' /> }
+        { isNavOpen
+          ? <MdNorth style={{ padding: '5px' }} className='icon icon-background' />
+          : <MdMenu className='icon icon-background' /> }
       </NavToggler>
-      <VerticalFlexContainer style={{ display: isNavOpen ? 'flex' : 'none' }} className='menu-div background-div mobile-scrollable'>
+      <VerticalFlexContainer
+        style={{ display: isNavOpen ? 'flex' : 'none' }}
+        className='menu-div background-div mobile-scrollable'
+      >
         <NavTogglerPlaceholder />
           <h1>MSGS</h1>
           <NavBar>
             <i>Hello, { user.username } #{ user.id }</i>
-            <MenuBtn onClick={() => setVisibleElement(-1)} className={ visibleElement === -1 ? 'active-element' : '' }>Profile and Settings</MenuBtn>
+            <MenuBtn
+              onClick={() => setVisibleElement(-1)}
+              className={ visibleElement === -1 ? 'active-element' : '' }
+            >
+              Profile and Settings
+            </MenuBtn>
             <MenuBtn onClick={openModal}>Start a new chat</MenuBtn>
-            <MenuBtn onClick={() => setVisibleElement(-2)} style={{ display: chatRequests.length > 0 ? 'block' : 'none' }}>View {chatRequests.length} new chat requests</MenuBtn> 
+            <MenuBtn
+              onClick={() => setVisibleElement(-2)}
+              style={{ display: chatRequests.length > 0 ? 'block' : 'none' }}
+            >
+              View {chatRequests.length} new chat requests
+            </MenuBtn> 
             <hr/>
             <NewChatRequest
               onClose={closeModal}
@@ -189,11 +176,19 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
               message={'Type in username or user ID to start a new conversation:'}
               chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
               setVisibleElement={setVisibleElement}
+              setChats={setChats}
             />
           </NavBar>
           <ChatsList>
             { chats && <p>Chats:</p> }
-            { menuChats && menuChats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} updateChatTimestamp={ updateChatTimestamp } timestamp />) }
+            { menuChats && menuChats.map(chat =>
+              <ChatPreview
+                chat={ chat }
+                key={ chat.id }
+                setVisibleElement={ setVisibleElement }
+                visibleElement={visibleElement}
+              />
+            )}
           </ChatsList>
       </VerticalFlexContainer>
       { visibleElement === 0 && isNavOpen === false && <PlaceHolder /> }
@@ -203,9 +198,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
 
 Menubar.propTypes = {
   visibleElement: PropTypes.number,
-  chats: PropTypes.array.isRequired,
-  children: PropTypes.array,
-  setVisibleElement: PropTypes.func
+  setVisibleElement: PropTypes.func.isRequired,
 }
 
 export default Menubar

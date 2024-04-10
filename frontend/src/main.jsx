@@ -13,10 +13,9 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import App from './App.jsx'
 import { UserProvider } from './contexts/UserContext.jsx'
+import { ChatsProvider } from './contexts/ChatsContext.jsx'
 
 const CHATS_URL = import.meta.env.VITE_CHATS_URL
-
-console.log(CHATS_URL)
 
 const authLink = setContext(async (_, { headers }) => {
   const user = JSON.parse(localStorage.getItem('MsgsUser'))
@@ -62,7 +61,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <Router>
     <UserProvider>
       <ApolloProvider client={client}>
-        <App />
+        <ChatsProvider>
+          <App />
+        </ChatsProvider>
       </ApolloProvider>
     </UserProvider>
   </Router>

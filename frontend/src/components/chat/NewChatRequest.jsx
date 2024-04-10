@@ -8,7 +8,7 @@ import '../../styles/modalStyle.css'
 import { UserPreviewSelectable } from '../../styles/style'
 import { UserContext } from '../../contexts/UserContext'
 
-const NewChatRequest = ({ isOpen, onClose, message, chatUsers, setVisibleElement }) => {
+const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement, setChats }) => {
   const { user } = useContext(UserContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
   const { reset: resetSearchQuery, ...search } = useField('text')
@@ -17,6 +17,7 @@ const NewChatRequest = ({ isOpen, onClose, message, chatUsers, setVisibleElement
   const [ sendRequest ] = useMutation(NEW_CHAT, {
     onCompleted: (data) => {
       const chatId = data.createChat.id
+      setChats((existingChats) => [...existingChats, data.createChat])
       setVisibleElement(chatId)
     }
   })
@@ -68,14 +69,14 @@ const NewChatRequest = ({ isOpen, onClose, message, chatUsers, setVisibleElement
   if (!isOpen) {
     return null
   }
-  console.log(chatUsers)
+
   return(
     <div className='modal-overlay'>
 
       <div className="modal">
         <div className="modal-content">
           <p>{message}</p>
-          <input placeholder='Username or user ID' { ...search } />
+          <input autoFocus placeholder='Username or user ID' { ...search } />
           {data && data.findUser.filter(u => u.id !== user.id).map(user => (
             <UserPreviewSelectable key={ user.id } onClick={() => handleNewChatRequest(user.id)}>
               { user.username } #{ user.id }
@@ -92,8 +93,8 @@ NewChatRequest.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
-  chatUsers: PropTypes.array.isRequired,
-  setVisibleElement: PropTypes.func.isRequired
+  setVisibleElement: PropTypes.func.isRequired,
+  setChats: PropTypes.func.isRequired
 }
 
 export default NewChatRequest
