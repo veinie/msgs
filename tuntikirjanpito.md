@@ -24,3 +24,4 @@
 |9.4.| 5 | Layoutin mobiiliystävällisen parannus.|
 |9.4.| 8 | Lisää frontin muokkausta. Siistitty teemaa ja päivitetty styled-komponentit vastaamaan lopullista toteutusta.|
 |9.4.| 2 | Päivitetty Chats-GraphQL-API palauttamaan keskusteluihin liittyvät käyttäjät getUserChats-kutsussa. Lisätty mahdollisuus keskustelupyyntöjen hylkäämiseen ja näihin liittyvien keskustelujen poistoon.|
+|10.4.| 5 | Muutettu Chats-api siten, että mikäli uutta keskustelupyyntöä vastaava keskustelu löytyyy tietokannasta valmiiksi, palautetaan aiemman keskustelun tiedot. Päivitetty Frontend asettamaan uuden keskustelupyynnön mukainen keskustelu näkyväksi elementiksi keskustelupyynnön suorittamisen jälkeen.|
