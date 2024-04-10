@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import { useMutation } from "@apollo/client"
+import { useMutation } from '@apollo/client'
 import { useState } from 'react'
-import { NewMessageContainer, InputDiv, SendButton, VerticallyCentralizedContainer, DisabledSendButton } from "../../styles/style"
-import { ADD_MESSAGE } from "../../gql/mutations"
-import { MdSend } from "react-icons/md";
+import { NewMessageContainer, InputDiv, SendButton, VerticallyCentralizedContainer, DisabledSendButton } from '../../styles/style'
+import { ADD_MESSAGE } from '../../gql/mutations'
+import { MdSend } from 'react-icons/md'
 
 const NewMessageForm = ({ chatId }) => {
   const [content, setContent] = useState('')

@@ -1,8 +1,8 @@
-import { useState, useEffect, useContext } from "react"
-import { UserContext } from "../../contexts/UserContext"
-import useField from "../../hooks/useField"
-import userService from "../../services/user"
-import { Button } from "../../styles/style"
+import { useState, useEffect, useContext } from 'react'
+import { UserContext } from '../../contexts/UserContext'
+import useField from '../../hooks/useField'
+import userService from '../../services/user'
+import { Button } from '../../styles/style'
 
 const PasswordResetForm = () => {
   const { user, setLogout } = useContext(UserContext)

@@ -1,4 +1,4 @@
-import Menubar from './Menubar';
+import Menubar from './Menubar'
 
 const Home = () => {
 

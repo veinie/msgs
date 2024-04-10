@@ -3,7 +3,7 @@ import '../styles/modalStyle.css'
 
 const Modal = ({ isOpen, onClose, message, children }) => {
   if (!isOpen) {
-    return null;
+    return null
   }
 
   return (
@@ -16,8 +16,8 @@ const Modal = ({ isOpen, onClose, message, children }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Modal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -25,4 +25,4 @@ Modal.propTypes = {
   message: PropTypes.string.isRequired
 }
 
-export default Modal;
+export default Modal

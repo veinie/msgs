@@ -23,21 +23,21 @@ const LandingPage = () => {
     <VerticallyCentralizedContainer>
       <HorizontallyCentralizedContainer>
         <DesktopHorizontalMobileVertical>
-            <div style={{ width: '150px', textAlign: 'center' }}>
-              <p>Welcome to</p>
-              <h1>MSGS</h1>
-            </div>
-            <FormDiv>
-              <div style={hideWhenVisible} className='background-div landingpage-form'>
-                <LoginForm />
+          <div style={{ width: '150px', textAlign: 'center' }}>
+            <p>Welcome to</p>
+            <h1>MSGS</h1>
+          </div>
+          <FormDiv>
+            <div style={hideWhenVisible} className='background-div landingpage-form'>
+              <LoginForm />
                 Do not have an account yet?
-                <Button className='btn-light' onClick={toggleVisibility} style={{ marginLeft: '5px' }}>Sign up</Button>
-              </div>
-              <div style={showWhenVisible} className='background-div landingpage-form'>
-                <SignupForm />
-                <Button className='btn-light' onClick={toggleVisibility}>Back to login</Button>
-              </div>
-            </FormDiv>
+              <Button className='btn-light' onClick={toggleVisibility} style={{ marginLeft: '5px' }}>Sign up</Button>
+            </div>
+            <div style={showWhenVisible} className='background-div landingpage-form'>
+              <SignupForm />
+              <Button className='btn-light' onClick={toggleVisibility}>Back to login</Button>
+            </div>
+          </FormDiv>
         </DesktopHorizontalMobileVertical>
       </HorizontallyCentralizedContainer>
     </VerticallyCentralizedContainer>

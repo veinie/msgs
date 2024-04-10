@@ -3,7 +3,7 @@ import '../../styles/modalStyle.css'
 
 const SuccesfulSignupModal = ({ isOpen, onClose, message }) => {
   if (!isOpen) {
-    return null;
+    return null
   }
 
   return (
@@ -15,8 +15,8 @@ const SuccesfulSignupModal = ({ isOpen, onClose, message }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 SuccesfulSignupModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
@@ -24,4 +24,4 @@ SuccesfulSignupModal.propTypes = {
   message: PropTypes.string.isRequired
 }
 
-export default SuccesfulSignupModal;
+export default SuccesfulSignupModal

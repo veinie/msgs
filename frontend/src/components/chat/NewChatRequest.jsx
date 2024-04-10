@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect, useContext } from 'react'
-import { useLazyQuery, useMutation } from "@apollo/client"
-import { FIND_USER } from "../../gql/queries"
+import { useLazyQuery, useMutation } from '@apollo/client'
+import { FIND_USER } from '../../gql/queries'
 import { NEW_CHAT } from '../../gql/mutations'
-import useField from "../../hooks/useField"
+import useField from '../../hooks/useField'
 import '../../styles/modalStyle.css'
 import { UserPreviewSelectable } from '../../styles/style'
 import { UserContext } from '../../contexts/UserContext'
@@ -14,7 +14,7 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
   const { chats, refetchChats } = useContext(ChatsContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
   const { reset: resetSearchQuery, ...search } = useField('text')
-  const [shouldExecuteQuery, setShouldExecuteQuery] = useState(false);
+  const [shouldExecuteQuery, setShouldExecuteQuery] = useState(false)
   const [ executeQuery, { data,  refetch }] = useLazyQuery(FIND_USER)
   const [ sendRequest ] = useMutation(NEW_CHAT, {
     onCompleted: (data) => {

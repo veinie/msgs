@@ -7,7 +7,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { useMutation } from '@apollo/client'
 import { UPDATE_MESSAGE, DELETE_MESSAGE } from '../../gql/mutations'
 import Modal from '../Modal'
-import { MdMoreVert, MdEdit, MdDeleteForever } from "react-icons/md";
+import { MdMoreVert, MdEdit, MdDeleteForever } from 'react-icons/md'
 import { InputDiv, Button } from '../../styles/style'
 
 const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
@@ -53,7 +53,7 @@ const Message = ({ message, deleteMessageFromList, updateMessageOnList }) => {
 
   const EditMessageModal = () => {
     const [text, setText] = useState(message.content)
-    const contentEditableRef = useRef(null);
+    const contentEditableRef = useRef(null)
 
     useEffect(() => {
       const contentEditableElement = contentEditableRef.current

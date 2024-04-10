@@ -21,8 +21,8 @@ const authLink = setContext(async (_, { headers }) => {
   const user = JSON.parse(localStorage.getItem('MsgsUser'))
   return {
     headers: {
-        ...headers,
-        authorization: user ? `Bearer ${user.token}` : null
+      ...headers,
+      authorization: user ? `Bearer ${user.token}` : null
     }
   }
 })

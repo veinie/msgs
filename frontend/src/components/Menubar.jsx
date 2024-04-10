@@ -1,7 +1,7 @@
-import { useState, useContext, useEffect, useRef } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react'
 import { PropTypes } from 'prop-types'
-import { UserContext } from '../contexts/UserContext';
-import NewChatRequest from './chat/NewChatRequest';
+import { UserContext } from '../contexts/UserContext'
+import NewChatRequest from './chat/NewChatRequest'
 import {
   NavBar,
   MenuBtn,
@@ -11,10 +11,10 @@ import {
   VerticallyCentralizedContainer,
   HorizontallyCentralizedContainer,
   NavTogglerPlaceholder,
-} from '../styles/style';
-import ChatPreview from './chat/ChatPreview';
-import { MdMenu, MdNorth } from "react-icons/md";
-import { ChatsContext } from '../contexts/ChatsContext';
+} from '../styles/style'
+import ChatPreview from './chat/ChatPreview'
+import { MdMenu, MdNorth } from 'react-icons/md'
+import { ChatsContext } from '../contexts/ChatsContext'
 
 const PlaceHolder = () => {
   return (
@@ -127,7 +127,7 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
         isNavOpen: {isNavOpen ? 'true' : 'false'}<br/>
         VisibleElement: {visibleElement}<br/>
         Storage-current-page: { localStorage.getItem('current-page') }
-    </div>
+      </div>
     )
   }
 
@@ -144,43 +144,43 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
         className='menu-div background-div mobile-scrollable'
       >
         <NavTogglerPlaceholder />
-          <h1>MSGS</h1>
-          <NavBar>
-            <i>Hello, { user.username } #{ user.id }</i>
-            <MenuBtn
-              onClick={() => setVisibleElement(-1)}
-              className={ visibleElement === -1 ? 'active-element' : '' }
-            >
+        <h1>MSGS</h1>
+        <NavBar>
+          <i>Hello, { user.username } #{ user.id }</i>
+          <MenuBtn
+            onClick={() => setVisibleElement(-1)}
+            className={ visibleElement === -1 ? 'active-element' : '' }
+          >
               Profile and Settings
-            </MenuBtn>
-            <MenuBtn onClick={openModal}>Start a new chat</MenuBtn>
-            <MenuBtn
-              onClick={() => setVisibleElement(-2)}
-              style={{ display: chatRequests.length > 0 ? 'block' : 'none' }}
-            >
+          </MenuBtn>
+          <MenuBtn onClick={openModal}>Start a new chat</MenuBtn>
+          <MenuBtn
+            onClick={() => setVisibleElement(-2)}
+            style={{ display: chatRequests.length > 0 ? 'block' : 'none' }}
+          >
               View {chatRequests.length} new chat requests
-            </MenuBtn> 
-            <hr/>
-            <NewChatRequest
-              onClose={closeModal}
-              isOpen={isModalOpen}
-              message={'Type in username or user ID to start a new conversation:'}
-              // chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
-              setVisibleElement={setVisibleElement}
-              setChats={setChats}
+          </MenuBtn> 
+          <hr/>
+          <NewChatRequest
+            onClose={closeModal}
+            isOpen={isModalOpen}
+            message={'Type in username or user ID to start a new conversation:'}
+            // chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
+            setVisibleElement={setVisibleElement}
+            setChats={setChats}
+          />
+        </NavBar>
+        <ChatsList>
+          { chats && <p>Chats:</p> }
+          { menuChats && menuChats.map(chat =>
+            <ChatPreview
+              chat={ chat }
+              key={ chat.id }
+              setVisibleElement={ setVisibleElement }
+              visibleElement={visibleElement}
             />
-          </NavBar>
-          <ChatsList>
-            { chats && <p>Chats:</p> }
-            { menuChats && menuChats.map(chat =>
-              <ChatPreview
-                chat={ chat }
-                key={ chat.id }
-                setVisibleElement={ setVisibleElement }
-                visibleElement={visibleElement}
-              />
-            )}
-          </ChatsList>
+          )}
+        </ChatsList>
       </VerticalFlexContainer>
       { visibleElement === 0 && isNavOpen === false && <PlaceHolder /> }
     </>

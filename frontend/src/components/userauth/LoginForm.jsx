@@ -1,13 +1,13 @@
 // import PropTypes from 'prop-types'
-import { useState, useContext } from 'react';
-import { UserContext } from '../../contexts/UserContext';
+import { useState, useContext } from 'react'
+import { UserContext } from '../../contexts/UserContext'
 import useField from '../../hooks/useField'
 import userService from '../../services/user'
-import { useApolloClient } from '@apollo/client';
-import { Button } from '../../styles/style';
+import { useApolloClient } from '@apollo/client'
+import { Button } from '../../styles/style'
 
 const LoginForm = () => {
-  const { setLogin } = useContext(UserContext);
+  const { setLogin } = useContext(UserContext)
   const [extendedSessionLogin, setExtendedSessionLogin] = useState(false)
   const { reset: resetEmail, ...email } = useField('text')
   const { reset: resetPassword, ...password } = useField('password')
