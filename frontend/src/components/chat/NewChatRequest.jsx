@@ -8,13 +8,18 @@ import '../../styles/modalStyle.css'
 import { UserPreviewSelectable } from '../../styles/style'
 import { UserContext } from '../../contexts/UserContext'
 
-const NewChatRequest = ({ isOpen, onClose, message }) => {
+const NewChatRequest = ({ isOpen, onClose, message, chatUsers, setVisibleElement }) => {
   const { user } = useContext(UserContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
   const { reset: resetSearchQuery, ...search } = useField('text')
   const [shouldExecuteQuery, setShouldExecuteQuery] = useState(false);
   const [ executeQuery, { data,  refetch }] = useLazyQuery(FIND_USER)
-  const [ sendRequest ] = useMutation(NEW_CHAT)
+  const [ sendRequest ] = useMutation(NEW_CHAT, {
+    onCompleted: (data) => {
+      const chatId = data.createChat.id
+      setVisibleElement(chatId)
+    }
+  })
 
   useEffect(() => {
     if (search.value && (search.value.length >= 3 || (!isNaN(search.value) && !isNaN(parseFloat(search.value)) && search.value.length > 0))) {
@@ -63,7 +68,7 @@ const NewChatRequest = ({ isOpen, onClose, message }) => {
   if (!isOpen) {
     return null
   }
-
+  console.log(chatUsers)
   return(
     <div className='modal-overlay'>
 
@@ -86,7 +91,9 @@ const NewChatRequest = ({ isOpen, onClose, message }) => {
 NewChatRequest.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired
+  message: PropTypes.string.isRequired,
+  chatUsers: PropTypes.array.isRequired,
+  setVisibleElement: PropTypes.func.isRequired
 }
 
 export default NewChatRequest

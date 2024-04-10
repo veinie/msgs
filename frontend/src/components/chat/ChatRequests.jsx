@@ -5,21 +5,36 @@ import { ACCEPT_CHAT_REQUEST, DECLINE_CHAT_REQUEST } from '../../gql/mutations'
 import { CHAT_REQUESTS } from '../../gql/queries'
 import { NavTogglerPlaceholder } from '../../styles/style'
 import { Button } from '../../styles/style'
+// import { CHAT_REQUESTS } from '../gql/queries'
 
 
-const ChatRequests = ({ isVisible }) => {
+const ChatRequests = ({ isVisible, setVisibleElement, refetchChats }) => {
   const [ chatRequests, setChatRequests ] = useState([])
-  const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST)
-  const [declineRequest] = useMutation(DECLINE_CHAT_REQUEST, {
+  const client = useApolloClient()
+  const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST, {
     onCompleted: (data) => {
-      console.log(data)
-      setChatRequests(chatRequests.filter(r => r.id !== data.declineChatRequest.requestId))
+      refetchChats()
+      setChatRequests(chatRequests.filter(r => r.id !== data.acceptChatRequest.id))
+      client.query({
+        query: CHAT_REQUESTS
+      })
     },
     onError: (err) => {
       console.log(err)
     }
   })
-  const client = useApolloClient()
+  const [declineRequest] = useMutation(DECLINE_CHAT_REQUEST, {
+    onCompleted: (data) => {
+      console.log(data)
+      setChatRequests(chatRequests.filter(r => r.id !== data.declineChatRequest.requestId))
+      client.query({
+        query: CHAT_REQUESTS
+      })
+    },
+    onError: (err) => {
+      console.log(err)
+    }
+  })
 
   useEffect(() => {
     const cachedRequests = client.readQuery({
@@ -60,7 +75,7 @@ const ChatRequests = ({ isVisible }) => {
     }
   }
 
-  if (!chatRequests) return <div style={{ padding: '1em' }}>No new requests...</div>
+  if (!chatRequests || chatRequests.length === 0) return <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }}>No new requests...</div>
   return(
     <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
       <NavTogglerPlaceholder />
@@ -80,6 +95,8 @@ const ChatRequests = ({ isVisible }) => {
 
 ChatRequests.propTypes = {
   isVisible: PropTypes.bool.isRequired,
+  refetchChats: PropTypes.func.isRequired,
+  setVisibleElement: PropTypes.func.isRequired,
 }
 
 export default ChatRequests

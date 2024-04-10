@@ -39,7 +39,7 @@ function App() {
     }
   }
 
-  useQuery( USER_CHATS, {
+  const chatsQuery = useQuery( USER_CHATS, {
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
       setChats(data.getUserChats)
@@ -79,7 +79,7 @@ function App() {
         <DesktopHorizontalMobileVertical>
             <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } chats={ chats } style={{ height: '100VH' }} />
             <UserProfile isVisible={ visibleElement === -1 } visibleElement={ visibleElement } theme={theme} toggleTheme={ themeToggler } />
-            <ChatRequests isVisible={ visibleElement === -2 } visibleElement={ visibleElement } />
+            <ChatRequests isVisible={ visibleElement === -2 } visibleElement={ visibleElement } refetchChats={() => chatsQuery.refetch() } setVisibleElement={setVisibleElement}/>
             { chats && chats.map(chat => <ChatView chat={ chat } key={ chat.id } id={ chat.id } isVisible={ visibleElement === chat.id } />) }
         </DesktopHorizontalMobileVertical>
       </>

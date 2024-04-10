@@ -50,7 +50,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
       if (error.message === 'invalid token') {
         setLogout()
       }
-    }
+    },
   })
 
   useSubscription(SUBSCRIBE_CHAT_REQUESTS, {
@@ -187,6 +187,8 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
               onClose={closeModal}
               isOpen={isModalOpen}
               message={'Type in username or user ID to start a new conversation:'}
+              chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
+              setVisibleElement={setVisibleElement}
             />
           </NavBar>
           <ChatsList>

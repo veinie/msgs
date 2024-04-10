@@ -1,7 +1,8 @@
 const { request } = require('express')
 const { PubSub, withFilter } = require('graphql-subscriptions')
-const { literal, Op } = require('sequelize')
+const { literal, Op, QueryTypes} = require('sequelize')
 const { Chat, Userchat, User, Message } = require('../../../common/models')
+const { sequelize } = require('../../../common/util/db')
 const pubsub = new PubSub()
 
 module.exports = {
@@ -13,31 +14,56 @@ module.exports = {
       if (!requestedUser) {
         throw new Error('Requested user not found')
       }
-      const newChat = await Chat.create()
-      // console.log(newChat.dataValues.id)
-      await requestingUser.addChat(newChat)
-      await requestedUser.addChat(newChat)
-      const requesterJoinEntry = await Userchat.findOne({
-        where: {
-          user_id: requestingUser.id,
-          chat_id: newChat.id
-        }
-      })
-      requesterJoinEntry.accepted = true
-      console.log(requesterJoinEntry)
-      await requesterJoinEntry.save()
-      console.log(requesterJoinEntry)
-      const requestedJoinEntry = await Userchat.findOne({
-        where: {
-          user_id: requestedUser.id,
-          chat_id: newChat.id
-        }
-      })
-      requestedJoinEntry.requester_id = requestingUser.id
-      await requestedJoinEntry.save()
-      console.log(requestedJoinEntry)
-      pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
-      return newChat
+      let existingChatsIds = []
+      let existingChats = []
+      try {
+        existingChatsIds = await sequelize.query(
+          'SELECT chat_id FROM userchats WHERE user_id IN (:userIds) GROUP BY chat_id HAVING COUNT (DISTINCT user_id) = 2', {
+            type: QueryTypes.SELECT,
+            replacements: { userIds: [requestingUser.id, requestedUser.id] }
+          }
+        )
+      } catch (err) {
+        console.log(err)
+      }
+      if (existingChatsIds.length > 0) {
+        existingChats = await Chat.findAll({
+          where: {
+            id: {
+              [Op.in]: existingChatsIds.map(i => i.chat_id)
+            }
+          }
+        })
+      }
+      if (existingChats.length > 0) {
+        return existingChats.at(-1)
+      } else {
+          const newChat = await Chat.create()
+          await requestingUser.addChat(newChat)
+          await requestedUser.addChat(newChat)
+          const requesterJoinEntry = await Userchat.findOne({
+            where: {
+              user_id: requestingUser.id,
+              chat_id: newChat.id
+            }
+          })
+          requesterJoinEntry.accepted = true
+          console.log(requesterJoinEntry)
+          await requesterJoinEntry.save()
+          console.log(requesterJoinEntry)
+          const requestedJoinEntry = await Userchat.findOne({
+            where: {
+              user_id: requestedUser.id,
+              chat_id: newChat.id
+            }
+          })
+          requestedJoinEntry.requester_id = requestingUser.id
+          await requestedJoinEntry.save()
+          console.log(requestedJoinEntry)
+          pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
+          return newChat
+      }
+      throw new Error('something happened')
     },
     acceptChatRequest: async (_, { requestId }, context) => {
       const request = await Userchat.findByPk(requestId)
