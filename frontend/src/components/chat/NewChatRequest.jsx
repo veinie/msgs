@@ -7,9 +7,11 @@ import useField from "../../hooks/useField"
 import '../../styles/modalStyle.css'
 import { UserPreviewSelectable } from '../../styles/style'
 import { UserContext } from '../../contexts/UserContext'
+import { ChatsContext } from '../../contexts/ChatsContext'
 
-const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement, setChats }) => {
+const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
   const { user } = useContext(UserContext)
+  const { chats, refetchChats } = useContext(ChatsContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
   const { reset: resetSearchQuery, ...search } = useField('text')
   const [shouldExecuteQuery, setShouldExecuteQuery] = useState(false);
@@ -17,8 +19,11 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement, setChats 
   const [ sendRequest ] = useMutation(NEW_CHAT, {
     onCompleted: (data) => {
       const chatId = data.createChat.id
-      setChats((existingChats) => [...existingChats, data.createChat])
       setVisibleElement(chatId)
+      if (chats.map(c => c.id).includes(chatId)) {
+        return
+      }
+      refetchChats()
     }
   })
 
@@ -94,7 +99,6 @@ NewChatRequest.propTypes = {
   onClose: PropTypes.func.isRequired,
   message: PropTypes.string.isRequired,
   setVisibleElement: PropTypes.func.isRequired,
-  setChats: PropTypes.func.isRequired
 }
 
 export default NewChatRequest

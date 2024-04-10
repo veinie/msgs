@@ -138,6 +138,12 @@ export const GlobalStyles = createGlobalStyle`
 
   }
 
+  .main-window {
+    @media (min-width: 767px) {
+      width: 80VW;
+    }
+  }
+
   .btn-primary {
     background-color: ${({ theme }) => theme.buttonPrimary}
   }

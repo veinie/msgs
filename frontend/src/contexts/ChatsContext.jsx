@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useEffect } from 'react'
 import { useQuery } from '@apollo/client'
 import { USER_CHATS, CHAT_REQUESTS } from '../gql/queries'
 
@@ -25,13 +25,16 @@ const ChatsProvider = ({ children }) => {
     console.log('refetching')
     try {
       await chatsQuery.refetch()
-      if (chatsQuery.data) {
-        setChats(chatsQuery.data.getUserChats)
-      }
     } catch (error) {
       handleQueryError(error)
     }
   }
+
+  useEffect(() => {
+    if (chatsQuery.data) {
+      setChats(chatsQuery.data.getUserChats.map(c => ({ ...c, latestMessageAt: c.createdAt })))
+    }
+  }, [chatsQuery.data])
 
   useQuery(CHAT_REQUESTS, {
     onCompleted: (data) => {
@@ -39,6 +42,10 @@ const ChatsProvider = ({ children }) => {
     },
     onError: (error) => handleQueryError(error),
   })
+
+  const removeChatRequest = (reqId) => {
+    setChatRequests([...chatRequests].filter(req => req.id !== reqId))
+  }
 
   return(
     <ChatsContext.Provider
@@ -48,6 +55,7 @@ const ChatsProvider = ({ children }) => {
         refetchChats,
         chatRequests,
         setChatRequests,
+        removeChatRequest
       }}
     >
       {children}

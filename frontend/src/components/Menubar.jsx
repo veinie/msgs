@@ -14,8 +14,6 @@ import {
 } from '../styles/style';
 import ChatPreview from './chat/ChatPreview';
 import { MdMenu, MdNorth } from "react-icons/md";
-import { useSubscription } from '@apollo/client'
-import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
 import { ChatsContext } from '../contexts/ChatsContext';
 
 const PlaceHolder = () => {
@@ -33,19 +31,12 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
   const [isNavOpen, setIsNavOpen] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const { user } = useContext(UserContext)
-  const { chats, setChats, chatRequests, setChatRequests } = useContext(ChatsContext)
+  const { chats, setChats, chatRequests } = useContext(ChatsContext)
   const [ menuChats, setMenuChats ] = useState(chats)
   const [viewPortSize, setViewPortSize] = useState({ width: window.innerWidth, height: window.innerHeight })
   const mobileWidthTrigger = 767
   const [onMobile, setOnMobile] = useState(viewPortSize.width <= mobileWidthTrigger)
   const debug = false
-
-  useSubscription(SUBSCRIBE_CHAT_REQUESTS, {
-    onData: (subdata) => {
-      const newRequest = subdata.data.newChatRequest
-      setChatRequests(prevRequests => [...prevRequests, newRequest])
-    }
-  })
 
   useEffect(() => {
     const sortChats = () => {
@@ -174,7 +165,7 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
               onClose={closeModal}
               isOpen={isModalOpen}
               message={'Type in username or user ID to start a new conversation:'}
-              chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
+              // chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
               setVisibleElement={setVisibleElement}
               setChats={setChats}
             />

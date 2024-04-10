@@ -55,7 +55,7 @@ function App() {
             <Menubar visibleElement={ visibleElement } setVisibleElement={ setVisibleElement } style={{ height: '100VH' }} />
             <UserProfile isVisible={ visibleElement === -1 } visibleElement={ visibleElement } theme={theme} toggleTheme={ themeToggler } />
             <ChatRequests isVisible={ visibleElement === -2 } visibleElement={ visibleElement } setVisibleElement={setVisibleElement}/>
-            { chats && chats.map(chat => <ChatView chat={ chat } key={ chat.id } id={ chat.id } isVisible={ visibleElement === chat.id } />) }
+            { chats && chats.map(chat => <ChatView chat={ chat } key={ chat.id } id={ chat.id } visibleElement={ visibleElement } />) }
         </DesktopHorizontalMobileVertical>
       </>
     )

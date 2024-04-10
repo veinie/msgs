@@ -10,7 +10,7 @@ import { SUBSCRIBE_CHAT_REQUESTS } from '../../gql/subscriptions'
 
 const ChatRequests = ({ isVisible, setVisibleElement }) => {
   const { user } = useContext(UserContext)
-  const { chatRequests, setChatRequests, refetchChats } = useContext(ChatsContext)
+  const { chatRequests, setChatRequests, refetchChats, removeChatRequest } = useContext(ChatsContext)
 
   const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST, {
     onCompleted: (data) => {
@@ -37,8 +37,9 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
     variables: {
       userId: user.id
     },
-    onData: (data) => {
-      console.log(data)
+    onData: ({ data }) => {
+      const newRequest = data.data.newChatRequest
+      setChatRequests([...chatRequests, newRequest])
     },
     onError: (error) => {
       console.log(error)
@@ -46,9 +47,14 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
   })
 
   const handleAcceptClick = (requestId) => {
-    acceptRequest({ variables: {
-      requestId
-    }})
+    removeChatRequest(requestId)
+    acceptRequest({
+      variables: {
+        requestId
+      }
+    })
+    console.log('removing request ', requestId)
+
   }
 
   const handleDeclineClick = (requestId, requester) => {
@@ -58,22 +64,23 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
           requestId
         }
       })
+      removeChatRequest(requestId)
     }
   }
 
   if (!chatRequests || chatRequests.length === 0 || chatRequests[0] === undefined) return <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }}>No new requests...</div>
 
   return(
-    <div style={{ display: isVisible ? 'block' : 'none', padding: '1em', boxSizing: 'border-box' }} className='full-width'>
+    <div style={{ display: isVisible ? 'block' : 'none', padding: '1em', boxSizing: 'border-box' }} className='full-width main-window'>
       <NavTogglerPlaceholder />
       {chatRequests && chatRequests.map(request => (
         <div key={request.id}>
           { request.requester ? request.requester.username : 'Someone' } invited you to chat!
-          <>
+          <div style={{ margin: '10px 0 10px 0' }}>
             <Button className='btn btn-primary' style={{ marginLeft: '1em' }} onClick={() => handleAcceptClick(request.id)}>Accept!</Button>
             <Button className='btn-light' style={{ marginLeft: '1em' }} onClick={() => handleDeclineClick(request.id, request.requester.username)}>Decline</Button>
             <hr/>
-          </>
+          </div>
         </div>
       ))}
     </div>

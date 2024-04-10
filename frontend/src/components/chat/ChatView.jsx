@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import { useState, useEffect, useRef, useLayoutEffect, useContext } from 'react'
-import { useSubscription, useQuery } from '@apollo/client'
+import { useSubscription, useQuery, useApolloClient } from '@apollo/client'
 import { SUBSCRIBE_CHAT_MESSAGES } from '../../gql/subscriptions'
 import { GET_CHAT_MESSAGES } from '../../gql/queries'
 import { ChatViewContainer, MessageListContainer } from '../../styles/style'
@@ -8,10 +8,11 @@ import Message from './Message'
 import NewMessageForm from './NewMessageForm'
 import { ChatsContext } from '../../contexts/ChatsContext'
 
-const ChatView = ({ chat, isVisible }) => {
-  const [ messages, setMessages ] = useState([])
+const ChatView = ({ chat, visibleElement }) => {
   const { chats, setChats } = useContext(ChatsContext)
+  const [messages, setMessages] = useState([])
   const lastMessageRef = useRef(null)
+  const client = useApolloClient()
 
   const variables = {
     chatId: chat.id
@@ -38,13 +39,14 @@ const ChatView = ({ chat, isVisible }) => {
         )
       }
     }
-  })
+  }, [])
 
   useSubscription(SUBSCRIBE_CHAT_MESSAGES, {
     variables,
     onData: ({ data }) => {
       const newMessage = data.data.newMessageToChat
-      setMessages(sortMessages([...messages, newMessage]))
+      const sortedMessages = sortMessages([...messages, newMessage])
+      setMessages(sortedMessages)
       setChats(
         chats.map(
           c => c.id !== chat.id
@@ -52,6 +54,13 @@ const ChatView = ({ chat, isVisible }) => {
             : { ...c, latestMessageAt: newMessage.createdAt }
         )
       )
+      client.writeQuery({
+        query: GET_CHAT_MESSAGES,
+        variables,
+        data: {
+          getChatMessages: [...messages, newMessage]
+        }
+      })
     },
     onError: (error) => {
       console.log(error)
@@ -85,7 +94,7 @@ const ChatView = ({ chat, isVisible }) => {
   if (!chat) return <div>Loading data...</div>
 
   const displayMessages = () => {
-    if (messages.length === 0) return <p>Nothing yet...</p>
+    if (messages && messages !== undefined && messages[0] !== undefined && messages.length === 0) return <p>Nothing yet...</p>
     return (
       messages.map(message => (
         <Message
@@ -99,7 +108,7 @@ const ChatView = ({ chat, isVisible }) => {
   }
 
   return (
-    <ChatViewContainer style={{ display: isVisible ? 'block' : 'none' }}>
+    <ChatViewContainer style={{ display: visibleElement === chat.id ? 'block' : 'none' }}>
       <p>{ chat.users && chat.users.map(u => u.username).join(', ') }</p>
       <MessageListContainer id={ `${chat.id}_message-list` }>
         { displayMessages() }
@@ -111,8 +120,8 @@ const ChatView = ({ chat, isVisible }) => {
 }
 
 ChatView.propTypes = {
-  chat: PropTypes.object,
-  isVisible: PropTypes.bool.isRequired
+  chat: PropTypes.object.isRequired,
+  visibleElement: PropTypes.number.isRequired
 }
 
 export default ChatView
