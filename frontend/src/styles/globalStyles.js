@@ -25,6 +25,14 @@ export const GlobalStyles = createGlobalStyle`
     width: 350px;
   }
 
+  .profile-div {
+    box-sizing: border-box;
+    @media (min-width: 767px) {
+      width: 80VW;
+      overflow-y: auto;
+    }
+  }
+
   .menu-btn {
 
   }
@@ -53,7 +61,7 @@ export const GlobalStyles = createGlobalStyle`
     width: 100VW;
     
     @media (min-width: 767px) {
-      width: 300px;
+      width: 20VW;
       overflow-y: auto;
     }
   }

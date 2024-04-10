@@ -62,13 +62,15 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   console.log('Userprofile rendered')
 
   return (
-    <Scrollable style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='full-width'>
-      <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
-      <Logout />
-      <hr/>
-      <ChangeUsernameForm />
-      <PasswordResetForm />
-      <ThemeToggler theme={theme} toggleTheme={ toggleTheme } />
+    <Scrollable style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='profile-div'>
+      <div className='full-width'>
+        <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
+        <Logout />
+        <hr/>
+        <ChangeUsernameForm />
+        <PasswordResetForm />
+        <ThemeToggler theme={theme} toggleTheme={ toggleTheme } />
+      </div>
     </Scrollable>
 
       

@@ -48,17 +48,12 @@ module.exports = {
       }
     },
     declineChatRequest: async (_, { requestId }, context) => {
-      const request =  await Userchat.findByPk(requestId)
+      const request = await Userchat.findByPk(requestId)
       if (!context.req.decodedToken.id || request.user_id !== context.req.decodedToken.id) {
         throw new Error('Unauthorized')
       }
       try {
-        const deleteChat = await Chat.destroy({
-          where: {
-            id: request.chat_id
-          },
-          include: [Userchat, Message]
-        })
+        await request.destroy()
         return { success: true, message: 'Declined request', requestId }
       } catch (error) {
         console.log(error)

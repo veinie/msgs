@@ -14,9 +14,8 @@ export const Page = styled.div`
   left: 0;
   width: 100VW;
   height: 100VH;
-
 `
-  // background: linear-gradient(145deg, ${theme.baseBgGrey}, ${theme.slightlyLighterGrey});
+
 export const NavBar = styled.div`
   @media (max-width: 767px) {
     overflow-y: auto;
@@ -30,9 +29,18 @@ export const Scrollable = styled.div`
 export const ChatsList = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   @media (min-width: 767px) {
   overflow-y: auto;
+  }
+`
+
+export const MenuContainer = styled.div`
+  box-sizing: border-box;
+
+  @media (min-width: 767px) {
+    width: 20%;
   }
 `
 
@@ -84,9 +92,11 @@ export const FormDiv = styled.div`
 
 export const ChatPreviewLink = styled(Link)`
   display: inline-block;
+  box-sizing: border-box;
   padding: 2vh;
   text-decoration: none;
   cursor: pointer;
+  width: 100%;
 
   i {
     color: grey;
@@ -101,6 +111,9 @@ export const ChatViewContainer = styled.div`
 
   @media (max-width: 767px) {
     padding: 1em;
+  }
+  @media (min-width: 767px) {
+    width: 80VW;
   }
 `
 

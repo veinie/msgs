@@ -10,14 +10,13 @@ import {
   ChatsList,
   VerticallyCentralizedContainer,
   HorizontallyCentralizedContainer,
-  NavTogglerPlaceholder
+  NavTogglerPlaceholder,
 } from '../styles/style';
 import ChatPreview from './chat/ChatPreview';
 import { MdMenu, MdNorth } from "react-icons/md";
 import { useQuery, useSubscription } from '@apollo/client'
 import { CHAT_REQUESTS } from '../gql/queries'
 import { SUBSCRIBE_CHAT_REQUESTS } from '../gql/subscriptions';
-// import { epochToHumanReadable as formatTime } from '../util/time'
 
 const PlaceHolder = () => {
   return (
@@ -191,8 +190,7 @@ const Menubar = ({ visibleElement, setVisibleElement, chats }) => {
             />
           </NavBar>
           <ChatsList>
-            {/* { children } */}
-            { chats && <p>Chats</p> }
+            { chats && <p>Chats:</p> }
             { menuChats && menuChats.map(chat => <ChatPreview chat={ chat } key={ chat.id } setVisibleElement={ setVisibleElement } visibleElement={visibleElement} updateChatTimestamp={ updateChatTimestamp } timestamp />) }
           </ChatsList>
       </VerticalFlexContainer>

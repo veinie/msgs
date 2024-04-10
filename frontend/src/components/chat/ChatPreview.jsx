@@ -17,12 +17,6 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement, updateChatTimest
     chatId: chat.id
   }
 
-  // const messages = client.readQuery({
-  //   GET_CHAT_MESSAGES,
-  //   variables
-  // })
-  // console.log(messages)
-
   useEffect(() => {
     const participantSubscription = client.watchQuery({
         query: GET_CHAT_USERS,
@@ -67,11 +61,8 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement, updateChatTimest
   }, [latestMessage, chat.id, updateChatTimestamp])
 
   return (
-    // <ChatPreviewLink to={ `/chats/${chat.id}` }>
     <ChatPreviewLink onClick={() => setVisibleElement(chat.id) } className={ visibleElement === chat.id ? 'active-element' : '' } >
-      { chat.id }<br></br>
       { participants } <br />
-      {/* <i>{ latestMessage ? formatTime(latestMessage.createdAt) : formatTime(chat.createdAt) }</i> */}
       <i>{ latestMessage && formatTime(latestMessage.createdAt) }</i>
     </ChatPreviewLink>
   )

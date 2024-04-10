@@ -43,6 +43,7 @@ function App() {
     fetchPolicy: 'network-only',
     onCompleted: (data) => {
       setChats(data.getUserChats)
+      console.log(data.getUserChats)
     },
     onError: (error) => handleQueryError(error)
   })
