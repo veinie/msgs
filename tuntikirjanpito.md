@@ -26,3 +26,4 @@
 |9.4.| 2 | Päivitetty Chats-GraphQL-API palauttamaan keskusteluihin liittyvät käyttäjät getUserChats-kutsussa. Lisätty mahdollisuus keskustelupyyntöjen hylkäämiseen ja näihin liittyvien keskustelujen poistoon.|
 |10.4.| 5 | Muutettu Chats-api siten, että mikäli uutta keskustelupyyntöä vastaava keskustelu löytyyy tietokannasta valmiiksi, palautetaan aiemman keskustelun tiedot. Päivitetty Frontend asettamaan uuden keskustelupyynnön mukainen keskustelu näkyväksi elementiksi keskustelupyynnön suorittamisen jälkeen.|
 |10.4.| 10 | Siiretty frontend-sovelluksessa tieto keskusteluista React-kontekstiin.|
+|10.4.| 1 | Korjattu aiemmin syntynyt bugi uusien keskustelupyyntöjen tilauksen toiminnassa ja näihin liittyvän kontekstin määrittelyssä.|
