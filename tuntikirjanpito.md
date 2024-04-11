@@ -29,3 +29,4 @@
 |10.4.| 1 | Korjattu aiemmin syntynyt bugi uusien keskustelupyyntöjen tilauksen toiminnassa ja näihin liittyvän kontekstin määrittelyssä.|
 |10.4.| 1 | Käyttöönotettu eslint ja tyylien pakottaminen frontissa.|
 |11.4.| 2 | Lisätty eslint ja tyylien pakottaminen backend-rakenteisiin.|
+|11.4.| 3 | Parannettu virheenkäsittelyä GraphQL-API:ssa koskien virheellisellä tai puuttuvalla tokenilla lähetettyjä kutsuja, sekä näistä aiheutuvien virheiden käsittelyä frontend-sovelluksessa siten, että käyttäjä kirjataan sovelluksesta automaattisesti ulos silloin, kun kutsuja lähetetään puutteellisella varmenteella.|

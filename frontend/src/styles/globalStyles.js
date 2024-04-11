@@ -190,6 +190,11 @@ export const GlobalStyles = createGlobalStyle`
     display: block; 
   }
 
+  input {
+    padding: 10px;
+    display: block; 
+  }
+
   .text-input {
     padding: 10px;
     display: block; 
