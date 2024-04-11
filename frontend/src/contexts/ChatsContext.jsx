@@ -1,16 +1,25 @@
-import { useState, createContext, useEffect } from 'react'
+import { useState, useEffect, useContext, createContext } from 'react'
 import { useQuery } from '@apollo/client'
+import { UserContext } from './UserContext'
 import { USER_CHATS, CHAT_REQUESTS } from '../gql/queries'
 
 const ChatsContext = createContext({ chats: [], requests: [] })
 
 // eslint-disable-next-line react/prop-types
 const ChatsProvider = ({ children }) => {
+  const { user, setLogout } = useContext(UserContext)
   const [chats, setChats] = useState([])
   const [chatRequests, setChatRequests] = useState([])
 
   const handleQueryError = (error) => {
     console.log(error)
+    if (
+      error.graphQLErrors
+      &&
+      error.graphQLErrors.map(e => e.message).includes('Unauthorized')
+    ) {
+      setLogout()
+    }
   }
 
   const chatsQuery = useQuery(USER_CHATS, {
@@ -19,6 +28,7 @@ const ChatsProvider = ({ children }) => {
       setChats(data.getUserChats.map(c => ({ ...c, latestMessageAt: c.createdAt })))
     },
     onError: (error) => handleQueryError(error),
+    skip: !user
   })
 
   const refetchChats = async () => {
@@ -41,6 +51,7 @@ const ChatsProvider = ({ children }) => {
       setChatRequests(data.getChatRequests)
     },
     onError: (error) => handleQueryError(error),
+    skip: !user
   })
 
   const removeChatRequest = (reqId) => {

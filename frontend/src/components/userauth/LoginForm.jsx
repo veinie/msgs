@@ -28,7 +28,10 @@ const LoginForm = () => {
         include: 'active',
       })
     } catch (error) {
-      alert(error)
+      console.log(error)
+      if (error.response.data.error) {
+        alert(error.response.data.error)
+      }
     }
   }
 

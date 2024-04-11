@@ -36,7 +36,8 @@ const runServer = async (PORT) => {
           }
         }
       }
-    ]
+    ],
+    includeStacktraceInErrorResponses: false,
   })
   await connectToDatabase()
   await server.start()

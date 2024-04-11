@@ -2,12 +2,13 @@ const { PubSub, withFilter } = require('graphql-subscriptions')
 const pubsub = new PubSub()
 
 const { Chat, Userchat, User, Message } = require('../../../common/models')
+const { authError } = require('./errors') 
 
 
 module.exports = {
   Mutation: {
     createMessage: async (_, { chatId, content }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       console.log(context.req)
       const chat = Chat.findOne({
         include: {
@@ -32,7 +33,7 @@ module.exports = {
       return message
     },
     updateMessage: async (_, { id, content }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const message = await Message.findByPk(id, {
         include: [{
           model: User
@@ -47,7 +48,7 @@ module.exports = {
       }
     },
     deleteMessage: async (_, { id }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const message = await Message.findByPk(id)
       if (message && message.userId === context.req.decodedToken.id) {
         await message.destroy()
@@ -58,7 +59,7 @@ module.exports = {
   },
   Query: {
     getChatMessages: async (_, { chatId }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const chat = await Chat.findByPk(chatId, {
         include: [{
           model: User,
@@ -68,7 +69,7 @@ module.exports = {
           required: true
         }]
       })
-      if (!chat) throw new Error('Unauthorized')
+      if (!chat) return authError
       const messages = await Message.findAll({
         where: { chatId },
         include: [{

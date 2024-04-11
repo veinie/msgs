@@ -3,11 +3,12 @@ const { Op, QueryTypes } = require('sequelize')
 const { Chat, Userchat, User, Message } = require('../../../common/models')
 const { sequelize } = require('../../../common/util/db')
 const pubsub = new PubSub()
+const { authError } = require('./errors')
 
 module.exports = {
   Mutation: {
     createChat: async (_, { userId }, context) => {
-      if (!context.req.decodedToken) throw new Error('You must be logged in')
+      if (!context.req.decodedToken) return authError
       const requestingUser = await User.findByPk(context.req.decodedToken.id)
       const requestedUser = await User.findByPk(userId)
       if (!requestedUser) {
@@ -61,6 +62,7 @@ module.exports = {
       }
     },
     acceptChatRequest: async (_, { requestId }, context) => {
+      if (!context.req.decodedToken) return authError
       const request = await Userchat.findByPk(requestId)
       if (request.user_id === context.req.decodedToken.id) {
         request.accepted = true
@@ -70,6 +72,7 @@ module.exports = {
       }
     },
     declineChatRequest: async (_, { requestId }, context) => {
+      if (!context.req.decodedToken) return authError
       const request = await Userchat.findByPk(requestId)
       if (!context.req.decodedToken.id || request.user_id !== context.req.decodedToken.id) {
         throw new Error('Unauthorized')
@@ -85,7 +88,7 @@ module.exports = {
   },
   Query: {
     getUserChats: async (_, _args, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const chats = await Chat.findAll({
         include: [{
           model: User,
@@ -117,7 +120,7 @@ module.exports = {
       return chats
     },
     getChatUsers: async(_, { chatId }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const users = await User.findAll({
         include: [{
           model: Chat,
@@ -132,7 +135,7 @@ module.exports = {
       return users
     },
     getChatMessages: async(_, { chatId }, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const isUserchat = await Userchat.findOne({
         where: {
           chat_id: chatId,
@@ -151,7 +154,7 @@ module.exports = {
       return messages
     },
     getChatRequests: async (_, _args, context) => {
-      if (!context.req.decodedToken) return new Error('invalid token')
+      if (!context.req.decodedToken) return authError
       const requests = await Userchat.findAll({
         where: {
           user_id: context.req.decodedToken.id,
