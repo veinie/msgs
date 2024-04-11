@@ -7,11 +7,13 @@
     "dev": "nodemon index.js",
     "start": "node index.js",
     "migration:down": "node ../common/util/rollback.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint -c ../common/.eslintrc.js . --ext .js,.jsx --report-unused-disable-directives --max-warnings 0"
   },
   "author": "VNI",
   "license": "GPL-3.0",
   "devDependencies": {
+    "eslint": "^8.45.0",
     "nodemon": "^3.1.0"
   },
   "dependencies": {

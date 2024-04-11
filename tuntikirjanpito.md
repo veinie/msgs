@@ -28,3 +28,4 @@
 |10.4.| 10 | Siiretty frontend-sovelluksessa tieto keskusteluista React-kontekstiin.|
 |10.4.| 1 | Korjattu aiemmin syntynyt bugi uusien keskustelupyyntöjen tilauksen toiminnassa ja näihin liittyvän kontekstin määrittelyssä.|
 |10.4.| 1 | Käyttöönotettu eslint ja tyylien pakottaminen frontissa.|
+|11.4.| 2 | Lisätty eslint ja tyylien pakottaminen backend-rakenteisiin.|

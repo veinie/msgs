@@ -1,7 +1,7 @@
 import { PropTypes } from 'prop-types'
 import { Button } from '../styles/style'
 
-const ThemeToggler = ({theme,  toggleTheme }) => {
+const ThemeToggler = ({ theme,  toggleTheme }) => {
   return (
     <div className='background-div profile-element' style={{ padding: '10px' }}>
       <h3>Toggle light or dark theme</h3>

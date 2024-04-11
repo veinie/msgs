@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const Sequelize = require('sequelize')
 const { DATABASE_URL } = require('./config')
 const { Umzug, SequelizeStorage } = require('umzug')

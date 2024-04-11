@@ -7,29 +7,31 @@ const { Chat, Userchat, User, Message } = require('../../../common/models')
 module.exports = {
   Mutation: {
     createMessage: async (_, { chatId, content }, context) => {
+      if (!context.req.decodedToken) return new Error('invalid token')
+      console.log(context.req)
       const chat = Chat.findOne({
         include: {
           model: User,
           through: {
             model: Userchat,
             where: {
-              userId: context.req.decodedToken.id,
-              chatId
+              user_id: context.req.decodedToken.id,
+              chat_id: chatId
             }
           },
           required: true,
         }
       })
-      if (!chat ) throw new Error('Message mutation failed')
+      if (!chat ) return new Error('Message mutation failed')
       const message = await Message.create({
         chatId,
         userId: context.req.decodedToken.id,
         content,
       })
-      pubsub.publish('newMessageToChat', { chatId: message.chatId, newMessage: message });
+      pubsub.publish('newMessageToChat', { chatId: message.chatId, newMessage: message })
       return message
     },
-    updateMessage: async (_, { chatId, id, content }, context) => {
+    updateMessage: async (_, { id, content }, context) => {
       if (!context.req.decodedToken) return new Error('invalid token')
       const message = await Message.findByPk(id, {
         include: [{
@@ -56,6 +58,17 @@ module.exports = {
   },
   Query: {
     getChatMessages: async (_, { chatId }, context) => {
+      if (!context.req.decodedToken) return new Error('invalid token')
+      const chat = await Chat.findByPk(chatId, {
+        include: [{
+          model: User,
+          where: {
+            id: context.req.decodedToken.id
+          },
+          required: true
+        }]
+      })
+      if (!chat) throw new Error('Unauthorized')
       const messages = await Message.findAll({
         where: { chatId },
         include: [{

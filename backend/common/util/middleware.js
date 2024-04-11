@@ -6,19 +6,32 @@ const { User, Session } = require('../models')
 
 const requestLogger = (req, _res, next) => {
   let logstring = `${req.method} ${req.path}`
-  if (req.body) {
-    if (req.body.password) {
-      logstring += ` ${ JSON.stringify({ ...req.body, password: '****' }) }`
-    } else {
-      logstring += ` ${ JSON.stringify(req.body) }`
-    }
+
+  function hasPassword(key) {
+    const regex = /password/i
+    return regex.test(key)
   }
+
+  if (req.body) {
+    const logBody = {}
+
+    Object.entries(req.body).forEach(([key, value]) => {
+      const logValue = hasPassword(key)
+        ? '*****'
+        : value
+      logBody[key] = logValue
+    })
+
+    logstring += ` ${ JSON.stringify(logBody) }`
+  }
+
   logger.info(logstring)
   next()
 }
 
-const unknownEndpoint = (_req, _res, next) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+const unknownEndpoint = (_req, res, next) => {
+  res.status(404).send({ error: 'unknown endpoint' })
+  next()
 }
 
 const errorHandler = (error, _req, res, next) => {
@@ -29,11 +42,14 @@ const errorHandler = (error, _req, res, next) => {
 
 const tokenExtractor = async (req, res, next) => {
   const authorization = req.get('authorization')
+  let token
+  let decodedToken
+
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
       const encodedToken = authorization.substring(7)
-      req.token = encodedToken
-      req.decodedToken = jwt.verify(encodedToken, SECRET)
+      token = encodedToken
+      decodedToken = jwt.verify(encodedToken, SECRET)
 
       const session = await Session.findOne({
         where: {
@@ -41,7 +57,7 @@ const tokenExtractor = async (req, res, next) => {
         }
       })
 
-      if (!session) throw new Error('Transaction attempt with an invalid token')
+      if (!session) return new Error('Transaction attempt with an invalid token')
 
       const user = await User.findByPk(session.userId)
 
@@ -51,10 +67,14 @@ const tokenExtractor = async (req, res, next) => {
             userId: user.id
           }
         })
-        throw new Error('Transaction attempt by an inactive user')
+        return new Error('Transaction attempt by an inactive user')
       }
 
-      req.sessionId = session.id
+      if (decodedToken && session && user.active) {
+        req.token = token
+        req.decodedToken = decodedToken
+        req.sessionId = session.id
+      }
       
     } catch (error){
       if (error.name === jwt.TokenExpiredError) {
@@ -64,10 +84,11 @@ const tokenExtractor = async (req, res, next) => {
           }
         })
       }
+
       if (res) {
         return res.status(401).json({ error: 'token invalid' })
       } else {
-        throw new Error('token invalid')
+        return new Error('token invalid')
       }
 
     }

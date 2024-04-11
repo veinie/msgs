@@ -15,12 +15,12 @@ User.init({
     unique: false,
     allowNull: false,
     validate: {
-        customValidator(value) {
-            const re = /^.{2,32}$/
-            if (!re.exec(value)) {
-                throw new Error("Username must be between 2 and 32 characters of length.")
-            }
+      customValidator(value) {
+        const re = /^.{2,32}$/
+        if (!re.exec(value)) {
+          throw new Error('Username must be between 2 and 32 characters of length.')
         }
+      }
     }
   },
   email: {
@@ -31,7 +31,7 @@ User.init({
       customValidator(value) {
         const re = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
         if (!re.exec(value)) {
-          throw new Error("Email must be a valid email address.")
+          throw new Error('Email must be a valid email address.')
         }
       }
     }
@@ -40,7 +40,7 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-        is: /[$]2[abxy]?[$](?:0[4-9]|[12][0-9]|3[01])[$][./0-9a-zA-Z]{53}/
+      is: /[$]2[abxy]?[$](?:0[4-9]|[12][0-9]|3[01])[$][./0-9a-zA-Z]{53}/
     }
   }, 
   active: {
@@ -57,7 +57,7 @@ User.init({
     attributes: { exclude: ['passwordHash', 'email'] }
   },
   scopes: {
-    unlimited: { attributes: {}}
+    unlimited: { attributes: {} }
   },
   sequelize,
   underscored: true,

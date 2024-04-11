@@ -1,6 +1,5 @@
-const { request } = require('express')
 const { PubSub, withFilter } = require('graphql-subscriptions')
-const { literal, Op, QueryTypes} = require('sequelize')
+const { Op, QueryTypes } = require('sequelize')
 const { Chat, Userchat, User, Message } = require('../../../common/models')
 const { sequelize } = require('../../../common/util/db')
 const pubsub = new PubSub()
@@ -38,30 +37,27 @@ module.exports = {
       if (existingChats.length > 0) {
         return existingChats.at(-1)
       } else {
-          const newChat = await Chat.create()
-          await requestingUser.addChat(newChat)
-          await requestedUser.addChat(newChat)
-          const requesterJoinEntry = await Userchat.findOne({
-            where: {
-              user_id: requestingUser.id,
-              chat_id: newChat.id
-            }
-          })
-          requesterJoinEntry.accepted = true
-          console.log(requesterJoinEntry)
-          await requesterJoinEntry.save()
-          console.log(requesterJoinEntry)
-          const requestedJoinEntry = await Userchat.findOne({
-            where: {
-              user_id: requestedUser.id,
-              chat_id: newChat.id
-            }
-          })
-          requestedJoinEntry.requester_id = requestingUser.id
-          await requestedJoinEntry.save()
-          console.log(requestedJoinEntry)
-          pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
-          return newChat
+        const newChat = await Chat.create()
+        await requestingUser.addChat(newChat)
+        await requestedUser.addChat(newChat)
+        const requesterJoinEntry = await Userchat.findOne({
+          where: {
+            user_id: requestingUser.id,
+            chat_id: newChat.id
+          }
+        })
+        requesterJoinEntry.accepted = true
+        await requesterJoinEntry.save()
+        const requestedJoinEntry = await Userchat.findOne({
+          where: {
+            user_id: requestedUser.id,
+            chat_id: newChat.id
+          }
+        })
+        requestedJoinEntry.requester_id = requestingUser.id
+        await requestedJoinEntry.save()
+        pubsub.publish('newChatRequest', { userId: requestedUser.id, requestId: requestedJoinEntry.id })
+        return newChat
       }
     },
     acceptChatRequest: async (_, { requestId }, context) => {
@@ -100,7 +96,6 @@ module.exports = {
           required: true,
         }],
       })
-      console.log(chats.length)
       let users = []
       if (chats) {
         users = await User.findAll({
@@ -114,7 +109,6 @@ module.exports = {
           }]
         })
       }
-      console.log(users)
       if (users) {
         chats.forEach(c => {
           c.users = users.filter(u => u.chats.map(c => c.id).includes(c.id))
@@ -123,9 +117,13 @@ module.exports = {
       return chats
     },
     getChatUsers: async(_, { chatId }, context) => {
+      if (!context.req.decodedToken) return new Error('invalid token')
       const users = await User.findAll({
         include: [{
           model: Chat,
+          where: {
+            id: chatId
+          },
           through: {
             where: { accepted: true }
           }

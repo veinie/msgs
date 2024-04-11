@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 require('dotenv').config()
 
 module.exports = {
@@ -5,8 +6,8 @@ module.exports = {
   DATABASE_URL: process.env.DATABASE_URL,
   PORT: process.env.PORT || 3001,
   GQL_PORT: process.env.GQL_PORT,
-  SECRET: process.env.SECRET || "",
+  SECRET: process.env.SECRET || '',
   SALT_ROUNDS: parseInt(process.env.SALT_ROUNDS) || 10,
-  EMAIL_USER: process.env.EMAIL_USER || "",
-  EMAIL_PASS: process.env.EMAIL_PASS || "",
+  EMAIL_USER: process.env.EMAIL_USER || '',
+  EMAIL_PASS: process.env.EMAIL_PASS || '',
 }

@@ -39,7 +39,7 @@ const refreshToken = async (token) => {
   return response.data
 }
 
-const changePassword = async ({token, oldPassword, newPassword}) => {
+const changePassword = async ({ token, oldPassword, newPassword }) => {
   const config = makeConfig(token)
   const payload = {
     oldPassword,

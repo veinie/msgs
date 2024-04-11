@@ -1,5 +1,3 @@
-const { gql } = require('@apollo/server')
-
 const userType = require('./user')
 const chatType = require('./chat')
 const messageType = require('./message')
@@ -12,6 +10,6 @@ const rootType = `
      root: String
  }
 
-`;
+`
 
-module.exports = [rootType, userType, chatType, messageType];
+module.exports = [rootType, userType, chatType, messageType]

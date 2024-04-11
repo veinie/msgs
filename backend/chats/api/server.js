@@ -1,17 +1,16 @@
-const express = require('express');
-const { createServer } = require('http');
+const express = require('express')
 const { ApolloServer } = require('@apollo/server')
 const { WebSocketServer } = require('ws')
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer')
 const { makeExecutableSchema } = require('@graphql-tools/schema')
 const { useServer } = require('graphql-ws/lib/use/ws')
 const { expressMiddleware } = require('@apollo/server/express4')
-const http = require('http');
-const cors = require('cors');
+const http = require('http')
+const cors = require('cors')
 const { connectToDatabase } = require('../../common/util/db')
-const typeDefs = require('../graphql/schemas');
-const resolvers = require('../graphql/resolvers');
-const context = require('../graphql/context');
+const typeDefs = require('../graphql/schemas')
+const resolvers = require('../graphql/resolvers')
+const context = require('../graphql/context')
 const { errorHandler, requestLogger } = require('../../common/util/middleware')
 
 
@@ -45,11 +44,11 @@ const runServer = async (PORT) => {
     '/api',
     cors(),
     express.json(),
+    requestLogger,
     expressMiddleware(server, {
       context,
-      errorHandler,
-      requestLogger,
-    })
+    }),
+    errorHandler
   )
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}`))
