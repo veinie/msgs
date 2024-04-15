@@ -12,7 +12,6 @@ const Logout = () => {
     event.preventDefault()
     console.log('logout initiated')
     const response = await userService.logout(user.token)
-    console.log(response)
     if (response.error) {
       alert('Session expired')
     }
