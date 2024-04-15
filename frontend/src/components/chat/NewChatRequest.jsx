@@ -41,7 +41,10 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
   }
 
   useEffect(() => {
-    if (search.value && (search.value.length >= 3 || (!isNaN(search.value) && !isNaN(parseFloat(search.value)) && search.value.length > 0))) {
+    if (
+      search.value &&
+      (search.value.length >= 3 || (!isNaN(search.value) && !isNaN(parseFloat(search.value)) && search.value.length > 0))
+    ) {
       setShouldExecuteQuery(true)
     } else {
       setShouldExecuteQuery(false)

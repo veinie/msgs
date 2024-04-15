@@ -49,11 +49,21 @@ const LoginForm = () => {
         <form id="login-form" onSubmit={handleLogin}>
           <div className='form-element'>
             email
-            <input required { ...email } placeholder='Your account email' className='full-width landingpage-input'/>
+            <input
+              required
+              { ...email }
+              placeholder='Your account email'
+              className='full-width landingpage-input'
+            />
           </div>
           <div className='form-element'>
             password
-            <input required { ...password } placeholder='********' className='full-width landingpage-input'/>
+            <input
+              required
+              { ...password }
+              placeholder='********'
+              className='full-width landingpage-input'
+            />
           </div>
           <div className='form-element' onClick={() => setExtendedSessionLogin(!extendedSessionLogin)}>
             <input

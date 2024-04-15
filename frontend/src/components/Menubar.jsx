@@ -8,23 +8,13 @@ import {
   NavToggler,
   VerticalFlexContainer,
   ChatsList,
-  VerticallyCentralizedContainer,
-  HorizontallyCentralizedContainer,
   NavTogglerPlaceholder,
 } from '../styles/style'
 import ChatPreview from './chat/ChatPreview'
 import { MdMenu, MdNorth } from 'react-icons/md'
 import { ChatsContext } from '../contexts/ChatsContext'
+import Placeholder from './Placeholder'
 
-const PlaceHolder = () => {
-  return (
-    <VerticallyCentralizedContainer>
-      <HorizontallyCentralizedContainer>
-        <p>¯\_( ͡° ͜ʖ ͡°)_/¯</p>
-      </HorizontallyCentralizedContainer>
-    </VerticallyCentralizedContainer>
-  )
-}
 
 const Menubar = ({ visibleElement, setVisibleElement }) => {
   const isInitialRender = useRef(true)
@@ -165,7 +155,6 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
             onClose={closeModal}
             isOpen={isModalOpen}
             message={'Type in username or user ID to start a new conversation:'}
-            // chatUsers={Array.from(new Set(chats.map(c => c.users).flat(Infinity)))}
             setVisibleElement={setVisibleElement}
             setChats={setChats}
           />
@@ -182,7 +171,7 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
           )}
         </ChatsList>
       </VerticalFlexContainer>
-      { visibleElement === 0 && isNavOpen === false && <PlaceHolder /> }
+      { visibleElement === 0 && <Placeholder /> }
     </>
   )
 }

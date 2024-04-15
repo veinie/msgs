@@ -33,10 +33,6 @@ export const GlobalStyles = createGlobalStyle`
     }
   }
 
-  .menu-btn {
-
-  }
-
   .icon {
     color: ${({ theme }) => theme.accentColor}
   }
@@ -132,10 +128,6 @@ export const GlobalStyles = createGlobalStyle`
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
-  }
-
-  .icon {
-
   }
 
   .main-window {

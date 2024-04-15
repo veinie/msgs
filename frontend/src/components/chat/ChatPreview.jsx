@@ -9,8 +9,7 @@ const ChatPreview = ({ chat, visibleElement, setVisibleElement }) => {
 
   return (
     <ChatPreviewLink onClick={() => setVisibleElement(chat.id) } className={ visibleElement === chat.id ? 'active-element' : '' } >
-      {chat.id}<br/>
-      { chat.users && chat.users.filter(u => u.id !== user.id).map(u => u.username) } <br />
+      { chat.users && <div>{chat.users.filter(u => u.id !== user.id).map(u => u.username)}</div> }
       <i>{ formatTime(chat.latestMessageAt) }</i>
     </ChatPreviewLink>
   )

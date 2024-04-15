@@ -64,17 +64,38 @@ const PasswordResetForm = () => {
       <form onSubmit={handleSubmit}>
         <div className='form-element'>
           Old password
-          <input required {...oldPassword } className='text-input'/>
+          <input
+            required
+            {...oldPassword }
+            className='text-input'
+          />
         </div>
         <div className='form-element'>
           New password
-          <input required {...newPassword} className='text-input'/>
+          <input
+            required
+            {...newPassword}
+            className='text-input'
+          />
         </div>
         <div className='form-element'>
           New password again
-          <input required {...newPasswordAgain} className='text-input'/>
+          <input
+            required
+            {...newPasswordAgain}
+            className='text-input'
+          />
         </div>
-        <Button className={ !readyToSubmit ? 'btn btn-disabled' : 'btn btn-secondary' } type='submit'>Submit new password</Button>
+        <Button
+          className={
+            !readyToSubmit
+              ? 'btn btn-disabled'
+              : 'btn btn-secondary'
+          } 
+          type='submit'
+        >
+          Submit new password
+        </Button>
       </form>
     </div>
   )

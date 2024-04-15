@@ -40,11 +40,19 @@ export const RecoverPasswordRequest = () => {
   return (
     <div className='form-element'>
       <h2>Password recovery</h2>
-      <p>To recover forgotten password, please enter the email address registered with the account to the field below and then select Recover password.</p>
+      <p>
+        To recover forgotten password, please enter the email
+        address registered with the account to the field below and then select Recover password.
+      </p>
       <form onSubmit={handleSubmit}>
         <div className='form-element'>
           email
-          <input required { ...email } placeholder='your-account@email.net' className='full-width'/>
+          <input
+            required
+            { ...email }
+            placeholder='your-account@email.net'
+            className='full-width'
+          />
         </div>
         <Button className='btn btn-secondary' type='submit'>Recover password</Button>
         <SuccessModal />

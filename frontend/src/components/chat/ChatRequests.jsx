@@ -14,7 +14,6 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
 
   const [acceptRequest] = useMutation(ACCEPT_CHAT_REQUEST, {
     onCompleted: (data) => {
-      console.log(data)
       refetchChats()
       setChatRequests(chatRequests.filter(r => r.id !== data.acceptChatRequest.id))
       setVisibleElement(data.acceptChatRequest.id)
@@ -25,7 +24,6 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
   })
   const [declineRequest] = useMutation(DECLINE_CHAT_REQUEST, {
     onCompleted: (data) => {
-      console.log(data)
       setChatRequests(chatRequests.filter(r => r.id !== data.declineChatRequest.requestId))
     },
     onError: (err) => {
@@ -53,8 +51,6 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
         requestId
       }
     })
-    console.log('removing request ', requestId)
-
   }
 
   const handleDeclineClick = (requestId, requester) => {
@@ -68,17 +64,40 @@ const ChatRequests = ({ isVisible, setVisibleElement }) => {
     }
   }
 
-  if (!chatRequests || chatRequests.length === 0 || chatRequests[0] === undefined) return <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }}>No new requests...</div>
-
+  if (
+    !chatRequests
+    ||
+    chatRequests.length === 0
+    ||
+    chatRequests[0] === undefined
+  ) {
+    return <div style={{ display: isVisible ? 'block' : 'none', padding: '1em' }}>No new requests...</div>
+  }
+   
   return(
-    <div style={{ display: isVisible ? 'block' : 'none', padding: '1em', boxSizing: 'border-box' }} className='full-width main-window'>
+    <div
+      style={{ display: isVisible ? 'block' : 'none', padding: '1em', boxSizing: 'border-box' }}
+      className='full-width main-window'
+    >
       <NavTogglerPlaceholder />
       {chatRequests && chatRequests.map(request => (
         <div key={request.id}>
           { request.requester ? request.requester.username : 'Someone' } invited you to chat!
           <div style={{ margin: '10px 0 10px 0' }}>
-            <Button className='btn btn-primary' style={{ marginLeft: '1em' }} onClick={() => handleAcceptClick(request.id)}>Accept!</Button>
-            <Button className='btn-light' style={{ marginLeft: '1em' }} onClick={() => handleDeclineClick(request.id, request.requester.username)}>Decline</Button>
+            <Button
+              className='btn btn-primary'
+              style={{ marginLeft: '1em' }}
+              onClick={() => handleAcceptClick(request.id)}
+            >
+              Accept!
+            </Button>
+            <Button
+              className='btn-light'
+              style={{ marginLeft: '1em' }}
+              onClick={() => handleDeclineClick(request.id, request.requester.username)}
+            >
+              Decline
+            </Button>
             <hr/>
           </div>
         </div>

@@ -17,7 +17,6 @@ const ChangeUsernameForm = () => {
         token: user.token,
         newUsername: newUsername.value
       })
-      console.log(response)
       if (response.status === 204) {
         updateUserProfile({
           username: newUsername.value
@@ -38,7 +37,16 @@ const ChangeUsernameForm = () => {
           New username
           <input required {...newUsername} className='text-input'/>
         </div>
-        <Button className={ newUsername.value === '' ? 'btn btn-disabled' : 'btn btn-secondary' } type='submit'>Submit new username</Button>
+        <Button
+          className={
+            newUsername.value === ''
+              ? 'btn btn-disabled'
+              : 'btn btn-secondary'
+          }
+          type='submit'
+        >
+          Submit new username
+        </Button>
       </form>
     </div>
   )

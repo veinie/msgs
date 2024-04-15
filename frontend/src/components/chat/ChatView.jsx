@@ -89,8 +89,6 @@ const ChatView = ({ chat, visibleElement }) => {
     setMessages(messages.map(m => m.id !== messageId ? m : updatedMessage))
   }
 
-  console.log('Message rendered')
-
   if (!chat) return <div>Loading data...</div>
 
   const displayMessages = () => {

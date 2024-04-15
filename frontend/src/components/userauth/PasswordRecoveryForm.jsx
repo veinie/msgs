@@ -57,11 +57,21 @@ const PasswordRecoveryForm = () => {
             <form onSubmit={handleSubmit}>
               <div className='form-element'>
                 New password
-                <input required {...newPassword} placeholder='******************' className='text-input full-width'/>
+                <input
+                  required
+                  {...newPassword}
+                  placeholder='******************'
+                  className='text-input full-width'
+                />
               </div>
               <div className='form-element'>
                 New password again
-                <input required {...newPasswordAgain} placeholder='******************' className='text-input full-width'/>
+                <input
+                  required
+                  {...newPasswordAgain}
+                  placeholder='******************'
+                  className='text-input full-width'
+                />
               </div>
               <Button className={'btn btn-secondary'} type='submit'>Submit new password</Button>
             </form>

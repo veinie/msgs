@@ -1,11 +1,6 @@
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
-// const theme = {
-//   baseBgGrey: '#3B3938',
-//   slightlyLighterGrey: '#595756'
-// }
-
 export const Page = styled.div`
   margin: 0;
   padding: 0;
@@ -233,12 +228,3 @@ export const SendButton = styled(Button)`
 export const DisabledSendButton = styled(SendButton)`
   cursor: not-allowed;
 `
-
-// #265bff
-// #8b9cff
-// #e3e2ff
-// #e7943a
-// #ffdab0
-
-
-// Dark grey: #3B3938

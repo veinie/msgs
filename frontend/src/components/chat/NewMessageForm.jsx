@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types'
 import { useMutation } from '@apollo/client'
 import { useEffect, useState, useRef } from 'react'
-import { NewMessageContainer, InputDiv, SendButton, VerticallyCentralizedContainer, DisabledSendButton } from '../../styles/style'
+import {
+  NewMessageContainer,
+  InputDiv,
+  SendButton,
+  VerticallyCentralizedContainer,
+  DisabledSendButton
+} from '../../styles/style'
 import { ADD_MESSAGE } from '../../gql/mutations'
 import { MdSend } from 'react-icons/md'
 
@@ -13,8 +19,7 @@ const NewMessageForm = ({ chatId }) => {
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (!content) return
-    const response = await send({ variables: { chatId, content } })
-    console.log(response)
+    await send({ variables: { chatId, content } })
     setContent('')
     document.getElementById(`${chatId}-input`).textContent = ''
   }
@@ -49,7 +54,15 @@ const NewMessageForm = ({ chatId }) => {
             onKeyDown={handleKeyDown}
             id={`${chatId}-input`}
           />
-          {content !== '' ? <SendButton className='btn-send'><MdSend/></SendButton> : <DisabledSendButton className='btn-send-disabled'><MdSend/></DisabledSendButton> }
+          {content !== '' 
+            ? 
+            <SendButton className='btn-send'>
+              <MdSend/>
+            </SendButton>
+            :
+            <DisabledSendButton className='btn-send-disabled'>
+              <MdSend/>
+            </DisabledSendButton> }
         </VerticallyCentralizedContainer>
       </form>
     </NewMessageContainer>

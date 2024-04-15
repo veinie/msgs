@@ -19,12 +19,13 @@ const DeleteAccountForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (window.confirm('Proceed to permanently delete account and all related information?')) {
+    if (window.confirm(
+      'Proceed to permanently delete account and all related information?'
+    )) {
       const response = await userService.deleteAccount({
         userId: user.id,
         token: user.token
       })
-      console.log(response)
       if (response.status === 204) {
         window.alert('Account deleted succesfully.')
         setLogout()
@@ -44,7 +45,16 @@ const DeleteAccountForm = () => {
           To confirm, type in your username:
           <input required {...usernameInput} className='text-input'/>
         </div>
-        <Button className={ readyToSubmit === false ? 'btn btn-disabled' : 'btn btn-danger' } type='submit'>Permanently delete Account</Button>
+        <Button
+          className={
+            readyToSubmit === false
+              ? 'btn btn-disabled'
+              : 'btn btn-danger'
+          }
+          type='submit'
+        >
+          Permanently delete Account
+        </Button>
       </form>
     </div>
   )

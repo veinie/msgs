@@ -1,4 +1,3 @@
-// import PropTypes from 'prop-types'
 import { useState } from 'react'
 import Modal from '../Modal'
 import useField from '../../hooks/useField'
