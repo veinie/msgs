@@ -1,5 +1,7 @@
 #!/bin/bash
 
+pwd
+ls
 cd ../common
 npm ci --omit=dev
 cd ../userauth
