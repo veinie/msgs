@@ -108,14 +108,17 @@ const ChatView = ({ chat, visibleElement }) => {
   }
 
   return (
-    <ChatViewContainer style={{ display: visibleElement === chat.id ? 'block' : 'none' }}>
-      <p>{ chat.users && chat.users.map(u => u.username).join(', ') }</p>
-      <MessageListContainer id={ `${chat.id}_message-list` }>
-        { displayMessages() }
-        <div ref={lastMessageRef} />
-      </MessageListContainer>
-      <NewMessageForm chatId={ chat.id } updateMessages={ setMessages } />
-    </ChatViewContainer>
+    <div>
+      <ChatViewContainer style={{ display: visibleElement === chat.id ? 'flex' : 'none' }}>
+        <p>{ chat.users && chat.users.map(u => u.username).join(', ') }</p>
+        <MessageListContainer id={ `${chat.id}_message-list` }>
+          { displayMessages() }
+          <div ref={lastMessageRef} />
+        </MessageListContainer>
+        <NewMessageForm chatId={ chat.id } updateMessages={ setMessages } />
+      </ChatViewContainer>
+    </div>
+
   )
 }
 

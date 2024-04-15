@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { useLazyQuery, useMutation } from '@apollo/client'
 import { FIND_USER } from '../../gql/queries'
 import { NEW_CHAT } from '../../gql/mutations'
@@ -10,6 +10,7 @@ import { UserContext } from '../../contexts/UserContext'
 import { ChatsContext } from '../../contexts/ChatsContext'
 
 const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
+  const modalRef = useRef()
   const { user } = useContext(UserContext)
   const { chats, refetchChats } = useContext(ChatsContext)
   const [refreshInterval, setRefreshInterval] = useState(null)
@@ -26,6 +27,18 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
       refetchChats()
     }
   })
+
+  const handleCloseModal = () => {
+    setShouldExecuteQuery(false)
+    resetSearchQuery()
+    onClose()
+  }
+
+  const handleOverlayClick = (event) => {
+    if (!modalRef.current.contains(event.target)) {
+      handleCloseModal()
+    }
+  }
 
   useEffect(() => {
     if (search.value && (search.value.length >= 3 || (!isNaN(search.value) && !isNaN(parseFloat(search.value)) && search.value.length > 0))) {
@@ -60,15 +73,9 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
     }
   }, [])
 
-  const handleCloseModal = () => {
-    onClose()
-    resetSearchQuery()
-  }
-
   const handleNewChatRequest = (userId) => {
     sendRequest({ variables: { userId } })
-    resetSearchQuery()
-    onClose()
+    handleCloseModal()
   }
 
   if (!isOpen) {
@@ -76,8 +83,8 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
   }
 
   return(
-    <div className='modal-overlay'>
-      <div className="modal">
+    <div className='modal-overlay' onClick={handleOverlayClick}>
+      <div className="modal" ref={modalRef}>
         <div className="modal-content">
           <p>{message}</p>
           <input autoFocus placeholder='Username or user ID' { ...search } />

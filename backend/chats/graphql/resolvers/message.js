@@ -9,7 +9,6 @@ module.exports = {
   Mutation: {
     createMessage: async (_, { chatId, content }, context) => {
       if (!context.req.decodedToken) return authError
-      console.log(context.req)
       const chat = Chat.findOne({
         include: {
           model: User,
