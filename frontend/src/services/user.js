@@ -71,6 +71,15 @@ const logout = async (token, global = false) => {
   }
 }
 
+const deleteAccount = async ({ userId, token }) => {
+  const config = makeConfig(token)
+  const payload = {
+    userId
+  }
+  const response = await axios.delete(`${baseUrl}/users`, { ...config, data: payload })
+  return response
+}
+
 export default {
   signup,
   confirmAccount,
@@ -78,5 +87,6 @@ export default {
   refreshToken,
   changePassword,
   changeUsername,
-  logout
+  logout,
+  deleteAccount
 }

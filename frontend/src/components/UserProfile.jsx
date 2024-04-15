@@ -7,6 +7,7 @@ import { useIdleTimer } from 'react-idle-timer'
 import userService from '../services/user'
 import PasswordResetForm from './userauth/PasswordResetForm'
 import ChangeUsernameForm from './userauth/ChangeUsernameForm'
+import DeleteAccountForm from './userauth/DeleteAccountForm'
 import { Scrollable } from '../styles/style'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
@@ -70,6 +71,7 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
         <ChangeUsernameForm />
         <PasswordResetForm />
         <ThemeToggler theme={theme} toggleTheme={ toggleTheme } />
+        <DeleteAccountForm />
       </div>
     </Scrollable>
 

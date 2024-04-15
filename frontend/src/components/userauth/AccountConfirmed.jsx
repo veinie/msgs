@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import userService from '../../services/user'
+import {
+  VerticallyCentralizedContainer,
+  HorizontallyCentralizedContainer,
+  DesktopHorizontalMobileVertical
+} from '../../styles/style'
 
 const AccountConfirmed = () => {
   const [confirmed, setConfirmed] = useState(false)
@@ -23,10 +28,16 @@ const AccountConfirmed = () => {
 
 
   return (
-    <>
-      <p>{ message }</p>
-      { confirmed && <>go to <Link to='/'>login</Link></> }
-    </>
+    <VerticallyCentralizedContainer>
+      <HorizontallyCentralizedContainer>
+        <DesktopHorizontalMobileVertical>
+          <div className='background-div landingpage-form'>
+            <p>{ message }</p>
+            { confirmed && <>go to <Link to='/'>login</Link></> }
+          </div>
+        </DesktopHorizontalMobileVertical>
+      </HorizontallyCentralizedContainer>
+    </VerticallyCentralizedContainer>
   )
 }
 

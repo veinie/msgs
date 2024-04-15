@@ -161,6 +161,10 @@ export const GlobalStyles = createGlobalStyle`
     color: black;
   }
 
+  .btn-danger {
+    background-color: #cc0000;
+  }
+
   .btn-send {
     background-color: ${({ theme }) => theme.background};
     color: ${({ theme }) => theme.text};
