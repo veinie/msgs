@@ -2,5 +2,5 @@
 
 cd ./common
 npm ci --omit=dev
-cd ../chats
+cd ../userauth
 npm ci --omit=dev
