@@ -5,7 +5,7 @@ const nodemailer = require('../util/email')
 
 const { SECRET, SALT_ROUNDS } = require('../util/config')
 const { tokenExtractor } = require('../../common/util/middleware')
-const { User, Session } = require('../../common/models')
+const { User, Session, Userchat, Message } = require('../../common/models')
 
 router.post('/signup', async (req, res) => {
   const { username, password, email } = req.body
@@ -103,12 +103,36 @@ router.get('/resetpassword/:confirmationCode', async () => {
   return
 })
 
-// router.delete('/:id', tokenExtractor, async (req, res) => {
-//   const user = await User.findByPk(req.params.id)
-//   if (user.id === req.decodedToken.id) {
-//     await user.destroy()
-//     res.status(200)
-//   }
-// })
+router.delete('/:id', tokenExtractor, async (req, res) => {
+  try {
+    const user = await User.findByPk(req.decodedToken.id)
+    if (user.id !== req.params.id) return res.status(401).json({ error: 'Unauthorized' })
+    await Message.destroy({
+      where: {
+        user_id: user.id
+      }
+    })
+    await Userchat.destroy({
+      where: {
+        user_id: user.id
+      }
+    })
+    await Session.destroy({
+      where: {
+        userId: user.id
+      }
+    })
+    await Userchat.update({ requester_id: null }, {
+      where: {
+        requester_id: user.id
+      }
+    })
+    await user.destroy()
+    res.status(410).json({ message: 'Userdata permanently deleted' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Something went wrong' })
+  }
+})
 
 module.exports = router
