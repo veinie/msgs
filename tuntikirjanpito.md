@@ -30,3 +30,8 @@
 |10.4.| 1 | Käyttöönotettu eslint ja tyylien pakottaminen frontissa.|
 |11.4.| 2 | Lisätty eslint ja tyylien pakottaminen backend-rakenteisiin.|
 |11.4.| 3 | Parannettu virheenkäsittelyä GraphQL-API:ssa koskien virheellisellä tai puuttuvalla tokenilla lähetettyjä kutsuja, sekä näistä aiheutuvien virheiden käsittelyä frontend-sovelluksessa siten, että käyttäjä kirjataan sovelluksesta automaattisesti ulos silloin, kun kutsuja lähetetään puutteellisella varmenteella.|
+|15.4.| 3 | Lisätty userauth-APIin ja frontendiin rakenteet käyttäjätunnuksen poistamista varten.|
+|15.4.| 5 | Lisätty sähköpostiosoitteeseen perustuva salasanan palauttamismahdollisuus back- ja frontendiin.|
+|15.4.| 1 | Viestinlähetyskomponentin viimeistelyä, mm. Ctrl+Enter viestin lähetys ja komponentin parempi kiinnittäminen näytön alareunaan.|
+|15.4.| 2 | Frontendin uudelleenformatointia julkaisua varten.|
+|15.4.| 4 | Userauth- ja Chats-API julkaistu Renderiin. Frontin kanssa vielä ongelmia kutsujen uudelleenohjaukseen liittyen.|
