@@ -16,6 +16,7 @@ import { UserProvider } from './contexts/UserContext.jsx'
 import { ChatsProvider } from './contexts/ChatsContext.jsx'
 
 const CHATS_URL = import.meta.env.VITE_CHATS_URL
+const CHATS_SUB_URL = import.meta.env.VITE_CHATS_SUB_URL
 
 const authLink = setContext(async (_, { headers }) => {
   const user = JSON.parse(localStorage.getItem('MsgsUser'))
@@ -28,11 +29,11 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: `http://${CHATS_URL}`
+  uri: `${CHATS_URL}`
 })
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: `ws://${CHATS_URL}`
+  url: `${CHATS_SUB_URL}`
 }))
 
 const splitLink = split(
