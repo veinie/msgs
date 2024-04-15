@@ -103,10 +103,12 @@ router.get('/resetpassword/:confirmationCode', async () => {
   return
 })
 
-router.delete('/:id', tokenExtractor, async (req, res) => {
+router.delete('/', tokenExtractor, async (req, res) => {
+  if (!req.body.userId) return res.status(400).json({ error: 'userId required in request body' })
+  const { userId } = req.body
   try {
     const user = await User.findByPk(req.decodedToken.id)
-    if (user.id !== req.params.id) return res.status(401).json({ error: 'Unauthorized' })
+    if (user.id !== userId) return res.status(401).json({ error: 'Unauthorized' })
     await Message.destroy({
       where: {
         user_id: user.id
@@ -128,7 +130,7 @@ router.delete('/:id', tokenExtractor, async (req, res) => {
       }
     })
     await user.destroy()
-    res.status(410).json({ message: 'Userdata permanently deleted' })
+    res.status(204).end()
   } catch (error) {
     console.log(error)
     res.status(500).json({ error: 'Something went wrong' })
