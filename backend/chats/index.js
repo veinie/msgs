@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-require('dotenv').config()
+// require('dotenv').config()
 
-const runServer = require('./api/server')
-const { GQL_PORT } = require('../common/util/config')
+import runServer from './api/server'
+import { GQL_PORT } from '../common/util/config'
 
 process.on('uncaughtException', (err) => {
   console.error(`${(new Date()).toUTCString()} uncaughtException:`, err)
