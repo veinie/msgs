@@ -8,10 +8,11 @@ const { tokenExtractor } = require('../../common/util/middleware')
 const { User, Session, Userchat, Message, RecoveryToken } = require('../../common/models')
 
 router.post('/signup', async (req, res) => {
-  const { username, password, email } = req.body
-  const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
-  const confirmationCode = jwt.sign({ email: req.body.email }, SECRET)
   try {
+    const { username, password, email } = req.body
+    if (!(username && password && email)) return res.status(400).json({ error: 'Required parameters missing' })
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS)
+    const confirmationCode = jwt.sign({ email: req.body.email }, SECRET)
     const user = await User.create({ username, email, passwordHash, confirmationCode })
     res.status(201).json({
       message: 'User registered succesfully! Check email for account activation.'
