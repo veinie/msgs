@@ -77,7 +77,6 @@ const NewChatRequest = ({ isOpen, onClose, message, setVisibleElement }) => {
 
   return(
     <div className='modal-overlay'>
-
       <div className="modal">
         <div className="modal-content">
           <p>{message}</p>

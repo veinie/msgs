@@ -1,6 +1,6 @@
 // import PropTypes from 'prop-types'
 import { useState } from 'react'
-import SuccesfulSignupModal from './SuccesfulSignupModal'
+import Modal from '../Modal'
 import useField from '../../hooks/useField'
 import userService from '../../services/user'
 import { Button } from '../../styles/style'
@@ -54,7 +54,7 @@ const SignupForm = () => {
 
   return (
     <div>
-      <SuccesfulSignupModal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
+      <Modal isOpen={isModalOpen} onClose={closeModal} message={modalMessage} />
       <h2>Sign up</h2>
       <form id="signup-form" onSubmit={handleSignup}>
         <div className='form-element'>

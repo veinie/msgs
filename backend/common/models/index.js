@@ -3,6 +3,7 @@ const Session = require('./session')
 const Chat = require('./chat')
 const Userchat = require('./userChat')
 const Message = require('./message')
+const RecoveryToken = require('./recoveryToken')
 
 User.hasMany(Session)
 Session.belongsTo(User)
@@ -18,6 +19,11 @@ Chat.hasMany(Message)
 Message.belongsTo(User)
 Message.belongsTo(Chat)
 
+RecoveryToken.belongsTo(User, {
+  onDelete: 'CASCADE'
+})
+User.hasMany(RecoveryToken)
+
 module.exports = {
-  User, Session, Chat, Userchat, Message
+  User, Session, Chat, Userchat, Message, RecoveryToken
 }

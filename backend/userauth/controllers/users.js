@@ -5,7 +5,7 @@ const nodemailer = require('../util/email')
 
 const { SECRET, SALT_ROUNDS } = require('../util/config')
 const { tokenExtractor } = require('../../common/util/middleware')
-const { User, Session, Userchat, Message } = require('../../common/models')
+const { User, Session, Userchat, Message, RecoveryToken } = require('../../common/models')
 
 router.post('/signup', async (req, res) => {
   const { username, password, email } = req.body
@@ -84,23 +84,59 @@ router.patch('/changeusername', tokenExtractor, async (req, res) => {
 })
 
 router.post('/passwordresetrequest', async (req, res) => {
-  const { email } = req.body
-  const user = await User.findOne({
-    where: { email }
-  })
-  if (user && req.body.email) {
-    user.confirmationCode = jwt.sign({ email: req.body.email }, SECRET)
-    nodemailer.sendPasswordResetEmail(
-      user.username,
-      user.email,
-      user.confirmationCode
-    )
+  try {
+    const { email } = req.body
+    if (!email) return res.status(400).json({ error: 'email required in request body' })
+    const user = await User.scope('unlimited').findOne({
+      where: { email }
+    })
+    if (user) {
+      const hash = bcrypt.hash(email, SALT_ROUNDS)
+      const token = jwt.sign({ secret: hash }, SECRET, options = { expiresIn: '1h' })
+      await RecoveryToken.create({
+        token,
+        userId: user.id,
+      })
+      nodemailer.sendPasswordResetEmail(
+        user.username,
+        user.email,
+        token
+      )
+    }
+    res.status(200).end()
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ error: 'Something went wrong' })
   }
-  res.status(200)
 })
 
-router.get('/resetpassword/:confirmationCode', async () => {
-  return
+router.post('/recoverpassword', async (req, res) => {
+  const { newPassword, recoveryToken } = req.body
+  try {
+    decodedToken = jwt.verify(recoveryToken, SECRET)
+    const token = await RecoveryToken.findOne({
+      where: {
+        token: recoveryToken
+      }
+    })
+    const user = await User.findByPk(token.userId)
+    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS)
+    user.passwordHash = newPasswordHash
+    await user.save()
+    await token.destroy()
+    await Session.destroy({
+      where: {
+        userId: user.id,
+      }
+    })
+    res.status(200).json({ message: 'updated succesfully' })
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'TokenExpiredError') {
+      return res.status(400).json({ error: 'Token expired' })
+    }
+    return res.status(400).json({ error: 'Token validation failed.' })
+  }
 })
 
 router.delete('/', tokenExtractor, async (req, res) => {

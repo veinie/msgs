@@ -71,6 +71,29 @@ const logout = async (token, global = false) => {
   }
 }
 
+const requestPasswordRecovery = async ({ email }) => {
+  const response = await axios.post(`${baseUrl}/users/passwordresetrequest`, { email })
+  return response
+}
+
+const recoverPassword = async ({ newPassword, recoveryToken }) => {
+  const payload = {
+    newPassword,
+    recoveryToken
+  }
+  try {
+    const response = await axios.post(`${baseUrl}/users/recoverpassword`, payload)
+    return response.data
+  } catch (error) {
+    console.log(error)
+    if (error.response.data.error === 'Token expired') {
+      return { error: 'Recovery token expired. Please re-submit the password recovery request.' }
+    } else {
+      return { error: 'Something went wrong' }
+    }
+  }
+}
+
 const deleteAccount = async ({ userId, token }) => {
   const config = makeConfig(token)
   const payload = {
@@ -88,5 +111,7 @@ export default {
   changePassword,
   changeUsername,
   logout,
+  requestPasswordRecovery,
+  recoverPassword,
   deleteAccount
 }

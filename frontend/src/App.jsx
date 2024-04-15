@@ -16,6 +16,7 @@ import { useDarkMode } from './hooks/useDarkMode'
 import UserProfile from './components/UserProfile'
 import ChatRequests from './components/chat/ChatRequests'
 import { ChatsContext, ChatsProvider } from './contexts/ChatsContext'
+import PasswordRecoveryForm from './components/userauth/PasswordRecoveryForm'
 
 function App() {
   const [theme, themeToggler, mountedComponent] = useDarkMode()
@@ -68,6 +69,7 @@ function App() {
         <Routes>
           <Route path='*' element={ <ChatsProvider><Msgs /></ChatsProvider> } />
           <Route path='/accountconfirmation/:code' element={<AccountConfirmed />} />
+          <Route path='/resetpassword/:token' element={<PasswordRecoveryForm />} />
         </Routes>
       </Page>
     </ThemeProvider>

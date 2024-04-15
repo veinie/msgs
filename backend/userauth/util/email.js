@@ -1,5 +1,5 @@
 const nodemailer = require('nodemailer')
-const { FRONTEND_CONFIRMATION_URL, BASE_URL, EMAIL_USER, EMAIL_PASS } = require('./config')
+const { FRONTEND_URL, BASE_URL, EMAIL_USER, EMAIL_PASS } = require('./config')
 const logger = require('../../common/util/logger')
 
 // https://betterprogramming.pub/how-to-create-a-signup-confirmation-email-with-node-js-c2fea602872a
@@ -24,7 +24,7 @@ module.exports.sendConfirmationEmail = (name, email, confirmationCode) => {
     html: `<h1>Email Confirmation</h1>
         <h2>Hello ${name}</h2>
         <p>Thank you for subscribing. Please confirm your email by clicking on the following link</p>
-        <a href=${FRONTEND_CONFIRMATION_URL}/${confirmationCode}> Click here</a>
+        <a href=${FRONTEND_URL}/accountconfirmation/${confirmationCode}> Click here</a>
         </div>`,
   }).catch(err => console.log(err))
 }
@@ -39,7 +39,7 @@ module.exports.sendPasswordResetEmail = (name, email, confirmationCode) => {
         <h2>Hello ${name}</h2>
         <p>A request for resetting your Msgs password was submitted. If you didn't send the request, please remove this message.</p>
         <p>You can proceed resetting the password by clicking the following link:</p>
-        <a href=${BASE_URL}/api/users/resetpassword/${confirmationCode}>${BASE_URL}/api/users/resetpassword/${confirmationCode}</a>
+        <a href=${FRONTEND_URL}/resetpassword/${confirmationCode}>Recover password</a>
         </div>`,
   }).catch(err => console.log(err))
 }
