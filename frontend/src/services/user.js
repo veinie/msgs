@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseUrl = `${import.meta.env.VITE_USERAUTH_URL}`
+const baseUrl = `${import.meta.env.VITE_USERAUTH_URL}/api`
 
 const makeConfig = (token) => {
   const config = {

@@ -29,11 +29,11 @@ const authLink = setContext(async (_, { headers }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: `${CHATS_URL}`
+  uri: `${CHATS_URL}/api`
 })
 
 const wsLink = new GraphQLWsLink(createClient({
-  url: `${CHATS_SUB_URL}`
+  url: `${CHATS_SUB_URL}/api`
 }))
 
 const splitLink = split(
