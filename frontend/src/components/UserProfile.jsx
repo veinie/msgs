@@ -59,7 +59,6 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
     <Scrollable style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='profile-div'>
       <div className='full-width'>
         <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
-        {active.toString()}
         <Logout />
         <hr/>
         <ChangeUsernameForm />
@@ -68,8 +67,6 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
         <DeleteAccountForm />
       </div>
     </Scrollable>
-
-      
   )
 }
 
