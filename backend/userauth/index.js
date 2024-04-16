@@ -17,6 +17,9 @@ app.use(middleware.requestLogger)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 app.use('/api/logout', logoutRouter)
+app.get('/api/health', (_req, res) => {
+  res.status(200).send('OK')
+})
 
 app.use(middleware.errorHandler)
 
