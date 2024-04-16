@@ -51,6 +51,9 @@ const runServer = async (PORT) => {
     }),
     errorHandler
   )
+  app.get('/health', (_req, res) => {
+    res.status(200).send('OK')
+  })
   httpServer.listen(PORT, () =>
     console.log(`Server is now running on http://localhost:${PORT}`))
 }
