@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const router = require('express').Router()
+const { Op } = require('sequelize')
 
 const { SECRET } = require('../util/config')
 const { User, Session } = require('../../common/models')
@@ -10,7 +11,9 @@ router.post('/', async (req, res) => {
   const body = req.body
   const user = await User.scope('unlimited').findOne({
     where: {
-      email: body.email,
+      email: {
+        [Op.iLike]: body.email
+      }
     }
   })
 

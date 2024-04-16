@@ -61,7 +61,6 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
         width: window.innerWidth,
         height: window.innerHeight
       })
-
     }
     window.addEventListener('resize', handleResize)
 
@@ -108,7 +107,6 @@ const Menubar = ({ visibleElement, setVisibleElement }) => {
   }
 
   const ComponentLayoutDebugger = () => {
-    console.log('Menubar rendered')
     return (
       <div style={{ position: 'fixed', top: '0' }} className='background-div'>
         Width: {viewPortSize.width}<br/>

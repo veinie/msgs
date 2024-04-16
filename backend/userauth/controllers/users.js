@@ -2,6 +2,7 @@ const router = require('express').Router()
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const nodemailer = require('../util/email')
+const { Op } = require('sequelize')
 
 const { SECRET, SALT_ROUNDS } = require('../util/config')
 const { tokenExtractor } = require('../../common/util/middleware')
@@ -89,7 +90,11 @@ router.post('/passwordresetrequest', async (req, res) => {
     const { email } = req.body
     if (!email) return res.status(400).json({ error: 'email required in request body' })
     const user = await User.scope('unlimited').findOne({
-      where: { email }
+      where: {
+        email: {
+          [Op.iLike]: email
+        }
+      }
     })
     if (user) {
       const hash = bcrypt.hash(email, SALT_ROUNDS)
