@@ -13,12 +13,14 @@ import { MdSend } from 'react-icons/md'
 
 const NewMessageForm = ({ chatId }) => {
   const [content, setContent] = useState('')
+  const [readyToSubmit, setReadyToSubmit] = useState(false)
+  const [message, setMessage] = useState('0 / 255')
   const [send] = useMutation(ADD_MESSAGE)
   const inputRef = useRef(null)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (!content) return
+    if (!readyToSubmit) return
     await send({ variables: { chatId, content } })
     setContent('')
     document.getElementById(`${chatId}-input`).textContent = ''
@@ -43,9 +45,23 @@ const NewMessageForm = ({ chatId }) => {
     }
   }, [])
 
+  useEffect(() => {
+    if (content.length > 0 && content.length <= 255) {
+      setReadyToSubmit(true)
+      setMessage(`${content.length} / 255`)
+    } else if (content.length < 1) {
+      setReadyToSubmit(false)
+      setMessage('0 / 255')
+    } else if (content.length > 255) {
+      setReadyToSubmit(false)
+      setMessage(`Messages longer than 255 characters cannot be submitted. (${content.length} / 255)`)
+    }
+  }, [content])
+
   return (
     <NewMessageContainer>
       <form id={`${chatId}-new-message-form`} onSubmit={handleSubmit} style={{ width: '100%' }}>
+        { message }
         <VerticallyCentralizedContainer>
           <InputDiv
             contentEditable
@@ -54,7 +70,7 @@ const NewMessageForm = ({ chatId }) => {
             onKeyDown={handleKeyDown}
             id={`${chatId}-input`}
           />
-          {content !== '' 
+          {readyToSubmit
             ? 
             <SendButton className='btn-send'>
               <MdSend/>
