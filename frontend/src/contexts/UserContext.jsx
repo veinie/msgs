@@ -21,6 +21,7 @@ const UserProvider = ({ children }) => {
   }, [])
 
   const setLogin = (userData) => {
+    console.log('setting login')
     setUser(userData)
     setAuthenticated(true)
     localStorage.setItem('MsgsUser', JSON.stringify(userData))

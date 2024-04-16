@@ -12,9 +12,9 @@ import { Scrollable } from '../styles/style'
 
 const UserProfile = ({ isVisible, theme, toggleTheme }) => {
   const { user, setLogin, setLogout } = useContext(UserContext)
-  const [active, setActive] = useState(true)
+  const [active, setActive] = useState(false)
   useIdleTimer({
-    timeout: 60000, // 60 seconds
+    timeout: 600000, // 10 minutes
     onAction: () => {
       if (!active) {
         setActive(true)
@@ -36,15 +36,10 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
           console.log('checking time to token invalidation')
           const expTime = JSON.parse(atob(user.token.split('.')[1])).exp * 1000
           const minutesRemaining = (expTime - Date.now()) / 1000 / 60
-          if (minutesRemaining < 20) {
+          if (minutesRemaining < 25) {
             console.log('refreshing token')
             const response = await userService.refreshToken(user.token)
-            if (response.error) {
-              console.log(response)
-              return
-            } else {
-              setLogin(response)
-            }
+            setLogin(response)
           }
         }
       } catch (error) {
@@ -53,19 +48,18 @@ const UserProfile = ({ isVisible, theme, toggleTheme }) => {
           setLogout()
         }
       }
-    }, 60000)
+    }, 300000) // 5 minutes
 
     return () => {
       clearInterval(interval)
     }
-  }, [])
-
-  console.log('Userprofile rendered')
+  }, [active, user])
 
   return (
     <Scrollable style={{ display: isVisible ? 'block' : 'none', padding: '1em' }} className='profile-div'>
       <div className='full-width'>
         <p>{ `Logged in as ${ user.username } (User-ID: #${ user.id })` }</p>
+        {active.toString()}
         <Logout />
         <hr/>
         <ChangeUsernameForm />
