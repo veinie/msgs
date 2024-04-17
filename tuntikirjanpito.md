@@ -35,3 +35,7 @@
 |15.4.| 1 | Viestinlähetyskomponentin viimeistelyä, mm. Ctrl+Enter viestin lähetys ja komponentin parempi kiinnittäminen näytön alareunaan.|
 |15.4.| 2 | Frontendin uudelleenformatointia julkaisua varten.|
 |15.4.| 4 | Userauth- ja Chats-API julkaistu Renderiin. Frontin kanssa vielä ongelmia kutsujen uudelleenohjaukseen liittyen.|
+|16.4.| 6 | Frontendin julkaisu Renderiin. Tähän liittyen jonkun verran osoitteiden uudelleenmäärittelyä SSL-yhteyksien toiminnan toteuttamiseksi Renderin vaatiman SSL/TLS -yhteyden yli verrattuna paikalliesti ajettuun kehitysympäristöön.|
+|16.4.| 4 | Muutamia pieniä frontend-muutoksia, kuten ilmoitus viestin maksimipituuden ylittymisestä, token-autorefresh-flown korjaus, case-sensitiivisyyden poistaminen kirjautumis- ja salasananpalautuslomakkeen sähköpostiosoitesyötteen osalta. Lisäksi lisätty healthcheck-endpointit backend-kohteisiin.|
+|17.4.| 2 | Readme-tiedoston päivitys.|
+|Yht. |177 | 10op |
