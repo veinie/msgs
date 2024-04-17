@@ -11,7 +11,33 @@ Taustalla palvelu hyödyntää Postgres-tietokantaa.
 
 Demoversio sovelluksesta on löydettävissä osoitteesssa [msgs.onrender.com](https://msgs.onrender.com).
 
+Työaikakirjanpito tiedostossa [tuntikirjanpito.md](tuntikirjanpito.md)
+
 Huomaathan, että demosovelluksen käyttäminen vaatii toimivan sähköpostiosoitteen käyttämisen rekisteröitymisen yhteydessä. Tunnuksen aktivointiin käytettävä sähköpostiviesti päätyy suurella todennäköisyydellä vastaanottajan roskapostikansioon, sillä demosovellukseen rekisteröitynä sähköpostipaveluna käytetään maksutonta gmail-tiliä.
+
+Huomaathan lisäksi, että koska sovelluksen demoversiota ajetaan maksuttomilla Render-resursseilla, mikäli sovelluksessa ei ole ollut käyttäjiä ennen sisäänkirjautumista, toimintojen aktivoituminen saattaa kestää jopa useita minuutteja. Mikäli kirjautuminen ei siis heti onnistu, tai keskustelut eivät tule näkyviin, odotathan muutaman minuutin Renderin puolen resurssien aktivoitumista.
+
+## Sovelluksen käyttö
+
+Käyttöliittymäsuunnittelussa on pyritty intuitiivisuuteen, joten tämän osion voinee tarvittaessa silmäillä läpi nopeasti. Käyttöohje on kuitenkin tehtävänannossa vaadittu elementti, joten tässä tulee:
+
+Ladattuasi sivun valitse "Sign up" ja syötä lomakkeen pyytämät tiedot. Lopuksi valitse uudelleen "Sign up", jonka jälkeen, mikäli kentät on täytetty oikein, sovellus ilmoittaa, että tunnuksen vahvistussähköpostiviesti on lähetetty ilmoitettuun sähköpostiosoitteeseen.
+
+Aktivoi tunnus painamalla sähköpostiviestissä olevaa linkkiä.
+
+Tämän jälkeen pääset takaisin kirjautumissivulle, ja kirjautumaan sisään ilmoitetuilla tiedoilla. Valitsemalla kirjautumisnäkymässä "Keep me logged in for 30 days", istunnolle myönnettävän JsonWebTokenin voimassaoloaika määritetään 30vrk pituiseksi.
+
+Kirjauduttuasi sisään löydät käyttäjäprofiiliin liittyvät asetukset valikon kohdasta "Profile and Settings". Täällä voit kirjautua ulos, vaihtaa käyttäjänimen, vaihtaa salasanan, vaihtaa sovelluksen väriteemaa, sekä poistaa käyttäjätunnukseen liittyvät tiedot (mukaan lukien käyttäjän palveluun lähettämät viestit).
+
+Valikon kohdasta "Start a new chat" pääset aloittamaan uuden keskustelun. Valittuasi tämän, sovellus näyttää Modalin jossa voit syöttää haluamasi keskustelukumppanin käyttäjätunnuksen tai käyttäjä-id:n kenttään, jonka jälkeen keskustelun avaava ruutu tulee näkyviin syötekentän alapuolelle.
+
+HUOM: demoympäristöstä löytyy ainakin käyttäjä "Veikka", jolle viestejä voi lähettää. Toki voit myös luoda itsellesi kaksi tunnusta (vaatii kaksi erillistä sähköpostiosoitetta) voidaksesi paremmin todentaa GraphQL-subscriptioiden toimintaa.
+
+Valittuasi keskustelukumppanin, ruudulla näytetään uusi keskustelu. Viestejä keskusteluun voi lähettää kirjoittamalla ruudun alareunan contenteditable-div-syötekenttään halutun viestin, ja valitsemalla sitten kentän oikealla puolella olevan lähetyspainikkeen (tai näppäimistöllä esim Ctrl+Enter).
+
+Itse lähetettyjä voi muokata tai poistaa viestin oikeasa reunassa olevan kolmen pisteen kautta avattavan valikon kautta.
+
+Tarvittaessa käyttäjätunnukseen liittyvän salasanan palauttaminen voidaan käynnistää valitsemalla sovelluksen kirjautumisnäkymässsä "Forgot password" ja syöttämällä käyttäjätunnukseen rekisteröity sähköpostiosoite kenttään. Valitsemalla lopuksi "Recover password", sähköpostiosoitteeseen lähetetään linkki, jonka kautta pääset valitsemaan käyttäjätunnuksellesi uuden salasanan.
 
 ## Käyttäjänhallinta REST-API
 
