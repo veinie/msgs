@@ -3,12 +3,15 @@ Messages app
 
 MSGS on viestipalvelusovellus, joka muodostuu neljästä erillisestä rakenteesta:
   - Backend common-moduuli sisältää backendin muiden rakenteiden käyttämiä, yhteisiä toimintoja, kuten migraatiot, Sequelize-ORM -määritykset, tietokantaan yhdistämiseen käytettävät rakenteet, middlewaret, ja loggerin.
-  - Backend userauth-API on REST-arkkitehtuuria mukaileva NodeJS Express-API, jonka avulla suoritetaan sovelluksen käyttäjähallintaan liittyviä toimintoja, kuten käyttäjien lisääminen, tietojen muuttaminen, kirjautuminen, ym.
-  - Backend chats-API on NodeJS Express GraphQL-API, jonka avulla hallitaan sovelukseen liittyviä viestejä sekä keskusteluja. GraphQL-API:n avulla keskusteluihin liittyviä viestejä voidaan välittää asiakassovellukseen GraphQL tilausten (subscription) avulla mahdollisimman viiveettömän toiminnan saavuttamiseksi välttäen samalla ylimääräistä verkkoliikennettä.
+  - Backend Userauth-API on REST-arkkitehtuuria mukaileva NodeJS Express-API, jonka avulla suoritetaan sovelluksen käyttäjähallintaan liittyviä toimintoja, kuten käyttäjien lisääminen, tietojen muuttaminen, kirjautuminen, ym.
+  - Backend Chats-API on NodeJS Express GraphQL-API, jonka avulla hallitaan sovelukseen liittyviä viestejä sekä keskusteluja. GraphQL-API:n avulla keskusteluihin liittyviä viestejä voidaan välittää asiakassovellukseen GraphQL tilausten (subscription) avulla mahdollisimman viiveettömän toiminnan saavuttamiseksi välttäen samalla ylimääräistä verkkoliikennettä.
   - Frontend React-sovellus, joka hyödyntää em. toimintoja.
 
 Taustalla palvelu hyödyntää Postgres-tietokantaa.
 
+Demoversio sovelluksesta on löydettävissä osoitteesssa [msgs.onrender.com](https://msgs.onrender.com).
+
+Huomaathan, että demosovelluksen käyttäminen vaatii toimivan sähköpostiosoitteen käyttämisen rekisteröitymisen yhteydessä. Tunnuksen aktivointiin käytettävä sähköpostiviesti päätyy suurella todennäköisyydellä vastaanottajan roskapostikansioon, sillä demosovellukseen rekisteröitynä sähköpostipaveluna käytetään maksutonta gmail-tiliä.
 
 ## Käyttäjänhallinta REST-API
 
@@ -65,7 +68,7 @@ GraphQL-API tarjoaa rajapinnan viestien ja keskustelujen hallintaan.
 - `newChatRequest(userId: Int!)` - Ilmoittaa uusista käyttäjä-id:tä koskevista keskustelupyynnöistä
 - `newMessageToChat(chatId: Int!)` - Ilmoittaa uusista keskustelua koskevista viesteistä
 
-GraphQL-rakenteen lisäksi kohteessa on endpoint /health joka vastaa HTTP 200 silloin, kun sovellus on käytettävissä.
+GraphQL-rakenteen lisäksi kohteessa on endpoint `/health` joka vastaa HTTP 200 silloin, kun sovellus on käytettävissä.
 
 ## React-frontend sovellus
 
